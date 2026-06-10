@@ -636,6 +636,7 @@ async function login(){
     const r=await fetch('/api/config',{headers:{'x-praktijk-pw':inp}});
     if(r.status===401){document.getElementById('pw-err').style.display='block';return;}
     pw=inp;
+    window.pw=pw;
     localStorage.setItem('pk-pw',pw);
     document.getElementById('login-screen').style.display='none';
     const cfg=await r.json();
@@ -665,6 +666,7 @@ function updatePersonSelects(){
 
 window.addEventListener('DOMContentLoaded',()=>{
   pw=localStorage.getItem('pk-pw')||'';
+  window.pw=pw;
   user=localStorage.getItem('pk-user')||'';
   if(user)document.getElementById('huser').textContent=user;
   if(pw){
@@ -688,7 +690,8 @@ async function laad(toon=true,stil=false){
     if(!r.ok)throw new Error();
     const d=await r.json();
     const oud=JSON.stringify(D.taken);
-    D={...D,...d};
+    Object.assign(D,d);
+    window.D=D;
     if(!D.taken)D.taken=[];
     if(!D.herinneringen)D.herinneringen=[];
     if(!D.rooster)D.rooster=[];
@@ -703,7 +706,7 @@ async function laad(toon=true,stil=false){
 async function sla(msg){
   setSdot('loading','Opslaan...');
   try{
-    D.bijgewerktDoor=user||'onbekend';D.laatstBijgewerkt=vandaag();
+    D.bijgewerktDoor=user||'onbekend';D.laatstBijgewerkt=vandaag();window.D=D;
     const r=await fetch('/api/taken',{method:'POST',...h(),body:JSON.stringify(D)});
     if(r.status===401){toast('⚠️ Sessie verlopen — herlaad de pagina');return;}
     setSdot('ok','Live verbonden');
@@ -1006,7 +1009,7 @@ async function saveWachtwoord(){
   if(!nw){toast('⚠️ Vul een nieuw wachtwoord in');return;}
   const r=await fetch('/api/config',{method:'POST',headers:{'Content-Type':'application/json','x-praktijk-pw':bev},body:JSON.stringify({wachtwoord:nw})});
   if(r.status===401){toast('⚠️ Huidig wachtwoord klopt niet');return;}
-  pw=nw;localStorage.setItem('pk-pw',pw);
+  pw=nw;window.pw=pw;localStorage.setItem('pk-pw',pw);
   toast('🔒 Wachtwoord bijgewerkt');document.getElementById('s-pw').value='';document.getElementById('s-pw-confirm').value='';
 }
 
@@ -1067,17 +1070,12 @@ async function quickFeed(){
   await sla('💬 Bericht geplaatst');
 }
 
-// ── RENDER ALL OVERRIDE ───────────────────────────────────────
-const _origRenderAll = renderAll;
-function renderAll(){
-  _origRenderAll();
-  if(window.renderFeed) window.renderFeed();
-  if(window.renderVergadering) window.renderVergadering();
-}
+
 
 // Expose globals for modules
 window.D = D; // live reference — modules share same object
 window.user = user;
+window.pw = pw;
 window.sla = sla;
 window.uid = uid;
 window.toast = toast;
