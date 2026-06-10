@@ -544,9 +544,14 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
         <h4>📦 Data beheer</h4>
         <div style="display:flex;flex-direction:column;gap:8px">
           <a href="/api/backup" class="btn btn-s">📥 Backup downloaden</a>
+          <label class="btn btn-s" style="cursor:pointer;justify-content:center">
+            📤 Backup terugzetten
+            <input type="file" id="restore-file" accept=".json" style="display:none" onchange="backupTerugzetten(this)">
+          </label>
           <button class="btn btn-r2" onclick="archiveerKlaar()">🗄️ Afgehandelde taken archiveren</button>
         </div>
-        <p style="font-size:12px;color:var(--gray-500);margin-top:10px">Archiveren verplaatst alle "Klaar"-taken. Ze blijven in de backup.</p>
+        <div id="restore-result" style="font-size:13px;margin-top:8px"></div>
+        <p style="font-size:12px;color:var(--gray-500);margin-top:6px">Archiveren verplaatst alle "Klaar"-taken. Ze blijven in de backup.</p>
       </div>
 
       <div class="sc">
@@ -1535,6 +1540,36 @@ function renderPINBeheer() {
       ${heeftPin?`<button class="btn btn-s" style="font-size:11px;padding:3px 9px" onclick="resetPIN('${n}')">Reset</button>`:''}
     </div>`;
   }).join('');
+}
+
+async function backupTerugzetten(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const el = document.getElementById('restore-result');
+  el.textContent = '⏳ Bezig...';
+  try {
+    const tekst = await file.text();
+    const data = JSON.parse(tekst);
+    // Valideer dat het een echte backup is
+    if (!data.taken) throw new Error('Ongeldig bestand — geen taken gevonden');
+    if (!confirm(`Backup terugzetten van ${file.name}?\n\nDit overschrijft alle huidige data!\n\nAantal taken in backup: ${data.taken.length}`)) {
+      el.textContent = '';
+      input.value = '';
+      return;
+    }
+    const r = await fetch('/api/taken', {method:'POST',...h(),body:JSON.stringify(data)});
+    if (r.ok) {
+      // Reload data
+      await laad(true);
+      el.innerHTML = '<span style="color:var(--green)">✅ Backup succesvol teruggezet!</span>';
+      toast('✅ Backup teruggezet — ' + data.taken.length + ' taken hersteld');
+    } else {
+      throw new Error('Server fout');
+    }
+  } catch(e) {
+    el.innerHTML = `<span style="color:var(--red)">⚠️ Mislukt: ${e.message}</span>`;
+  }
+  input.value = '';
 }
 
 async function archiveerKlaar(){
