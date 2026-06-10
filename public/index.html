@@ -196,6 +196,37 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
 .login-box input{width:100%;padding:10px 12px;border:1px solid var(--gray-300);border-radius:8px;font-family:'Inter',sans-serif;font-size:14px;text-align:center;letter-spacing:2px;margin-bottom:10px}
 .login-box input:focus{outline:none;border-color:var(--navy)}
 .login-err{color:var(--red);font-size:13px;margin-bottom:8px;display:none}
+
+/* ── TEAMFEED ── */
+.feed-card{background:white;border:1px solid var(--gray-200);border-radius:10px;padding:11px 14px;margin-bottom:8px;transition:box-shadow .15s}
+.feed-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.feed-card.feed-old{opacity:.5}
+.feed-top{display:flex;gap:9px;align-items:flex-start}
+.feed-av{width:32px;height:32px;border-radius:50%;background:var(--navy);color:white;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0}
+.feed-body{flex:1}
+.feed-meta{font-size:12px;color:var(--gray-500);margin-bottom:3px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.feed-text{font-size:13px;color:var(--gray-800);line-height:1.5}
+.feed-time{font-size:11px;color:var(--gray-400)}
+.feed-tag{font-size:10px;font-weight:700;padding:1px 7px;border-radius:20px}
+.feed-tag-info{background:#EEF4FF;color:#1E40AF}
+.feed-tag-urgent{background:var(--red-light);color:var(--red)}
+.feed-tag-vraag{background:var(--purple-light);color:var(--purple)}
+.feed-tag-fyi{background:var(--gray-100);color:var(--gray-600)}
+.feed-link{font-size:12px;color:var(--blue);cursor:pointer;margin-top:4px}
+.feed-link:hover{text-decoration:underline}
+.feed-compose{background:white;border:1px solid var(--gray-200);border-radius:10px;padding:12px 14px;margin-bottom:14px}
+
+/* ── VERGADERING ── */
+.verg-header{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px;background:white;border:1px solid var(--gray-200);border-radius:10px;padding:14px 16px}
+.verg-status-badge{font-size:14px;font-weight:600;color:var(--navy)}
+.verg-section{background:white;border:1px solid var(--gray-200);border-radius:10px;padding:14px 16px;margin-bottom:12px}
+.verg-section-title{font-size:13px;font-weight:600;color:var(--gray-600);margin-bottom:10px}
+.verg-person-btn{padding:5px 13px;border-radius:20px;font-size:13px;font-weight:500;border:1px solid var(--gray-300);background:white;color:var(--gray-600);cursor:pointer;font-family:inherit;transition:all .15s}
+.verg-person-btn.aan{background:var(--navy);color:white;border-color:var(--navy)}
+.agenda-item{padding:10px 12px;border:1px solid var(--gray-200);border-radius:8px;margin-bottom:7px;transition:background .15s}
+.agenda-item.afgevinkt{background:var(--green-light);border-color:#A8D8C0}
+.bespreek-tag{display:inline-block;font-size:10px;font-weight:700;background:#EEF4FF;color:#1E40AF;border-radius:20px;padding:1px 7px;margin-left:4px;vertical-align:middle;cursor:pointer}
+
 /* TOAST */
 .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--gray-800);color:white;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:500;z-index:200;opacity:0;transition:opacity .3s;white-space:nowrap;pointer-events:none}
 .toast.show{opacity:1}
@@ -234,6 +265,8 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
   <button class="ntab" onclick="goPage('herinneringen',this)">🔔 Herinneringen</button>
   <button class="ntab" onclick="goPage('rooster',this)">📅 Dienstrooster</button>
   <button class="ntab" onclick="goPage('instellingen',this)">⚙️ Instellingen</button>
+  <button class="ntab" onclick="goPage('feed',this)">💬 Teamfeed</button>
+  <button class="ntab" onclick="goPage('vergadering',this)">🗓️ Vergadering</button>
 </div>
 
 <div class="main">
@@ -400,6 +433,34 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
       </div>
     </div>
   </div>
+
+  <!-- ══ TEAMFEED ══ -->
+  <div class="page" id="page-feed">
+    <div class="feed-compose">
+      <div style="font-size:13px;font-weight:600;color:var(--gray-600);margin-bottom:9px">💬 Bericht plaatsen voor het team</div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:8px">
+        <select id="feed-tag-quick" style="font-family:inherit;font-size:12px;padding:5px 8px;border:1px solid var(--gray-300);border-radius:6px;background:white;color:var(--gray-800)">
+          <option value="fyi">💬 FYI</option>
+          <option value="info">ℹ️ Info</option>
+          <option value="vraag">❓ Vraag</option>
+          <option value="urgent">🔴 Urgent</option>
+        </select>
+      </div>
+      <div style="display:flex;gap:7px">
+        <input type="text" id="feed-quick-input" placeholder="Kort bericht voor het team... (bv. Rex zijn eigenaar heeft gebeld)" 
+          style="flex:1;padding:8px 11px;border:1px solid var(--gray-300);border-radius:7px;font-family:inherit;font-size:13px"
+          onkeydown="if(event.key==='Enter')quickFeed()">
+        <button class="btn btn-p" onclick="quickFeed()">Plaatsen</button>
+      </div>
+    </div>
+    <div id="feed-list"></div>
+  </div>
+
+  <!-- ══ VERGADERING ══ -->
+  <div class="page" id="page-vergadering">
+    <div id="verg-content"></div>
+  </div>
+
 </div><!-- /main -->
 
 <!-- ══ TAAK MODAL ══ -->
@@ -482,6 +543,76 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
     <div class="mact">
       <button class="btn btn-s" onclick="cm('smodal')">Annuleren</button>
       <button class="btn btn-p" onclick="saveShift()">Opslaan</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ FEED MODAL ══ -->
+<div class="overlay" id="feed-modal" style="display:none" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal">
+    <h3>Bericht plaatsen</h3>
+    <input type="hidden" id="fm-taakid">
+    <div class="fg"><label>Type</label>
+      <select id="fm-tag">
+        <option value="fyi">💬 FYI — algemene info</option>
+        <option value="info">ℹ️ Info — belangrijk</option>
+        <option value="vraag">❓ Vraag</option>
+        <option value="urgent">🔴 Urgent — actie nodig</option>
+      </select>
+    </div>
+    <div class="fg"><label>Bericht</label>
+      <textarea id="fm-tekst" placeholder="bv. Rex zijn eigenaar belde — wacht op terugbelafspraak" style="min-height:80px"></textarea>
+    </div>
+    <div class="mact">
+      <button class="btn btn-s" onclick="document.getElementById('feed-modal').style.display='none'">Annuleren</button>
+      <button class="btn btn-p" onclick="saveFeed()">Plaatsen</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ VERGADERING SETUP MODAL ══ -->
+<div class="overlay" id="verg-setup-modal" style="display:none" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal">
+    <h3>Vergadering instellen</h3>
+    <div class="fg"><label>Datum</label><input type="date" id="vs-datum"></div>
+    <div class="fg"><label>Locatie</label><input type="text" id="vs-locatie" placeholder="bv. Vergaderzaal praktijk"></div>
+    <div class="mact">
+      <button class="btn btn-s" onclick="document.getElementById('verg-setup-modal').style.display='none'">Annuleren</button>
+      <button class="btn btn-p" onclick="saveVergSetup()">Opslaan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ AGENDA PUNT MODAL ══ -->
+<div class="overlay" id="agenda-modal" style="display:none" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal">
+    <h3 id="ap-modal-title">Agendapunt toevoegen</h3>
+    <p id="ap-modal-sub" style="font-size:12px;color:var(--gray-500);margin-bottom:13px"></p>
+    <div class="fg"><label>Omschrijving *</label><input type="text" id="ap-tekst" placeholder="bv. Communicatie bij patiëntenoverdracht bespreken"></div>
+    <div class="fg"><label>Prioriteit</label>
+      <select id="ap-prioriteit">
+        <option value="normaal">🟡 Normaal</option>
+        <option value="hoog">🔴 Hoog</option>
+        <option value="laag">🟢 Laag</option>
+      </select>
+    </div>
+    <div class="mact">
+      <button class="btn btn-s" onclick="document.getElementById('agenda-modal').style.display='none'">Annuleren</button>
+      <button class="btn btn-p" onclick="saveAgendaPunt()">Toevoegen</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ INBRENGEN MODAL ══ -->
+<div class="overlay" id="inbrengen-modal" style="display:none" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal">
+    <h3>👥 Punten inbrengen in vergadering</h3>
+    <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px">Selecteer welke persoonlijke punten je wil delen met het team. Niet geselecteerde punten blijven privé.</p>
+    <div id="inbrengen-lijst"></div>
+    <div class="mact">
+      <button class="btn btn-s" onclick="document.getElementById('inbrengen-modal').style.display='none'">Annuleren</button>
+      <button class="btn btn-p" onclick="bevestigInbrengen()">✅ Inbrengen</button>
     </div>
   </div>
 </div>
@@ -660,6 +791,7 @@ function kaartHTML(t){
     </div>
     <div class="tactions">
       <button class="ibtn" title="${t.status==='done'?'Heropenen':'Als klaar markeren'}" onclick="snelKlaar('${t.id}')">${t.status==='done'?'↩️':'✅'}</button>
+      <button class="ibtn" title="Markeer voor vergadering" onclick="markeerBespreek('${t.id}')">${t.bespreek?'<span class=\'bespreek-tag\'>📌 Vergadering</span>':'📌'}</button>
       <button class="ibtn" onclick="toggleComments('${t.id}')">💬</button>
       <button class="ibtn" onclick="openModal('${t.id}')">✏️</button>
       <button class="ibtn" onclick="delTaak('${t.id}')">🗑️</button>
@@ -920,6 +1052,43 @@ function isDS(d){if(!d)return false;const t=new Date();t.setHours(0,0,0,0);const
 function parseD(s){if(!s)return null;if(s.includes('/')){const[d,m,y]=s.split('/');return new Date(`${y}-${m}-${d}`);}return new Date(s);}
 function setSdot(s,t){document.getElementById('sdot').className='sdot'+(s==='err'?' err':s==='loading'?' loading':'');document.getElementById('stext').textContent=t;document.getElementById('ldot').className='ldot'+(s==='err'?' warn':'');}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);}
+
+// ── QUICK FEED ────────────────────────────────────────────────
+async function quickFeed(){
+  const inp=document.getElementById('feed-quick-input');
+  const tekst=inp.value.trim();
+  if(!tekst){toast('⚠️ Schrijf een bericht');return;}
+  if(!user){toast('⚠️ Kies eerst je naam');return;}
+  if(!D.feed)D.feed=[];
+  D.feed.unshift({id:uid(),tekst,tag:document.getElementById('feed-tag-quick').value,door:user,ts:Date.now(),pinned:false,taakId:null});
+  const maxAge=(D.feedDays||7)*24*60*60*1000;
+  D.feed=D.feed.filter(m=>Date.now()-m.ts<maxAge);
+  inp.value='';
+  await sla('💬 Bericht geplaatst');
+}
+
+// ── RENDER ALL OVERRIDE ───────────────────────────────────────
+const _origRenderAll = renderAll;
+function renderAll(){
+  _origRenderAll();
+  if(window.renderFeed) window.renderFeed();
+  if(window.renderVergadering) window.renderVergadering();
+}
+
+// Expose globals for modules
+window.D = D; // live reference — modules share same object
+window.user = user;
+window.sla = sla;
+window.uid = uid;
+window.toast = toast;
+window.vandaag = vandaag;
+window.fmtD = fmtD;
+
+// Keep window.user in sync
+const _origSetUser = setUser;
+function setUser(n){_origSetUser(n);window.user=n;}
 </script>
+<script src="js/teamfeed.js"></script>
+<script src="js/vergadering.js"></script>
 </body>
 </html>
