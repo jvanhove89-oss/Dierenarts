@@ -4,7 +4,11 @@ function renderFeed() {
   if (!el) return;
   const items = (window.D.feed || []).slice().sort((a,b) => b.ts - a.ts);
   if (!items.length) {
-    el.innerHTML = `<div class="empty"><div class="empty-icon">💬</div><h3>Nog geen berichten</h3><p>Post een kort bericht voor het team.</p></div>`;
+    el.innerHTML = `<div class="empty">
+      <div class="empty-icon">💬</div>
+      <h3>Nog geen berichten</h3>
+      <p>Wees de eerste — post een kort bericht voor het team hierboven.</p>
+    </div>`;
     return;
   }
   const now = Date.now();
@@ -56,7 +60,7 @@ async function saveFeed() {
   window.D.feed = window.D.feed.filter(m => Date.now() - m.ts < maxAge);
   document.getElementById('feed-modal').style.display = 'none';
   await window.sla('💬 Bericht geplaatst');
-  renderFeed();
+  if (typeof renderFeed === 'function') renderFeed();
 }
 
 async function delFeed(id) {
