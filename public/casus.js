@@ -55,8 +55,13 @@ function renderCasus() {
             </div>
           </div>
 
-          <!-- REACTIES -->
-          <div class="casus-reacties" id="cr-${c.id}">
+          <!-- REACTIES (ingeklapt) -->
+          <div style="margin-top:6px">
+            <button onclick="toggleCasusReacties('${c.id}')" style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--gray-500);padding:0;font-family:inherit">
+              💬 ${reacties.length} reactie${reacties.length!==1?'s':''} ${reacties.length?'▼':'toevoegen ▼'}
+            </button>
+          </div>
+          <div class="casus-reacties comments" id="cr-${c.id}">
             ${reacties.map(r => `
               <div class="comment">
                 <div class="cav">${(r.door||'?')[0]}</div>
@@ -88,6 +93,7 @@ function openCasusModal(id) {
   document.getElementById('cm-soort').value = c ? c.soort : 'vraag';
   document.getElementById('cm-beschrijving').value = c ? c.beschrijving : '';
   document.getElementById('cm-diersoort').value = c ? c.diersoort||'' : '';
+  const cmDoss = document.getElementById('cm-dossier'); if(cmDoss){cmDoss.value=c?c.dossier||'':'';const btn=document.getElementById('cm-fuga-btn');if(btn)btn.style.display=cmDoss.value?'block':'none';}
   document.getElementById('cm-leeftijd').value = c ? c.leeftijd||'' : '';
   document.getElementById('cm-ras').value = c ? c.ras||'' : '';
   document.getElementById('casus-modal').style.display = 'flex';
@@ -154,3 +160,15 @@ window.delCasus = delCasus;
 window.toggleOpgelost = toggleOpgelost;
 window.toggleCasusVergadering = toggleCasusVergadering;
 window.addCasusReactie = addCasusReactie;
+
+function toggleCasusReacties(id) {
+  const el = document.getElementById('cr-' + id);
+  if (el) {
+    el.classList.toggle('open');
+    if (el.classList.contains('open')) {
+      const inp = document.getElementById('ri-' + id);
+      if (inp) inp.focus();
+    }
+  }
+}
+window.toggleCasusReacties = toggleCasusReacties;
