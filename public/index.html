@@ -514,19 +514,26 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
       </div>
 
       <div class="sc" style="grid-column:span 2">
-        <h4>💬 WhatsApp — Groepsmelding</h4>
+        <h4>💬 WhatsApp — Groepsmelding via Green API</h4>
         <div class="banner bi" style="margin-bottom:12px"><div>
-          Dagelijks overzicht voor het hele team. Stuur naar de praktijkgroep of een specifiek nummer.<br>
-          <strong>Activeren:</strong> stuur <code>I allow callmebot to send me messages</code> naar <strong>+34 644 52 74 48</strong> op WhatsApp. Je krijgt een API key terug.
+          <strong>Hoe activeren (eenmalig, 5 minuten):</strong><br>
+          1. Ga naar <a href="https://console.green-api.com" target="_blank" style="color:inherit;font-weight:600">console.green-api.com</a> → gratis account aanmaken<br>
+          2. Klik <strong>Create Instance</strong> → kies het gratis <strong>Developer</strong> plan<br>
+          3. Kopieer je <strong>Instance ID</strong> en <strong>API Token</strong><br>
+          4. Klik op <strong>Scan QR</strong> en scan met WhatsApp op je gsm — klaar!<br>
+          5. Vul hieronder je nummer in van waaruit de berichten verstuurd worden
         </div></div>
-        <div class="row3">
-          <div class="fg"><label>GSM-nummer groep/beheerder</label><input type="text" id="s-phone" placeholder="+32497123456"></div>
-          <div class="fg"><label>CallMeBot API Key</label><input type="text" id="s-apikey" placeholder="abc123..."></div>
+        <div class="row2">
+          <div class="fg"><label>Green API Instance ID</label><input type="text" id="s-green-instance" placeholder="1234567890"></div>
+          <div class="fg"><label>Green API Token</label><input type="text" id="s-green-token" placeholder="abc123..."></div>
+        </div>
+        <div class="row2">
+          <div class="fg"><label>GSM-nummer afzender (met +32...)</label><input type="text" id="s-phone" placeholder="+32497123456"></div>
           <div class="fg"><label>Verstuur dagelijks om</label><input type="time" id="s-tijd" value="08:00"></div>
         </div>
         <div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center">
           <button class="btn btn-p" onclick="saveWhatsApp()">💾 Opslaan</button>
-          <button class="btn btn-s" onclick="testWhatsApp('groep')">📤 Test groepsbericht</button>
+          <button class="btn btn-s" onclick="testWhatsApp('groep')">📤 Test bericht sturen</button>
           <span id="wa-result" style="font-size:13px"></span>
         </div>
       </div>
@@ -856,7 +863,7 @@ let pinNieuw2 = '';
 let pinFase = 'eerste';
 
 function renderLoginNamen() {
-  const namen = (window._loginNamen || D.namen || ['Karen','Alexandra','Sylvie']).filter(n => n && n !== 'Andere');
+  const namen = (window._loginNamen || D.namen || ['Karen','Alexandra','Sylvie','Jade']).filter(n => n && n !== 'Andere' && n.trim());
   const grid = document.getElementById('login-namen-grid');
   if (!grid) return;
   grid.innerHTML = namen.map(n => `
@@ -981,9 +988,10 @@ function applyConfig(cfg){
   renderLoginNamen();
   if(cfg.namen&&cfg.namen.length)D.namen=cfg.namen;
   updatePersonSelects();
-  if(cfg.groep_phone) document.getElementById('s-phone').value=cfg.groep_phone;
-  if(cfg.groep_apikey) document.getElementById('s-apikey').value=cfg.groep_apikey;
-  if(cfg.groep_tijd) document.getElementById('s-tijd').value=cfg.groep_tijd;
+  if(cfg.groep_phone){const el=document.getElementById('s-phone');if(el)el.value=cfg.groep_phone;}
+  if(cfg.groep_green_instance){const el=document.getElementById('s-green-instance');if(el)el.value=cfg.groep_green_instance;}
+  if(cfg.groep_green_token){const el=document.getElementById('s-green-token');if(el)el.value=cfg.groep_green_token;}
+  if(cfg.groep_tijd){const el=document.getElementById('s-tijd');if(el)el.value=cfg.groep_tijd;}
   if(cfg.namen){[1,2,3,4,5,6].forEach(i=>{const el=document.getElementById('sn'+i);if(el)el.value=cfg.namen[i-1]||'';});}
   renderPersoonlijkWA(cfg);
   renderPINBeheer();
@@ -1376,11 +1384,12 @@ async function saveWachtwoord(){
 async function saveWhatsApp(){
   const body={
     groep_phone:document.getElementById('s-phone').value.trim(),
-    groep_apikey:document.getElementById('s-apikey').value.trim(),
+    groep_green_instance:document.getElementById('s-green-instance').value.trim(),
+    groep_green_token:document.getElementById('s-green-token').value.trim(),
     groep_tijd:document.getElementById('s-tijd').value
   };
   const r=await fetch('/api/config',{method:'POST',...h(),body:JSON.stringify(body)});
-  if(r.ok)toast('💾 Groep WhatsApp opgeslagen');else toast('⚠️ Opslaan mislukt');
+  if(r.ok)toast('💾 WhatsApp instellingen opgeslagen');else toast('⚠️ Opslaan mislukt');
 }
 
 async function testWhatsApp(type){
@@ -1388,11 +1397,16 @@ async function testWhatsApp(type){
   el.textContent='⏳ Sturen...';
   let body={};
   if(type==='groep'){
-    body={phone:document.getElementById('s-phone').value.trim(),apikey:document.getElementById('s-apikey').value.trim(),naam:'het team'};
+    body={
+      phone:document.getElementById('s-phone').value.trim(),
+      green_instance:document.getElementById('s-green-instance').value.trim(),
+      green_token:document.getElementById('s-green-token').value.trim(),
+      naam:'het team'
+    };
   }
   const r=await fetch('/api/whatsapp-test',{method:'POST',...h(),body:JSON.stringify(body)});
   const d=await r.json();
-  if(d.skip)el.innerHTML='<span style="color:var(--amber)">⚠️ Vul eerst nummer en API key in.</span>';
+  if(d.skip)el.innerHTML='<span style="color:var(--amber)">⚠️ Vul Instance ID, Token en nummer in.</span>';
   else if(d.ok)el.innerHTML='<span style="color:var(--green)">✅ Verstuurd!</span>';
   else el.innerHTML=`<span style="color:var(--red)">⚠️ ${d.error||'Mislukt'}</span>`;
 }
@@ -1440,7 +1454,8 @@ async function savePersoonlijkWA(naam) {
   const pers = huidigConfig.persoonlijk || {};
   pers[naam] = {
     phone: document.getElementById(`pw-phone-${naam}`).value.trim(),
-    apikey: document.getElementById(`pw-key-${naam}`).value.trim(),
+    green_instance: document.getElementById(`pw-instance-${naam}`)?.value.trim()||'',
+    green_token: document.getElementById(`pw-key-${naam}`).value.trim(),
     reminder_tijd: document.getElementById(`pw-tijd-${naam}`).value,
     reminders_taken: document.getElementById(`pw-taken-${naam}`).checked,
     reminders_herinneringen: document.getElementById(`pw-herin-${naam}`).checked,
