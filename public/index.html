@@ -997,7 +997,7 @@ function applyConfig(cfg){
 }
 
 function vulPersoonDropdowns(...ids) {
-  const namen = D.namen || ['Karen','Alexandra','Sylvie','Andere'];
+  const namen = D.namen || ['Karen','Alexandra','Sylvie','Jade'];
   const opties = '<option value="">— niemand —</option>' + namen.map(n=>`<option value="${n}">${n}</option>`).join('');
   ids.forEach(id => {
     const el = document.getElementById(id);
@@ -1175,6 +1175,7 @@ function kaartHTML(t){
 
 async function snelKlaar(id){
   const t=D.taken.find(x=>x.id===id);if(!t)return;
+  if(t.door!==user&&t.verant!==user){toast('⚠️ Alleen de verantwoordelijke kan deze taak aanpassen');return;}
   t.status=t.status==='done'?'waiting':'done';
   t.gdoor=user;t.gop=vandaag();
   await sla(t.status==='done'?'✅ Taak afgehandeld':'↩️ Taak heropend');
@@ -1196,8 +1197,10 @@ function renderKanban(){
         <div class="kname">${t.naam}</div>
         <div class="kmeta">${meta.join(' · ')} ${catB}</div>
         <div class="kactions">
-          <button class="ibtn" onclick="openModal('${t.id}')">✏️</button>
-          <button class="ibtn" onclick="delTaak('${t.id}')">🗑️</button>
+          ${(t.door===user||t.verant===user) ? `
+            <button class="ibtn" onclick="openModal('${t.id}')">✏️</button>
+            <button class="ibtn" onclick="delTaak('${t.id}')">🗑️</button>
+          ` : '<span style="font-size:11px;color:var(--gray-400)">🔒</span>'}
         </div>
       </div>`;
     }).join('');
@@ -1328,6 +1331,7 @@ function openModal(id){
   document.getElementById('mtitle').textContent=id?'Taak bewerken':'Nieuwe taak';
   if(id){
     const t=D.taken.find(x=>x.id===id);if(!t)return;
+    if(t.door!==user&&t.verant!==user){toast('⚠️ Alleen de verantwoordelijke kan dit bewerken');return;}
     document.getElementById('f-naam').value=t.naam||'';document.getElementById('f-status').value=t.status||'waiting';
     document.getElementById('f-prio').value=t.prio||'';document.getElementById('f-cat').value=t.cat||'';
     vulPersoonDropdowns('f-verant','f-opvolger');
@@ -1358,7 +1362,14 @@ async function saveTask(){
   cm('modal');await sla('✅ Taak opgeslagen');
 }
 
-async function delTaak(id){if(!confirm('Taak verwijderen?'))return;D.taken=D.taken.filter(t=>t.id!==id);await sla('🗑️ Verwijderd');}
+async function delTaak(id){
+  const t=D.taken.find(x=>x.id===id);
+  if(!t)return;
+  if(t.door!==user&&t.verant!==user){toast('⚠️ Alleen de verantwoordelijke kan dit verwijderen');return;}
+  if(!confirm('Taak verwijderen?'))return;
+  D.taken=D.taken.filter(t=>t.id!==id);
+  await sla('🗑️ Verwijderd');
+}
 
 // ── VERLOF ─────────────────────────────────────────────────────
 function openVerlof(){
@@ -1422,7 +1433,7 @@ async function testWhatsApp(type){
 }
 
 function renderPersoonlijkWA(config) {
-  const namen = D.namen || ['Karen','Alexandra','Sylvie','Andere'];
+  const namen = D.namen || ['Karen','Alexandra','Sylvie','Jade'];
   const pers = config.persoonlijk || {};
   const el = document.getElementById('persoonlijk-wa-grid');
   if (!el) return;
