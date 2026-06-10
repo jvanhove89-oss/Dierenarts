@@ -27,8 +27,9 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
 .upill{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:5px 11px;font-size:12px;color:white;display:flex;align-items:center;gap:6px;cursor:pointer}
 .ldot{width:7px;height:7px;border-radius:50%;background:#4ade80;flex-shrink:0}
 .ldot.warn{background:#f59e0b}
-.nav-tabs{background:var(--navy-light);display:flex;overflow-x:auto;padding:0 22px;scrollbar-width:none}
-.nav-tabs::-webkit-scrollbar{display:none}
+.nav-tabs{background:var(--navy-light);display:flex;overflow-x:auto;padding:0 16px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.2) transparent}
+.nav-tabs::-webkit-scrollbar{height:3px}
+.nav-tabs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.25);border-radius:3px}
 .ntab{background:none;border:none;color:rgba(255,255,255,.6);font-family:'Inter',sans-serif;font-size:13px;font-weight:500;padding:10px 15px;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s}
 .ntab:hover{color:white}.ntab.active{color:white;border-bottom-color:#7EB8D4}.ntab:hover{color:white}
 .main{max-width:1100px;margin:0 auto;padding:20px 16px 80px}
@@ -173,8 +174,10 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
 .rweek{font-size:13px;font-weight:600;color:var(--navy)}
 .rgrid{display:grid;grid-template-columns:75px repeat(7,1fr);border:1px solid var(--gray-200);border-radius:10px;overflow:hidden;background:white;font-size:11px}
 .rgh{background:var(--navy);color:white;font-weight:600;padding:7px 4px;text-align:center;font-size:10px}
-.rgc{border-top:1px solid var(--gray-100);border-left:1px solid var(--gray-100);padding:5px;min-height:46px;cursor:pointer;transition:background .1s}
-.rgc:hover{background:var(--gray-50)}.rgc.pl{background:var(--gray-50);font-weight:600;color:var(--gray-600);display:flex;align-items:center;padding-left:7px;cursor:default}
+.rgc{border-top:1px solid var(--gray-100);border-left:1px solid var(--gray-100);padding:5px;min-height:46px;cursor:pointer;transition:background .1s;position:relative}
+.rgc:hover{background:var(--blue-light)}
+.rgc:empty:hover::after,.rgc:not(:has(.shift)):hover::after{content:'＋';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:16px;color:var(--blue);opacity:.5}
+.rgc.pl{background:var(--gray-50);font-weight:600;color:var(--gray-600);display:flex;align-items:center;padding-left:7px;cursor:default}
 .rgc.pl:hover{background:var(--gray-50)}.rgc.tod{background:#F0FAF7}
 .shift{border-radius:4px;padding:2px 4px;font-size:10px;font-weight:600;margin-bottom:2px;line-height:1.3}
 .s-am{background:#DBEAFE;color:#1E40AF}.s-pm{background:#FEF3C7;color:#92400E}
@@ -246,6 +249,14 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
 .pin-back{font-size:14px}
 .login-err{color:var(--red);font-size:13px;margin-bottom:8px;display:none}
 .login-err.show{display:block}
+
+/* ── CASUS ── */
+.casus-card{background:white;border:1px solid var(--gray-200);border-radius:10px;padding:14px 16px;margin-bottom:10px;transition:box-shadow .15s}
+.casus-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.casus-card.opgelost{opacity:.6}
+.casus-top{display:flex;gap:10px;align-items:flex-start}
+.casus-reacties{margin-top:10px;padding-top:10px;border-top:1px solid var(--gray-100)}
+
 
 /* ── CASUS ── */
 .casus-card{background:white;border:1px solid var(--gray-200);border-radius:10px;padding:14px 16px;margin-bottom:10px;transition:box-shadow .15s}
@@ -364,15 +375,15 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
   <button class="ntab" onclick="goPage('feed',this)">💬 Teamfeed</button>
   <button class="ntab" onclick="goPage('vergadering',this)">🗓️ Vergadering</button>
   <button class="ntab" onclick="goPage('casus',this)">🐾 Casussen</button>
-  <button class="ntab" onclick="goPage('dagboek',this)">📓 Dagboekje</button>
 </div>
 
 <div class="main">
-  <div class="who-bar">
+  <div class="who-bar" id="who-bar">
     <label>👤 Je bent:</label>
-    <select id="who" onchange="setUser(this.value)">
+    <select id="who" onchange="setUser(this.value)" style="display:none">
       <option value="">— kies je naam —</option>
     </select>
+    <span id="who-naam-label" style="font-size:14px;font-weight:600;color:var(--navy)"></span>
     <div class="sinfo">
       <div class="sdot loading" id="sdot"></div>
       <span id="stext">Verbinden...</span>
@@ -490,10 +501,14 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
 
       <div class="sc">
         <h4>👥 Teamnamen aanpassen</h4>
-        <div class="fg"><label>Collega 1</label><input type="text" id="sn1" placeholder="Karen"></div>
-        <div class="fg"><label>Collega 2</label><input type="text" id="sn2" placeholder="Alexandra"></div>
-        <div class="fg"><label>Collega 3</label><input type="text" id="sn3" placeholder="Sylvie"></div>
-        <div class="fg"><label>Collega 4</label><input type="text" id="sn4" placeholder="Andere"></div>
+        <div class="row2">
+          <div class="fg"><label>Collega 1</label><input type="text" id="sn1" placeholder="Karen"></div>
+          <div class="fg"><label>Collega 2</label><input type="text" id="sn2" placeholder="Alexandra"></div>
+          <div class="fg"><label>Collega 3</label><input type="text" id="sn3" placeholder="Sylvie"></div>
+          <div class="fg"><label>Collega 4</label><input type="text" id="sn4" placeholder="Jade"></div>
+          <div class="fg"><label>Collega 5 (optioneel)</label><input type="text" id="sn5" placeholder=""></div>
+          <div class="fg"><label>Collega 6 (optioneel)</label><input type="text" id="sn6" placeholder=""></div>
+        </div>
         <button class="btn btn-p" onclick="saveNamen()">💾 Opslaan</button>
         <p style="font-size:11px;color:var(--gray-500);margin-top:8px">Na opslaan herlaad je de pagina.</p>
       </div>
@@ -532,6 +547,18 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
           <button class="btn btn-r2" onclick="archiveerKlaar()">🗄️ Afgehandelde taken archiveren</button>
         </div>
         <p style="font-size:12px;color:var(--gray-500);margin-top:10px">Archiveren verplaatst alle "Klaar"-taken. Ze blijven in de backup.</p>
+      </div>
+
+      <div class="sc">
+        <h4>🔗 Fuga koppeling</h4>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px">Koppel dossiernummers aan Fuga. Klik op een dossiernummer in een taak of casus om het dossier direct te openen.</p>
+        <div class="fg"><label>Basis-URL van jouw Fuga omgeving</label>
+          <input type="text" id="fuga-url-input" placeholder="https://app.fuga.be/dossier/" style="font-size:12px">
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center">
+          <button class="btn btn-p" onclick="saveFugaUrl()">💾 Opslaan</button>
+          <span style="font-size:12px;color:var(--gray-500)">Dossiernummer wordt achter deze URL geplakt</span>
+        </div>
       </div>
 
       <div class="sc">
@@ -576,10 +603,7 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
     <div id="casus-content"></div>
   </div>
 
-  <!-- ══ DAGBOEKJE ══ -->
-  <div class="page" id="page-dagboek">
-    <div id="dagboek-content"></div>
-  </div>
+
 
 </div><!-- /main -->
 
@@ -606,7 +630,12 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
     <div class="fg"><label>📞 Belofte aan eigenaar</label><input type="text" id="f-belofte" placeholder="bv. Bellen als resultaten binnen zijn"></div>
     <div class="row2">
       <div class="fg"><label>Deadline</label><input type="date" id="f-deadline"></div>
-      <div class="fg"><label>Dossiernummer</label><input type="text" id="f-dossier" placeholder="bv. D-2024-0391"></div>
+      <div class="fg"><label>Fuga dossiernummer</label>
+        <div style="display:flex;gap:6px;align-items:center">
+          <input type="text" id="f-dossier" placeholder="bv. 12345" style="flex:1" oninput="document.getElementById('f-fuga-btn').style.display=this.value?'block':'none'">
+          <button type="button" id="f-fuga-btn" onclick="openFuga()" title="Open in Fuga" style="padding:7px 10px;background:#1B3557;color:white;border:none;border-radius:6px;cursor:pointer;font-size:12px;white-space:nowrap;display:none">🔗 Fuga</button>
+        </div>
+      </div>
     </div>
     <div class="fg"><label>Opmerking</label><textarea id="f-opmerking" placeholder="Extra info voor collega's..."></textarea></div>
     <div class="fg"><label>Subtaken (één per regel)</label><textarea id="f-subtaken" placeholder="bv.&#10;Bloedstaal nemen&#10;Resultaat opvragen&#10;Eigenaar bellen"></textarea></div>
@@ -760,7 +789,13 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
     </div>
     <div class="mdiv">Patiëntinfo (optioneel)</div>
     <div class="row3">
-      <div class="fg"><label>Diersoort</label><input type="text" id="cm-diersoort" placeholder="bv. Hond"></div>
+      <div class="fg"><label>Fuga dossiernummer</label>
+        <div style="display:flex;gap:6px;align-items:center">
+          <input type="text" id="cm-dossier" placeholder="bv. 12345" style="flex:1" oninput="document.getElementById('cm-fuga-btn').style.display=this.value?'block':'none'">
+          <button type="button" id="cm-fuga-btn" onclick="openFugaCasus()" style="padding:7px 10px;background:#1B3557;color:white;border:none;border-radius:6px;cursor:pointer;font-size:12px;display:none">🔗 Fuga</button>
+        </div>
+      </div>
+    <div class="fg"><label>Diersoort</label><input type="text" id="cm-diersoort" placeholder="bv. Hond"></div>
       <div class="fg"><label>Leeftijd</label><input type="text" id="cm-leeftijd" placeholder="bv. 3 jaar"></div>
       <div class="fg"><label>Ras</label><input type="text" id="cm-ras" placeholder="bv. Labrador"></div>
     </div>
@@ -896,6 +931,8 @@ async function doeLogin(naam) {
   localStorage.setItem('pk-user', naam);
   document.getElementById('huser').textContent = naam;
   document.getElementById('who').value = naam;
+  const naamlbl = document.getElementById('who-naam-label');
+  if (naamlbl) naamlbl.textContent = naam;
   document.getElementById('login-screen').style.display = 'none';
   laad();
   setInterval(() => laad(false, true), 25000);
@@ -916,9 +953,10 @@ function applyConfig(cfg){
   if(cfg.groep_phone) document.getElementById('s-phone').value=cfg.groep_phone;
   if(cfg.groep_apikey) document.getElementById('s-apikey').value=cfg.groep_apikey;
   if(cfg.groep_tijd) document.getElementById('s-tijd').value=cfg.groep_tijd;
-  if(cfg.namen) D.namen.forEach((n,i)=>{const el=document.getElementById('sn'+(i+1));if(el)el.value=n;});
+  if(cfg.namen){[1,2,3,4,5,6].forEach(i=>{const el=document.getElementById('sn'+i);if(el)el.value=cfg.namen[i-1]||'';});}
   renderPersoonlijkWA(cfg);
   renderPINBeheer();
+  renderFugaInstellingen();
 }
 
 function vulPersoonDropdowns(...ids) {
@@ -993,7 +1031,6 @@ function renderAll(){
   if(typeof renderFeed==='function') renderFeed();
   if(typeof renderVergadering==='function') renderVergadering();
   if(typeof renderCasus==='function') renderCasus();
-  if(typeof renderDagboek==='function') renderDagboek();
 }
 
 // ── NAVIGATIE ──────────────────────────────────────────────────
@@ -1056,7 +1093,7 @@ function renderTaken(){
 
 function kaartHTML(t){
   const badge=t.status==='urgent'?'<span class="badge bu">🔴 Urgent</span>':t.status==='waiting'?'<span class="badge bw">⏳ Lopend</span>':'<span class="badge bd">✅ Klaar</span>';
-  const catB=t.cat&&catL[t.cat]?`<span class="badge bc">${catL[t.cat]}</span>`:'';
+  const catB=t.cat&&catL[t.cat]?`<span class="badge bc" style="background:#E8EEF4;color:var(--navy)">${catL[t.cat]}</span>`:'';
   const prioB=t.prio?`<span class="badge bp">${prioL[t.prio]}</span>`:'';
   const vtag=t.overdracht?`<span class="vtag">✈️→${t.opvolger||'?'}</span>`:'';
   const pc=t.prio?'prio-'+t.prio:'';
@@ -1064,7 +1101,7 @@ function kaartHTML(t){
   if(t.verant)meta.push(`<span>👤 ${t.verant}</span>`);
   if(t.opvolger&&!t.overdracht)meta.push(`<span>🔄 ${t.opvolger}</span>`);
   if(t.deadline)meta.push(`<span>📅 ${fmtD(t.deadline)}${isDS(t.deadline)?' ⚠️':''}</span>`);
-  if(t.dossier)meta.push(`<span>📁 ${t.dossier}</span>`);
+  if(t.dossier)meta.push(`<span>📁 <a href="javascript:void(0)" onclick="openFugaDossier('${t.dossier}')" style="color:var(--navy);text-decoration:none;font-weight:500" title="Open in Fuga">${t.dossier} 🔗</a></span>`);
   const bel=t.belofte?`<div class="pbox">📞 ${t.belofte}</div>`:'';
   const sc=(t.subtaken||[]).length,sd=(t.subtaken||[]).filter(s=>s.done).length;
   const subs=(t.subtaken||[]).map((s,i)=>`<div class="subtaak ${s.done?'ds':''}"><input type="checkbox" ${s.done?'checked':''} onchange="toggleSub('${t.id}',${i},this.checked)"><span>${s.tekst}</span></div>`).join('');
@@ -1248,7 +1285,9 @@ function openModal(id){
     vulPersoonDropdowns('f-verant','f-opvolger');
     document.getElementById('f-verant').value=t.verant||'';document.getElementById('f-opvolger').value=t.opvolger||'';
     document.getElementById('f-belofte').value=t.belofte||'';document.getElementById('f-deadline').value=t.deadline||'';
-    document.getElementById('f-dossier').value=t.dossier||'';document.getElementById('f-opmerking').value=t.opmerking||'';
+    document.getElementById('f-dossier').value=t.dossier||'';
+    const fugaBtn=document.getElementById('f-fuga-btn');
+    if(fugaBtn) fugaBtn.style.display=t.dossier?'block':'none';document.getElementById('f-opmerking').value=t.opmerking||'';
     document.getElementById('f-subtaken').value=(t.subtaken||[]).map(s=>s.tekst).join('\n');
   }else{
     ['f-naam','f-belofte','f-opvolger','f-verant','f-opmerking','f-dossier','f-deadline','f-subtaken'].forEach(i=>document.getElementById(i).value='');
@@ -1393,10 +1432,39 @@ async function testPersoonlijkWA(naam) {
 }
 
 async function saveNamen(){
-  const namen=[1,2,3,4].map(i=>document.getElementById('sn'+i).value.trim()).filter(Boolean);
+  const namen=[1,2,3,4,5,6].map(i=>document.getElementById('sn'+i).value.trim()).filter(Boolean);
   if(namen.length<2){toast('⚠️ Minstens 2 namen nodig');return;}
   await fetch('/api/config',{method:'POST',...h(),body:JSON.stringify({namen})});
   D.namen=namen;updatePersonSelects();toast('👥 Namen opgeslagen — herlaad voor volledig effect');
+}
+
+// ── FUGA INTEGRATIE ──────────────────────────────────────────
+function getFugaBase() {
+  return localStorage.getItem('fuga-url') || 'https://app.fuga.be/dossier/';
+}
+
+function openFuga() {
+  const nr = document.getElementById('f-dossier').value.trim();
+  if (nr) window.open(getFugaBase() + nr, '_blank');
+}
+
+function openFugaCasus() {
+  const nr = document.getElementById('cm-dossier').value.trim();
+  if (nr) window.open(getFugaBase() + nr, '_blank');
+}
+
+function openFugaDossier(nr) {
+  if (nr) window.open(getFugaBase() + nr, '_blank');
+}
+
+function renderFugaInstellingen() {
+  const el = document.getElementById('fuga-url-input');
+  if (el) el.value = getFugaBase();
+}
+
+function saveFugaUrl() {
+  const url = document.getElementById('fuga-url-input').value.trim();
+  if (url) { localStorage.setItem('fuga-url', url); toast('🔗 Fuga URL opgeslagen'); }
 }
 
 function renderPINBeheer() {
@@ -1450,7 +1518,6 @@ function setUser(n){
     fverant.value=n;
   }
   renderAll();
-  if(typeof renderDagboek==='function')renderDagboek();
 }
 
 // ── HELPERS ────────────────────────────────────────────────────
@@ -1512,6 +1579,5 @@ function setUser(n){_origSetUser(n);window.user=n;}
 <script src="teamfeed.js"></script>
 <script src="vergadering.js"></script>
 <script src="casus.js"></script>
-<script src="dagboek.js"></script>
 </body>
 </html>
