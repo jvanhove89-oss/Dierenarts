@@ -673,7 +673,7 @@ window.addEventListener('DOMContentLoaded',()=>{
     // Probeer direct in te loggen met opgeslagen wachtwoord
     fetch('/api/config',{headers:{'x-praktijk-pw':pw}}).then(r=>{
       if(r.ok){
-        r.json().then(cfg=>{applyConfig(cfg);document.getElementById('login-screen').style.display='none';laad();setInterval(()=>laad(false,true),25000);});
+        r.json().then(cfg=>{applyConfig(cfg);document.getElementById('login-screen').style.display='none';window.user=user;laad();setInterval(()=>laad(false,true),25000);});
       }else{localStorage.removeItem('pk-pw');pw='';}
     }).catch(()=>{});
   }
@@ -1047,7 +1047,7 @@ async function archiveerKlaar(){
 
 // ── FILTER & USER ──────────────────────────────────────────────
 function setF(f,btn){filter=f;document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderTaken();}
-function setUser(n){user=n;localStorage.setItem('pk-user',n);document.getElementById('huser').textContent=n||'Kies je naam';renderTaken();}
+function setUser(n){user=n;window.user=n;localStorage.setItem('pk-user',n);document.getElementById('huser').textContent=n||'Kies je naam';renderAll();}
 
 // ── HELPERS ────────────────────────────────────────────────────
 function cm(id){document.getElementById(id).style.display='none';}
