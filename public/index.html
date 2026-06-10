@@ -550,6 +550,32 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
       </div>
 
       <div class="sc">
+        <h4>📧 Wekelijkse backup-mail</h4>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px">Elke maandag om 7u krijg je automatisch een backup als bijlage + een kort weekoverzicht. Werkt via een Gmail-account.</p>
+        <div class="banner bi" style="margin-bottom:12px"><div>
+          <strong>Gmail instellen:</strong><br>
+          1. Ga naar je Google-account → Beveiliging → 2-stapsverificatie (activeer dit)<br>
+          2. Ga naar <strong>myaccount.google.com/apppasswords</strong><br>
+          3. Maak een "App-wachtwoord" aan voor "Mail"<br>
+          4. Vul het 16-cijferige wachtwoord hieronder in
+        </div></div>
+        <div class="fg"><label>Verstuur backup naar (e-mail)</label>
+          <input type="email" id="backup-email" placeholder="karen@praktijk.be">
+        </div>
+        <div class="fg"><label>Gmail-adres (afzender)</label>
+          <input type="email" id="backup-smtp-user" placeholder="praktijk@gmail.com">
+        </div>
+        <div class="fg"><label>Gmail App-wachtwoord (16 tekens)</label>
+          <input type="password" id="backup-smtp-pass" placeholder="xxxx xxxx xxxx xxxx">
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center">
+          <button class="btn btn-p" onclick="saveBackupMail()">💾 Opslaan</button>
+          <button class="btn btn-s" onclick="testBackupMail()">📤 Test versturen</button>
+          <span id="backup-result" style="font-size:13px"></span>
+        </div>
+      </div>
+
+      <div class="sc">
         <h4>🔗 Fuga koppeling</h4>
         <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px">Koppel dossiernummers aan Fuga. Klik op een dossiernummer in een taak of casus om het dossier direct te openen.</p>
         <div class="fg"><label>Basis-URL van jouw Fuga omgeving</label>
@@ -957,6 +983,7 @@ function applyConfig(cfg){
   renderPersoonlijkWA(cfg);
   renderPINBeheer();
   renderFugaInstellingen();
+  renderBackupMailInstellingen(cfg);
 }
 
 function vulPersoonDropdowns(...ids) {
@@ -1436,6 +1463,32 @@ async function saveNamen(){
   if(namen.length<2){toast('⚠️ Minstens 2 namen nodig');return;}
   await fetch('/api/config',{method:'POST',...h(),body:JSON.stringify({namen})});
   D.namen=namen;updatePersonSelects();toast('👥 Namen opgeslagen — herlaad voor volledig effect');
+}
+
+// ── BACKUP MAIL ──────────────────────────────────────────────
+async function saveBackupMail() {
+  const body = {
+    backup_email: document.getElementById('backup-email').value.trim(),
+    backup_smtp_user: document.getElementById('backup-smtp-user').value.trim(),
+    backup_smtp_pass: document.getElementById('backup-smtp-pass').value.trim(),
+  };
+  const r = await fetch('/api/config', {method:'POST',...h(),body:JSON.stringify(body)});
+  if(r.ok) toast('📧 Backup mail opgeslagen — elke maandag om 7u');
+  else toast('⚠️ Opslaan mislukt');
+}
+
+async function testBackupMail() {
+  const el = document.getElementById('backup-result');
+  el.textContent = '⏳ Versturen...';
+  const r = await fetch('/api/backup-mail-test', {method:'POST',...h()});
+  const d = await r.json();
+  if(d.ok) el.innerHTML = '<span style="color:var(--green)">✅ Mail verstuurd!</span>';
+  else el.innerHTML = `<span style="color:var(--red)">⚠️ ${d.error||'Mislukt'}</span>`;
+}
+
+function renderBackupMailInstellingen(cfg) {
+  if(cfg.backup_email) document.getElementById('backup-email').value = cfg.backup_email;
+  if(cfg.backup_smtp_user) document.getElementById('backup-smtp-user').value = cfg.backup_smtp_user;
 }
 
 // ── FUGA INTEGRATIE ──────────────────────────────────────────
