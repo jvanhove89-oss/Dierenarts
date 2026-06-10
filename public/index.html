@@ -405,31 +405,12 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
   <!-- ══ INSTELLINGEN ══ -->
   <div class="page" id="page-instellingen">
     <div class="settings-grid">
-      <div class="sc">
-        <h4>🔒 Beveiliging</h4>
-        <div class="fg"><label>Teamwachtwoord</label><input type="password" id="s-pw" placeholder="Nieuw wachtwoord..."></div>
-        <div class="fg"><label>Huidig wachtwoord (ter bevestiging)</label><input type="password" id="s-pw-confirm" placeholder="Huidig wachtwoord"></div>
-        <button class="btn btn-p" onclick="saveWachtwoord()">💾 Wachtwoord opslaan</button>
-      </div>
 
       <div class="sc">
-        <h4>💬 WhatsApp meldingen</h4>
-        <div class="banner bi" style="margin-bottom:12px">
-          <div>
-            <strong>Hoe activeer je CallMeBot?</strong><br>
-            1. Stuur <code>I allow callmebot to send me messages</code> naar <strong>+34 644 52 74 48</strong> op WhatsApp<br>
-            2. Je krijgt een API key terug — vul die hieronder in<br>
-            3. Vul je eigen GSM-nummer in (met landcode, bv. +32497...)
-          </div>
-        </div>
-        <div class="fg"><label>Jouw GSM-nummer (met +32...)</label><input type="text" id="s-phone" placeholder="+32497123456"></div>
-        <div class="fg"><label>CallMeBot API Key</label><input type="text" id="s-apikey" placeholder="abc123..."></div>
-        <div class="fg"><label>Dagelijks bericht om</label><input type="time" id="s-tijd" value="08:00"></div>
-        <div style="display:flex;gap:7px;flex-wrap:wrap">
-          <button class="btn btn-p" onclick="saveWhatsApp()">💾 Opslaan</button>
-          <button class="btn btn-s" onclick="testWhatsApp()">📤 Test bericht sturen</button>
-        </div>
-        <div id="wa-result" style="margin-top:8px;font-size:13px"></div>
+        <h4>🔒 Beveiliging</h4>
+        <div class="fg"><label>Nieuw teamwachtwoord</label><input type="password" id="s-pw" placeholder="Nieuw wachtwoord..."></div>
+        <div class="fg"><label>Huidig wachtwoord (ter bevestiging)</label><input type="password" id="s-pw-confirm" placeholder="Huidig wachtwoord"></div>
+        <button class="btn btn-p" onclick="saveWachtwoord()">💾 Opslaan</button>
       </div>
 
       <div class="sc">
@@ -442,14 +423,42 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
         <p style="font-size:11px;color:var(--gray-500);margin-top:8px">Na opslaan herlaad je de pagina.</p>
       </div>
 
+      <div class="sc" style="grid-column:span 2">
+        <h4>💬 WhatsApp — Groepsmelding</h4>
+        <div class="banner bi" style="margin-bottom:12px"><div>
+          Dagelijks overzicht voor het hele team. Stuur naar de praktijkgroep of een specifiek nummer.<br>
+          <strong>Activeren:</strong> stuur <code>I allow callmebot to send me messages</code> naar <strong>+34 644 52 74 48</strong> op WhatsApp. Je krijgt een API key terug.
+        </div></div>
+        <div class="row3">
+          <div class="fg"><label>GSM-nummer groep/beheerder</label><input type="text" id="s-phone" placeholder="+32497123456"></div>
+          <div class="fg"><label>CallMeBot API Key</label><input type="text" id="s-apikey" placeholder="abc123..."></div>
+          <div class="fg"><label>Verstuur dagelijks om</label><input type="time" id="s-tijd" value="08:00"></div>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center">
+          <button class="btn btn-p" onclick="saveWhatsApp()">💾 Opslaan</button>
+          <button class="btn btn-s" onclick="testWhatsApp('groep')">📤 Test groepsbericht</button>
+          <span id="wa-result" style="font-size:13px"></span>
+        </div>
+      </div>
+
+      <div class="sc" style="grid-column:span 2">
+        <h4>📱 WhatsApp — Persoonlijke reminders</h4>
+        <div class="banner bg2" style="margin-bottom:14px"><div>
+          Elke collega kan haar eigen nummer instellen voor <strong>persoonlijke reminders</strong> — alleen zijzelf ziet die. Niemand anders.<br>
+          Activeer CallMeBot op je eigen gsm: stuur <code>I allow callmebot to send me messages</code> naar <strong>+34 644 52 74 48</strong>.
+        </div></div>
+        <div id="persoonlijk-wa-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px"></div>
+      </div>
+
       <div class="sc">
         <h4>📦 Data beheer</h4>
         <div style="display:flex;flex-direction:column;gap:8px">
           <a href="/api/backup" class="btn btn-s">📥 Backup downloaden</a>
           <button class="btn btn-r2" onclick="archiveerKlaar()">🗄️ Afgehandelde taken archiveren</button>
         </div>
-        <p style="font-size:12px;color:var(--gray-500);margin-top:10px">Archiveren verplaatst alle "Klaar"-taken uit het bord. Ze blijven in de backup.</p>
+        <p style="font-size:12px;color:var(--gray-500);margin-top:10px">Archiveren verplaatst alle "Klaar"-taken. Ze blijven in de backup.</p>
       </div>
+
     </div>
   </div>
 
@@ -709,12 +718,11 @@ async function login(){
 function applyConfig(cfg){
   if(cfg.namen&&cfg.namen.length)D.namen=cfg.namen;
   updatePersonSelects();
-  if(cfg.callmebot_phone){document.getElementById('s-phone').value=cfg.callmebot_phone;}
-  if(cfg.callmebot_apikey){document.getElementById('s-apikey').value=cfg.callmebot_apikey;}
-  if(cfg.whatsapp_tijd){document.getElementById('s-tijd').value=cfg.whatsapp_tijd;}
-  if(cfg.namen){
-    D.namen.forEach((n,i)=>{const el=document.getElementById('sn'+(i+1));if(el)el.value=n;});
-  }
+  if(cfg.groep_phone) document.getElementById('s-phone').value=cfg.groep_phone;
+  if(cfg.groep_apikey) document.getElementById('s-apikey').value=cfg.groep_apikey;
+  if(cfg.groep_tijd) document.getElementById('s-tijd').value=cfg.groep_tijd;
+  if(cfg.namen) D.namen.forEach((n,i)=>{const el=document.getElementById('sn'+(i+1));if(el)el.value=n;});
+  renderPersoonlijkWA(cfg);
 }
 
 function updatePersonSelects(){
@@ -1080,18 +1088,93 @@ async function saveWachtwoord(){
 }
 
 async function saveWhatsApp(){
-  const body={callmebot_phone:document.getElementById('s-phone').value.trim(),callmebot_apikey:document.getElementById('s-apikey').value.trim(),whatsapp_tijd:document.getElementById('s-tijd').value};
-  const r=await fetch('/api/config',{method:'POST',headers:{'Content-Type':'application/json','x-praktijk-pw':pw},body:JSON.stringify(body)});
-  if(r.ok)toast('💾 WhatsApp instellingen opgeslagen');else toast('⚠️ Opslaan mislukt');
+  const body={
+    groep_phone:document.getElementById('s-phone').value.trim(),
+    groep_apikey:document.getElementById('s-apikey').value.trim(),
+    groep_tijd:document.getElementById('s-tijd').value
+  };
+  const r=await fetch('/api/config',{method:'POST',...h(),body:JSON.stringify(body)});
+  if(r.ok)toast('💾 Groep WhatsApp opgeslagen');else toast('⚠️ Opslaan mislukt');
 }
 
-async function testWhatsApp(){
-  document.getElementById('wa-result').textContent='⏳ Bericht sturen...';
-  const r=await fetch('/api/whatsapp-test',{method:'POST',...h()});
+async function testWhatsApp(type){
+  const el=document.getElementById('wa-result');
+  el.textContent='⏳ Sturen...';
+  let body={};
+  if(type==='groep'){
+    body={phone:document.getElementById('s-phone').value.trim(),apikey:document.getElementById('s-apikey').value.trim(),naam:'het team'};
+  }
+  const r=await fetch('/api/whatsapp-test',{method:'POST',...h(),body:JSON.stringify(body)});
   const d=await r.json();
-  if(d.skip)document.getElementById('wa-result').innerHTML='<span style="color:var(--amber)">⚠️ Vul eerst GSM-nummer en API key in.</span>';
-  else if(d.ok)document.getElementById('wa-result').innerHTML='<span style="color:var(--green)">✅ Bericht verstuurd!</span>';
-  else document.getElementById('wa-result').innerHTML=`<span style="color:var(--red)">⚠️ Mislukt: ${d.error||'onbekend'}</span>`;
+  if(d.skip)el.innerHTML='<span style="color:var(--amber)">⚠️ Vul eerst nummer en API key in.</span>';
+  else if(d.ok)el.innerHTML='<span style="color:var(--green)">✅ Verstuurd!</span>';
+  else el.innerHTML=`<span style="color:var(--red)">⚠️ ${d.error||'Mislukt'}</span>`;
+}
+
+function renderPersoonlijkWA(config) {
+  const namen = D.namen || ['Karen','Alexandra','Sylvie','Andere'];
+  const pers = config.persoonlijk || {};
+  const el = document.getElementById('persoonlijk-wa-grid');
+  if (!el) return;
+  el.innerHTML = namen.filter(n => n !== 'Andere').map(naam => {
+    const inst = pers[naam] || {};
+    return `<div style="background:var(--gray-50);border:1px solid var(--gray-200);border-radius:9px;padding:14px">
+      <div style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;gap:7px">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--navy);color:white;display:flex;align-items:center;justify-content:center;font-size:12px">${naam[0]}</div>
+        ${naam}
+      </div>
+      <div class="fg"><label>GSM-nummer</label>
+        <input type="text" id="pw-phone-${naam}" value="${inst.phone||''}" placeholder="+32497...">
+      </div>
+      <div class="fg"><label>API Key</label>
+        <input type="text" id="pw-key-${naam}" value="${inst.apikey||''}" placeholder="Van CallMeBot">
+      </div>
+      <div class="fg"><label>Reminder om</label>
+        <input type="time" id="pw-tijd-${naam}" value="${inst.reminder_tijd||'08:00'}">
+      </div>
+      <div style="font-size:12px;color:var(--gray-500);margin-bottom:8px">
+        <label style="display:flex;align-items:center;gap:5px;cursor:pointer">
+          <input type="checkbox" id="pw-taken-${naam}" ${inst.reminders_taken!==false?'checked':''}> Eigen taken & deadlines
+        </label>
+        <label style="display:flex;align-items:center;gap:5px;cursor:pointer;margin-top:4px">
+          <input type="checkbox" id="pw-herin-${naam}" ${inst.reminders_herinneringen!==false?'checked':''}> Herinneringen
+        </label>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn btn-p" style="font-size:12px;padding:5px 11px" onclick="savePersoonlijkWA('${naam}')">💾 Opslaan</button>
+        <button class="btn btn-s" style="font-size:12px;padding:5px 11px" onclick="testPersoonlijkWA('${naam}')">📤 Test</button>
+      </div>
+      <div id="pw-result-${naam}" style="font-size:12px;margin-top:6px"></div>
+    </div>`;
+  }).join('');
+}
+
+async function savePersoonlijkWA(naam) {
+  const huidigConfig = await fetch('/api/config',{headers:{'x-praktijk-pw':pw}}).then(r=>r.json());
+  const pers = huidigConfig.persoonlijk || {};
+  pers[naam] = {
+    phone: document.getElementById(`pw-phone-${naam}`).value.trim(),
+    apikey: document.getElementById(`pw-key-${naam}`).value.trim(),
+    reminder_tijd: document.getElementById(`pw-tijd-${naam}`).value,
+    reminders_taken: document.getElementById(`pw-taken-${naam}`).checked,
+    reminders_herinneringen: document.getElementById(`pw-herin-${naam}`).checked,
+  };
+  const r = await fetch('/api/config',{method:'POST',...h(),body:JSON.stringify({persoonlijk:pers})});
+  const el = document.getElementById(`pw-result-${naam}`);
+  if(r.ok){el.innerHTML='<span style="color:var(--green)">✅ Opgeslagen</span>';}
+  else{el.innerHTML='<span style="color:var(--red)">⚠️ Mislukt</span>';}
+}
+
+async function testPersoonlijkWA(naam) {
+  const el = document.getElementById(`pw-result-${naam}`);
+  el.textContent = '⏳ Sturen...';
+  const phone = document.getElementById(`pw-phone-${naam}`).value.trim();
+  const apikey = document.getElementById(`pw-key-${naam}`).value.trim();
+  const r = await fetch('/api/whatsapp-test',{method:'POST',...h(),body:JSON.stringify({phone,apikey,naam})});
+  const d = await r.json();
+  if(d.skip)el.innerHTML='<span style="color:var(--amber)">⚠️ Vul nummer en key in.</span>';
+  else if(d.ok)el.innerHTML='<span style="color:var(--green)">✅ Verstuurd naar '+naam+'!</span>';
+  else el.innerHTML=`<span style="color:var(--red)">⚠️ ${d.error||'Mislukt'}</span>`;
 }
 
 async function saveNamen(){
