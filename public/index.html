@@ -250,6 +250,11 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
 .login-err{color:var(--red);font-size:13px;margin-bottom:8px;display:none}
 .login-err.show{display:block}
 
+/* ── VERWIJDERDE TAKEN ── */
+.tcard.verwijderd{border-left:3px solid var(--gray-300);opacity:.55;background:repeating-linear-gradient(45deg,#fff,#fff 8px,#f8f9fa 8px,#f8f9fa 16px)}
+.tcard.verwijderd .tname{text-decoration:line-through;color:var(--gray-500)}
+.verwijderd-badge{display:inline-flex;align-items:center;font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--gray-100);color:var(--gray-500);white-space:nowrap}
+
 /* ── CASUS ── */
 .casus-card{background:white;border:1px solid var(--gray-200);border-radius:10px;padding:14px 16px;margin-bottom:10px;transition:box-shadow .15s}
 .casus-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.05)}
@@ -257,6 +262,11 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
 .casus-top{display:flex;gap:10px;align-items:flex-start}
 .casus-reacties{margin-top:10px;padding-top:10px;border-top:1px solid var(--gray-100)}
 
+
+/* ── VERWIJDERDE TAKEN ── */
+.tcard.verwijderd{border-left:3px solid var(--gray-300);opacity:.55;background:repeating-linear-gradient(45deg,#fff,#fff 8px,#f8f9fa 8px,#f8f9fa 16px)}
+.tcard.verwijderd .tname{text-decoration:line-through;color:var(--gray-500)}
+.verwijderd-badge{display:inline-flex;align-items:center;font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--gray-100);color:var(--gray-500);white-space:nowrap}
 
 /* ── CASUS ── */
 .casus-card{background:white;border:1px solid var(--gray-200);border-radius:10px;padding:14px 16px;margin-bottom:10px;transition:box-shadow .15s}
@@ -1075,6 +1085,7 @@ async function sla(msg){
 }
 
 function renderAll(){
+  ruimVerwijderdeOp();
   renderTaken();renderKanban();renderDashboard();renderHerinneringen();renderRoster();
   if(typeof renderFeed==='function') renderFeed();
   if(typeof renderVergadering==='function') renderVergadering();
@@ -1140,6 +1151,22 @@ function renderTaken(){
 }
 
 function kaartHTML(t){
+  if(t.verwijderd){
+    const restUur=Math.max(0,Math.round(48-((Date.now()-t.verwijderdOp)/3600000)));
+    const kanDef=user==='Karen';
+    return `<div class="tcard verwijderd">
+      <div class="tcard-top"><div>
+        <div class="ttop">
+          <span class="tname">${t.naam}</span>
+          <span class="verwijderd-badge">🗑️ Verwijderd door ${t.verwijderdDoor||'?'} · nog ${restUur}u zichtbaar</span>
+        </div>
+        <div class="tfooter">Aangemaakt door ${t.door||'?'} · ${t.op||'?'}</div>
+      </div>
+      <div class="tactions">
+        ${kanDef?`<button class="ibtn" title="Definitief verwijderen" onclick="delTaak('${t.id}')">🗑️</button>`:''}
+      </div></div>
+    </div>`;
+  }
   const badge=t.status==='urgent'?'<span class="badge bu">🔴 Urgent</span>':t.status==='waiting'?'<span class="badge bw">⏳ Lopend</span>':'<span class="badge bd">✅ Klaar</span>';
   const catB=t.cat&&catL[t.cat]?`<span class="badge bc" style="background:#E8EEF4;color:var(--navy)">${catL[t.cat]}</span>`:'';
   const prioB=t.prio?`<span class="badge bp">${prioL[t.prio]}</span>`:'';
@@ -1173,9 +1200,16 @@ function kaartHTML(t){
   </div>`;
 }
 
+function magAanpassen(t){
+  // Karen heeft adminrechten - mag alles
+  if(user==='Karen') return true;
+  // Verantwoordelijke, aanmaker of opvolger mag aanpassen
+  return t.door===user || t.verant===user || t.opvolger===user;
+}
+
 async function snelKlaar(id){
   const t=D.taken.find(x=>x.id===id);if(!t)return;
-  if(t.door!==user&&t.verant!==user){toast('⚠️ Alleen de verantwoordelijke kan deze taak aanpassen');return;}
+  if(!magAanpassen(t)){toast('⚠️ Je hebt geen rechten om deze taak aan te passen');return;}
   t.status=t.status==='done'?'waiting':'done';
   t.gdoor=user;t.gop=vandaag();
   await sla(t.status==='done'?'✅ Taak afgehandeld':'↩️ Taak heropend');
@@ -1184,7 +1218,7 @@ async function snelKlaar(id){
 // ── KANBAN ─────────────────────────────────────────────────────
 function renderKanban(){
   ['urgent','waiting','done'].forEach(s=>{
-    const l=taken().filter(t=>t.status===s);
+    const l=taken().filter(t=>t.status===s&&!t.verwijderd);
     document.getElementById('kc-'+s).textContent=l.length;
     document.getElementById('kl-'+s).innerHTML=l.map(t=>{
       const catB=t.cat&&catL[t.cat]?`<span class="kbadge bc">${catL[t.cat]}</span>`:'';
@@ -1197,7 +1231,7 @@ function renderKanban(){
         <div class="kname">${t.naam}</div>
         <div class="kmeta">${meta.join(' · ')} ${catB}</div>
         <div class="kactions">
-          ${(t.door===user||t.verant===user) ? `
+          ${(user==='Karen'||t.door===user||t.verant===user||t.opvolger===user) ? `
             <button class="ibtn" onclick="openModal('${t.id}')">✏️</button>
             <button class="ibtn" onclick="delTaak('${t.id}')">🗑️</button>
           ` : '<span style="font-size:11px;color:var(--gray-400)">🔒</span>'}
@@ -1331,7 +1365,7 @@ function openModal(id){
   document.getElementById('mtitle').textContent=id?'Taak bewerken':'Nieuwe taak';
   if(id){
     const t=D.taken.find(x=>x.id===id);if(!t)return;
-    if(t.door!==user&&t.verant!==user){toast('⚠️ Alleen de verantwoordelijke kan dit bewerken');return;}
+    if(!magAanpassen(t)){toast('⚠️ Je hebt geen rechten om deze taak te bewerken');return;}
     document.getElementById('f-naam').value=t.naam||'';document.getElementById('f-status').value=t.status||'waiting';
     document.getElementById('f-prio').value=t.prio||'';document.getElementById('f-cat').value=t.cat||'';
     vulPersoonDropdowns('f-verant','f-opvolger');
@@ -1365,10 +1399,29 @@ async function saveTask(){
 async function delTaak(id){
   const t=D.taken.find(x=>x.id===id);
   if(!t)return;
-  if(t.door!==user&&t.verant!==user){toast('⚠️ Alleen de verantwoordelijke kan dit verwijderen');return;}
-  if(!confirm('Taak verwijderen?'))return;
-  D.taken=D.taken.filter(t=>t.id!==id);
-  await sla('🗑️ Verwijderd');
+  if(!magAanpassen(t)){toast('⚠️ Je hebt geen rechten om deze taak te verwijderen');return;}
+  if(t.verwijderd){
+    // Al verwijderd - definitief verwijderen (alleen Karen)
+    if(user!=='Karen'){toast('⚠️ Alleen Karen kan definitief verwijderen');return;}
+    if(!confirm('Definitief verwijderen?'))return;
+    D.taken=D.taken.filter(x=>x.id!==id);
+    await sla('🗑️ Definitief verwijderd');
+    return;
+  }
+  if(!confirm('Taak verwijderen? Ze blijft 48u zichtbaar.'))return;
+  t.verwijderd=true;
+  t.verwijderdDoor=user;
+  t.verwijderdOp=Date.now();
+  t.gdoor=user;t.gop=vandaag();
+  await sla('🗑️ Taak verwijderd — blijft 48u zichtbaar');
+}
+
+function ruimVerwijderdeOp(){
+  const nu=Date.now();
+  const grens=48*60*60*1000; // 48 uur
+  const voor=D.taken.length;
+  D.taken=D.taken.filter(t=>!t.verwijderd||(nu-t.verwijderdOp)<grens);
+  if(D.taken.length<voor) sla();
 }
 
 // ── VERLOF ─────────────────────────────────────────────────────
