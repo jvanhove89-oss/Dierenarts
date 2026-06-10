@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Takenbord – Dierenartspraktijk</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&display=swap');
+:root{
+  --navy:#1B3A5C;--navy-light:#2A5280;
+  --amber:#D4872A;--amber-light:#FDF3E7;
+  --red:#C0392B;--red-light:#FDF0EF;
+  --green:#1D9E75;--green-light:#EAF3DE;
+  --gray-50:#F8F9FA;--gray-100:#F0F2F5;--gray-200:#E2E8F0;
+  --gray-300:#CBD5E0;--gray-500:#718096;--gray-600:#4A5568;--gray-800:#1A202C;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-800);min-height:100vh}
+
+/* HEADER */
+header{background:var(--navy);color:white;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.header-left{display:flex;align-items:center;gap:14px}
+.logo{width:40px;height:40px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:21px;flex-shrink:0}
+header h1{font-family:'DM Serif Display',serif;font-size:19px}
+header p{font-size:12px;color:#A8C4D8;margin-top:1px}
+.user-pill{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:6px 14px;font-size:13px;color:white;display:flex;align-items:center;gap:7px;cursor:pointer}
+.ldot{width:8px;height:8px;border-radius:50%;background:#4ade80;flex-shrink:0}
+.ldot.warn{background:#f59e0b}
+
+/* MAIN */
+.main{max-width:920px;margin:0 auto;padding:24px 18px 80px}
+
+/* WHO BAR */
+.who-bar{background:white;border:1px solid var(--gray-200);border-radius:10px;padding:12px 16px;margin-bottom:18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.who-bar label{font-size:13px;font-weight:600;color:var(--gray-600);white-space:nowrap}
+.who-bar select{font-family:'Inter',sans-serif;font-size:13px;padding:6px 10px;border:1px solid var(--gray-300);border-radius:6px;background:white;color:var(--gray-800);cursor:pointer}
+.sync-info{margin-left:auto;font-size:12px;color:var(--gray-500);display:flex;align-items:center;gap:6px}
+.sdot{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0}
+.sdot.loading{background:var(--amber);animation:blink 1s infinite}
+.sdot.err{background:var(--red)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+.stat{background:white;border:1px solid var(--gray-200);border-radius:10px;padding:12px 14px;text-align:center}
+.stat-num{font-size:26px;font-weight:600}
+.stat-label{font-size:11px;color:var(--gray-500);margin-top:2px}
+.c-red{color:var(--red)}.c-amber{color:var(--amber)}.c-green{color:var(--green)}
+
+/* TOOLBAR */
+.toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.filters{display:flex;gap:5px;flex-wrap:wrap}
+.fbtn{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid var(--gray-300);background:white;color:var(--gray-600);cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s}
+.fbtn:hover{border-color:var(--navy);color:var(--navy)}
+.fbtn.active{background:var(--navy);color:white;border-color:var(--navy)}
+.btns{display:flex;gap:7px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 15px;border-radius:7px;font-family:'Inter',sans-serif;font-size:13px;font-weight:500;cursor:pointer;border:none;transition:all .15s;white-space:nowrap}
+.btn-p{background:var(--navy);color:white}.btn-p:hover{background:var(--navy-light)}
+.btn-s{background:white;color:var(--gray-600);border:1px solid var(--gray-300)}.btn-s:hover{background:var(--gray-50)}
+
+/* TASK CARDS */
+.tlist{display:flex;flex-direction:column;gap:9px}
+.tcard{background:white;border:1px solid var(--gray-200);border-radius:10px;padding:13px 16px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;transition:box-shadow .15s}
+.tcard:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.tcard.urgent{border-left:3px solid var(--red)}
+.tcard.waiting{border-left:3px solid var(--amber)}
+.tcard.done{border-left:3px solid var(--green);opacity:.6}
+.ttop{display:flex;align-items:flex-start;gap:7px;margin-bottom:5px;flex-wrap:wrap}
+.tname{font-size:14px;font-weight:600;color:var(--gray-800);flex:1;min-width:140px}
+.tcard.done .tname{text-decoration:line-through;color:var(--gray-500)}
+.badge{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;white-space:nowrap}
+.bu{background:var(--red-light);color:var(--red)}
+.bw{background:var(--amber-light);color:var(--amber)}
+.bd{background:var(--green-light);color:var(--green)}
+.bc{background:var(--gray-100);color:var(--gray-600)}
+.tmeta{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--gray-500)}
+.pbox{margin-top:7px;background:#FFFBF0;border:1px solid #F6E5B8;border-radius:6px;padding:5px 9px;font-size:12px;color:#7A5C1A}
+.tfooter{font-size:11px;color:var(--gray-500);margin-top:5px}
+.vtag{display:inline-block;font-size:10px;font-weight:700;background:#EEF4FF;color:#1E40AF;border-radius:20px;padding:1px 7px;margin-left:5px;vertical-align:middle}
+.tactions{display:flex;gap:3px}
+.ibtn{background:none;border:none;cursor:pointer;padding:5px;border-radius:6px;color:var(--gray-500);font-size:15px;transition:all .15s;line-height:1}
+.ibtn:hover{background:var(--gray-100);color:var(--gray-800)}
+
+/* EMPTY */
+.empty{text-align:center;padding:44px 20px;color:var(--gray-500)}
+.empty-icon{font-size:34px;margin-bottom:9px}
+.empty h3{font-size:15px;font-weight:600;margin-bottom:5px;color:var(--gray-600)}
+.empty p{font-size:13px}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal{background:white;border-radius:12px;padding:26px;width:100%;max-width:480px;max-height:92vh;overflow-y:auto}
+.modal h3{font-family:'DM Serif Display',serif;font-size:20px;color:var(--navy);margin-bottom:16px}
+.fg{margin-bottom:12px}
+.fg label{display:block;font-size:11px;font-weight:600;color:var(--gray-600);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+.fg input,.fg select,.fg textarea{width:100%;padding:8px 11px;border:1px solid var(--gray-300);border-radius:7px;font-family:'Inter',sans-serif;font-size:13px;color:var(--gray-800);background:white}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--navy)}
+.fg textarea{resize:vertical;min-height:58px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.divider{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gray-500);border-top:1px solid var(--gray-200);padding-top:12px;margin-bottom:12px}
+.mactions{display:flex;gap:7px;justify-content:flex-end;margin-top:18px}
+.banner{border-radius:9px;padding:11px 14px;font-size:13px;margin-bottom:14px;display:flex;align-items:flex-start;gap:9px;line-height:1.5}
+.bi{background:#EEF4FF;border:1px solid #C7D7F5;color:#1E40AF}
+.bw2{background:var(--amber-light);border:1px solid #F6D08A;color:#7A4B0A}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--gray-800);color:white;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:500;z-index:100;opacity:0;transition:opacity .3s;white-space:nowrap;pointer-events:none}
+.toast.show{opacity:1}
+.footer-bar{text-align:center;font-size:12px;color:var(--gray-500);margin-top:20px}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-left">
+    <div class="logo">🐾</div>
+    <div>
+      <h1>Takenbord Praktijk</h1>
+      <p>Gedeeld en live voor het hele team</p>
+    </div>
+  </div>
+  <div class="user-pill" onclick="document.getElementById('who').focus()">
+    <div class="ldot" id="ldot"></div>
+    <span id="huser">Kies je naam</span>
+  </div>
+</header>
+
+<div class="main">
+  <div class="who-bar">
+    <label>👤 Je bent:</label>
+    <select id="who" onchange="setUser(this.value)">
+      <option value="">— kies je naam —</option>
+      <option value="Karen">Karen</option>
+      <option value="Alexandra">Alexandra</option>
+      <option value="Sylvie">Sylvie</option>
+      <option value="Andere">Andere collega</option>
+    </select>
+    <div class="sync-info">
+      <div class="sdot loading" id="sdot"></div>
+      <span id="stext">Verbinden...</span>
+    </div>
+    <button class="btn btn-s" style="padding:5px 11px;font-size:12px" onclick="laad(true)">🔄 Ververs</button>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num c-red" id="cu">–</div><div class="stat-label">Urgent</div></div>
+    <div class="stat"><div class="stat-num c-amber" id="cw">–</div><div class="stat-label">Lopend</div></div>
+    <div class="stat"><div class="stat-num c-green" id="cd">–</div><div class="stat-label">Klaar</div></div>
+  </div>
+
+  <div class="toolbar">
+    <div class="filters">
+      <button class="fbtn active" onclick="setF('alle',this)">Alle</button>
+      <button class="fbtn" onclick="setF('urgent',this)">🔴 Urgent</button>
+      <button class="fbtn" onclick="setF('waiting',this)">⏳ Lopend</button>
+      <button class="fbtn" onclick="setF('done',this)">✅ Klaar</button>
+      <button class="fbtn" onclick="setF('mine',this)">👤 Van mij</button>
+      <button class="fbtn" onclick="setF('over',this)">✈️ Over te dragen</button>
+    </div>
+    <div class="btns">
+      <button class="btn btn-s" onclick="openVerlof()">✈️ Ik ga op verlof</button>
+      <button class="btn btn-p" onclick="openModal()">＋ Taak toevoegen</button>
+    </div>
+  </div>
+
+  <div id="tlist" class="tlist"></div>
+  <p class="footer-bar" id="fbar"></p>
+  <div style="text-align:center;margin-top:12px">
+    <a href="/api/backup" class="btn btn-s" style="font-size:12px;padding:5px 14px;text-decoration:none;display:inline-flex;align-items:center;gap:5px">
+      📥 Backup downloaden
+    </a>
+  </div>
+</div>
+
+<!-- TAAK MODAL -->
+<div class="overlay" id="modal" style="display:none" onclick="cbg(event,'modal')">
+  <div class="modal">
+    <h3 id="mtitle">Nieuwe taak</h3>
+    <div class="fg"><label>Patiënt / omschrijving *</label><input type="text" id="f-naam" placeholder="bv. Bloedresultaten Rex – eigenaar bellen"></div>
+    <div class="row2">
+      <div class="fg"><label>Status</label>
+        <select id="f-status">
+          <option value="waiting">⏳ Lopend</option>
+          <option value="urgent">🔴 Urgent</option>
+          <option value="done">✅ Klaar</option>
+        </select>
+      </div>
+      <div class="fg"><label>Categorie</label>
+        <select id="f-cat">
+          <option value="">— geen —</option>
+          <option value="onderzoek">🔬 Onderzoek</option>
+          <option value="medicatie">💊 Medicatie</option>
+          <option value="klant">📞 Klant contacteren</option>
+          <option value="bestelling">📦 Bestelling</option>
+          <option value="opvolging">📋 Opvolging</option>
+          <option value="andere">💬 Andere</option>
+        </select>
+      </div>
+    </div>
+    <div class="divider">Verantwoordelijkheid</div>
+    <div class="row2">
+      <div class="fg"><label>Verantwoordelijke</label><input type="text" id="f-verant" placeholder="bv. Karen"></div>
+      <div class="fg"><label>Opvolger bij afwezigheid</label><input type="text" id="f-opvolger" placeholder="bv. Alexandra"></div>
+    </div>
+    <div class="divider">Details</div>
+    <div class="fg"><label>📞 Belofte aan eigenaar</label><input type="text" id="f-belofte" placeholder="bv. Bellen als resultaten binnen zijn"></div>
+    <div class="row2">
+      <div class="fg"><label>Deadline</label><input type="date" id="f-deadline"></div>
+      <div class="fg"><label>Dossiernummer</label><input type="text" id="f-dossier" placeholder="bv. D-2024-0391"></div>
+    </div>
+    <div class="fg"><label>Opmerking</label><textarea id="f-opmerking" placeholder="Extra info voor collega's..."></textarea></div>
+    <div class="mactions">
+      <button class="btn btn-s" onclick="cm('modal')">Annuleren</button>
+      <button class="btn btn-p" onclick="saveTask()">Opslaan</button>
+    </div>
+  </div>
+</div>
+
+<!-- VERLOF MODAL -->
+<div class="overlay" id="vmodal" style="display:none" onclick="cbg(event,'vmodal')">
+  <div class="modal">
+    <h3>✈️ Ik ga op verlof</h3>
+    <p style="font-size:13px;color:var(--gray-600);margin-bottom:16px">Jouw openstaande taken worden gemarkeerd als "over te dragen". Kies wie ze overneemt.</p>
+    <div class="fg"><label>Opvolger voor al mijn taken</label><input type="text" id="v-opvolger" placeholder="Naam van collega die overneemt"></div>
+    <div class="row2">
+      <div class="fg"><label>Verlof van</label><input type="date" id="v-van"></div>
+      <div class="fg"><label>Terug op</label><input type="date" id="v-tot"></div>
+    </div>
+    <div id="vprev" style="margin-top:10px"></div>
+    <div class="mactions">
+      <button class="btn btn-s" onclick="cm('vmodal')">Annuleren</button>
+      <button class="btn btn-p" onclick="applyVerlof()">Taken overdragen</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let taken=[], filter='alle', user='', editId=null;
+
+// ── INIT ──────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded',()=>{
+  user = localStorage.getItem('pk-user')||'';
+  if(user){ document.getElementById('who').value=user; document.getElementById('huser').textContent=user; }
+  laad();
+  setInterval(()=>laad(false,true), 20000);
+});
+
+// ── API ───────────────────────────────────────────────────────
+async function laad(toon=true, stil=false){
+  if(toon) setSdot('loading','Laden...');
+  try{
+    const r=await fetch('/api/taken?t='+Date.now());
+    if(!r.ok) throw new Error();
+    const d=await r.json();
+    const nieuw=JSON.stringify(d.taken);
+    const oud=JSON.stringify(taken);
+    taken=d.taken||[];
+    setSdot('ok','Live verbonden');
+    render();
+    document.getElementById('fbar').textContent='Laatste sync: '+new Date().toLocaleTimeString('nl-BE')+(d.bijgewerktDoor?' · Gewijzigd door '+d.bijgewerktDoor:'');
+    if(stil && nieuw!==oud) toast('🔄 Bijgewerkt door een collega');
+  }catch(e){
+    setSdot('err','Verbinding mislukt');
+    document.getElementById('ldot').className='ldot warn';
+  }
+}
+
+async function sla(stilToast){
+  setSdot('loading','Opslaan...');
+  try{
+    await fetch('/api/taken',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({taken, bijgewerktDoor:user||'onbekend', laatstBijgewerkt:vandaag()})
+    });
+    setSdot('ok','Live verbonden');
+    if(!stilToast) toast('✅ Opgeslagen en zichtbaar voor het team');
+    render();
+  }catch(e){
+    setSdot('err','Opslaan mislukt');
+    toast('⚠️ Opslaan mislukt – probeer opnieuw');
+  }
+}
+
+// ── RENDER ────────────────────────────────────────────────────
+const catL={onderzoek:'🔬 Onderzoek',medicatie:'💊 Medicatie',klant:'📞 Klant',bestelling:'📦 Bestelling',opvolging:'📋 Opvolging',andere:'💬 Andere'};
+
+function render(){
+  document.getElementById('cu').textContent=taken.filter(t=>t.status==='urgent').length;
+  document.getElementById('cw').textContent=taken.filter(t=>t.status==='waiting').length;
+  document.getElementById('cd').textContent=taken.filter(t=>t.status==='done').length;
+
+  let l=taken;
+  if(filter==='urgent') l=taken.filter(t=>t.status==='urgent');
+  else if(filter==='waiting') l=taken.filter(t=>t.status==='waiting');
+  else if(filter==='done') l=taken.filter(t=>t.status==='done');
+  else if(filter==='mine') l=taken.filter(t=>t.verant===user||t.opvolger===user);
+  else if(filter==='over') l=taken.filter(t=>t.overdracht);
+
+  const el=document.getElementById('tlist');
+  if(!l.length){
+    el.innerHTML=`<div class="empty"><div class="empty-icon">${filter==='done'?'🎉':'📋'}</div><h3>${filter==='mine'&&!user?'Kies eerst je naam bovenaan':'Geen taken hier'}</h3><p>${filter==='over'?'Geen taken gemarkeerd voor overdracht.':'Voeg een taak toe via de knop rechtsboven.'}</p></div>`;
+    return;
+  }
+
+  el.innerHTML=l.map(t=>{
+    const badge=t.status==='urgent'?'<span class="badge bu">🔴 Urgent</span>':t.status==='waiting'?'<span class="badge bw">⏳ Lopend</span>':'<span class="badge bd">✅ Klaar</span>';
+    const catB=t.cat&&catL[t.cat]?`<span class="badge bc">${catL[t.cat]}</span>`:'';
+    const vtag=t.overdracht?`<span class="vtag">✈️ Over te dragen${t.opvolger?' → '+t.opvolger:''}</span>`:'';
+    const meta=[];
+    if(t.verant) meta.push(`<span>👤 ${t.verant}</span>`);
+    if(t.opvolger&&!t.overdracht) meta.push(`<span>🔄 Opvolger: ${t.opvolger}</span>`);
+    if(t.deadline) meta.push(`<span>📅 ${fmtD(t.deadline)}</span>`);
+    if(t.dossier) meta.push(`<span>📁 ${t.dossier}</span>`);
+    if(t.opmerking) meta.push(`<span>💬 ${t.opmerking}</span>`);
+    const belofte=t.belofte?`<div class="pbox">📞 Belofte aan eigenaar: <strong>${t.belofte}</strong></div>`:'';
+    return `<div class="tcard ${t.status}">
+      <div>
+        <div class="ttop"><span class="tname">${t.naam}${vtag}</span>${badge}${catB}</div>
+        <div class="tmeta">${meta.join('')}</div>
+        ${belofte}
+        <div class="tfooter">Toegevoegd door ${t.door||'?'} op ${t.op||'?'}${t.gdoor?' · Gewijzigd door '+t.gdoor:''}</div>
+      </div>
+      <div class="tactions">
+        <button class="ibtn" title="Bewerken" onclick="openModal('${t.id}')">✏️</button>
+        <button class="ibtn" title="Verwijderen" onclick="del('${t.id}')">🗑️</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── FILTER & USER ─────────────────────────────────────────────
+function setF(f,btn){filter=f;document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');render();}
+function setUser(n){user=n;localStorage.setItem('pk-user',n);document.getElementById('huser').textContent=n||'Kies je naam';render();}
+
+// ── TAAK MODAL ────────────────────────────────────────────────
+function openModal(id){
+  editId=id||null;
+  document.getElementById('mtitle').textContent=id?'Taak bewerken':'Nieuwe taak';
+  const velden=['naam','belofte','opvolger','verant','opmerking','dossier'];
+  if(id){
+    const t=taken.find(x=>x.id===id);if(!t)return;
+    document.getElementById('f-naam').value=t.naam||'';
+    document.getElementById('f-status').value=t.status;
+    document.getElementById('f-cat').value=t.cat||'';
+    document.getElementById('f-verant').value=t.verant||'';
+    document.getElementById('f-opvolger').value=t.opvolger||'';
+    document.getElementById('f-belofte').value=t.belofte||'';
+    document.getElementById('f-deadline').value=t.deadline||'';
+    document.getElementById('f-dossier').value=t.dossier||'';
+    document.getElementById('f-opmerking').value=t.opmerking||'';
+  } else {
+    ['f-naam','f-belofte','f-opvolger','f-verant','f-opmerking','f-dossier','f-deadline'].forEach(i=>document.getElementById(i).value='');
+    document.getElementById('f-status').value='waiting';
+    document.getElementById('f-cat').value='';
+    if(user) document.getElementById('f-verant').value=user;
+  }
+  document.getElementById('modal').style.display='flex';
+  setTimeout(()=>document.getElementById('f-naam').focus(),50);
+}
+
+async function saveTask(){
+  const naam=document.getElementById('f-naam').value.trim();
+  if(!naam){toast('⚠️ Geef een omschrijving in');return;}
+  const oud=editId?taken.find(t=>t.id===editId):null;
+  const taak={
+    id:editId||uid(),naam,
+    status:document.getElementById('f-status').value,
+    cat:document.getElementById('f-cat').value,
+    verant:document.getElementById('f-verant').value.trim(),
+    opvolger:document.getElementById('f-opvolger').value.trim(),
+    belofte:document.getElementById('f-belofte').value.trim(),
+    deadline:document.getElementById('f-deadline').value,
+    dossier:document.getElementById('f-dossier').value.trim(),
+    opmerking:document.getElementById('f-opmerking').value.trim(),
+    overdracht:oud?oud.overdracht:false,
+    door:oud?oud.door:(user||'onbekend'),
+    op:oud?oud.op:vandaag(),
+    gdoor:editId?(user||'onbekend'):null,
+    gop:editId?vandaag():null,
+  };
+  if(editId) taken=taken.map(t=>t.id===editId?taak:t); else taken.unshift(taak);
+  cm('modal');
+  await sla();
+}
+
+async function del(id){
+  if(!confirm('Taak verwijderen?'))return;
+  taken=taken.filter(t=>t.id!==id);
+  await sla();
+}
+
+// ── VERLOF ────────────────────────────────────────────────────
+function openVerlof(){
+  if(!user){toast('⚠️ Kies eerst je naam bovenaan');return;}
+  const mijn=taken.filter(t=>(t.verant===user||t.opvolger===user)&&t.status!=='done');
+  const prev=document.getElementById('vprev');
+  prev.innerHTML=mijn.length===0
+    ?'<div class="banner bi">✅ Je hebt geen openstaande taken om over te dragen.</div>'
+    :`<div class="banner bw2">📋 ${mijn.length} taak${mijn.length>1?'en':''} worden gemarkeerd als "over te dragen":<br><ul style="margin-top:7px;padding-left:18px">${mijn.map(t=>`<li>${t.naam}</li>`).join('')}</ul></div>`;
+  document.getElementById('v-van').value=new Date().toISOString().split('T')[0];
+  document.getElementById('v-tot').value='';
+  document.getElementById('v-opvolger').value='';
+  document.getElementById('vmodal').style.display='flex';
+}
+
+async function applyVerlof(){
+  const opvolger=document.getElementById('v-opvolger').value.trim();
+  const van=document.getElementById('v-van').value;
+  const tot=document.getElementById('v-tot').value;
+  let n=0;
+  taken=taken.map(t=>{
+    if((t.verant===user||t.opvolger===user)&&t.status!=='done'){
+      n++;
+      return{...t,overdracht:true,opvolger:opvolger||t.opvolger,
+        opmerking:(t.opmerking?t.opmerking+' | ':'')+`${user} op verlof${van?' v.a. '+fmtD(van):''}${tot?' t.e.m. '+fmtD(tot):''}`,
+        gdoor:user,gop:vandaag()};
+    }
+    return t;
+  });
+  cm('vmodal');
+  await sla();
+  toast(`✈️ ${n} taak${n!==1?'en':''} gemarkeerd voor overdracht`);
+}
+
+// ── HELPERS ───────────────────────────────────────────────────
+function cm(id){document.getElementById(id).style.display='none';}
+function cbg(e,id){if(e.target===document.getElementById(id))cm(id);}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function vandaag(){return new Date().toLocaleDateString('nl-BE',{day:'2-digit',month:'2-digit',year:'numeric'});}
+function fmtD(d){if(!d)return'';const[y,m,dd]=d.split('-');return dd+'/'+m+'/'+y;}
+function setSdot(s,t){
+  const d=document.getElementById('sdot');
+  d.className='sdot'+(s==='err'?' err':s==='loading'?' loading':'');
+  document.getElementById('stext').textContent=t;
+  document.getElementById('ldot').className='ldot'+(s==='err'?' warn':'');
+}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);}
+</script>
+</body>
+</html>
