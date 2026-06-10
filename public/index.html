@@ -1012,20 +1012,31 @@ function updatePersonSelects(){
   if(user)document.getElementById('who').value=user;
 }
 
-window.addEventListener('DOMContentLoaded',()=>{
-  pw=localStorage.getItem('pk-pw')||'';
-  window.pw=pw;
-  user=localStorage.getItem('pk-user')||'';
-  if(user)document.getElementById('huser').textContent=user;
-  if(pw){
-    // Probeer direct in te loggen met opgeslagen wachtwoord
-    fetch('/api/config',{headers:{'x-praktijk-pw':pw}}).then(r=>{
-      if(r.ok){
-        r.json().then(cfg=>{applyConfig(cfg);document.getElementById('login-screen').style.display='none';window.user=user;laad();setInterval(()=>laad(false,true),25000);});
-      }else{localStorage.removeItem('pk-pw');pw='';}
-    }).catch(()=>{});
+window.addEventListener('DOMContentLoaded', async () => {
+  pw = localStorage.getItem('pk-pw') || 'praktijk2024';
+  window.pw = pw;
+  user = localStorage.getItem('pk-user') || '';
+  window.user = user;
+
+  // Haal config op zodat namen beschikbaar zijn voor loginscherm
+  try {
+    const r = await fetch('/api/config', {headers:{'x-praktijk-pw': pw}});
+    if (r.ok) {
+      const cfg = await r.json();
+      applyConfig(cfg);
+    }
+  } catch(e) {
+    // Config niet beschikbaar - gebruik standaard namen
   }
+
   updatePersonSelects();
+  renderLoginNamen();
+
+  // Toon loginscherm - auto-selecteer naam als bekend
+  if (user) {
+    loginKiesNaam(user);
+  }
+  document.getElementById('login-screen').style.display = 'flex';
 });
 
 // ── API ────────────────────────────────────────────────────────
