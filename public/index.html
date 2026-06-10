@@ -587,7 +587,7 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
         <h4>🔗 Fuga koppeling</h4>
         <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px">Koppel dossiernummers aan Fuga. Klik op een dossiernummer in een taak of casus om het dossier direct te openen.</p>
         <div class="fg"><label>Basis-URL van jouw Fuga omgeving</label>
-          <input type="text" id="fuga-url-input" placeholder="https://app.fuga.be/dossier/" style="font-size:12px">
+          <input type="text" id="fuga-url-input" placeholder="https://sonetas.eu/fuga/vc?action=displayClient&id=" style="font-size:12px">
         </div>
         <div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center">
           <button class="btn btn-p" onclick="saveFugaUrl()">💾 Opslaan</button>
@@ -1513,7 +1513,7 @@ function renderBackupMailInstellingen(cfg) {
 
 // ── FUGA INTEGRATIE ──────────────────────────────────────────
 function getFugaBase() {
-  return localStorage.getItem('fuga-url') || 'https://app.fuga.be/dossier/';
+  return localStorage.getItem('fuga-url') || 'https://sonetas.eu/fuga/vc?action=displayClient&id=';
 }
 
 function openFuga() {
