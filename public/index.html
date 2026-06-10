@@ -715,7 +715,11 @@ async function sla(msg){
   }catch(e){setSdot('err','Opslaan mislukt');toast('⚠️ Opslaan mislukt');}
 }
 
-function renderAll(){renderTaken();renderKanban();renderDashboard();renderHerinneringen();renderRoster();}
+function renderAll(){
+  renderTaken();renderKanban();renderDashboard();renderHerinneringen();renderRoster();
+  if(typeof renderFeed==='function') renderFeed();
+  if(typeof renderVergadering==='function') renderVergadering();
+}
 
 // ── NAVIGATIE ──────────────────────────────────────────────────
 function goPage(id,btn){
