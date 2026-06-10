@@ -41,6 +41,7 @@ function renderVergadering() {
     bezig: '▶️ Bezig',
     afgerond: '✅ Afgerond'
   }[status];
+  const toonHint = status === 'voorbereiding' && !(verg.agenda||[]).length && !(window.D.taken||[]).filter(t=>t.bespreek).length;
 
   el.innerHTML = `
     <div class="verg-header">
@@ -63,7 +64,8 @@ function renderVergadering() {
       </div>
     </div>
 
-    ${status === 'bezig' ? `<div class="banner bw2" style="margin-bottom:12px">▶️ <div>Vergadering is bezig. Vink punten af, noteer beslissingen en actiepunten.</div></div>` : ''}
+    ${toonHint ? `<div class="banner bi" style="margin-bottom:12px">💡 <div><strong>Zo werkt het:</strong> Stel een datum in via <em>Instellen</em>. Voeg persoonlijke of gedeelde punten toe doorheen de maand. Klik <em>Start vergadering</em> als iedereen aanwezig is. Actiepunten worden automatisch taken bij het afsluiten.</div></div>` : ''}
+    ${status === 'bezig' ? `<div class="banner bw2" style="margin-bottom:12px">▶️ <div>Vergadering is bezig. Vink punten af en noteer beslissingen. Sluit af om actiepunten automatisch als taken aan te maken.</div></div>` : ''}
     ${status === 'afgerond' ? `<div class="banner bg2" style="margin-bottom:12px">✅ <div>Vergadering afgerond. <a href="#" onclick="downloadVerslag()" style="color:inherit;font-weight:600">📄 Verslag downloaden</a></div></div>` : ''}
 
     <!-- AANWEZIGHEID -->
