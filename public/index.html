@@ -250,6 +250,34 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
 .login-err{color:var(--red);font-size:13px;margin-bottom:8px;display:none}
 .login-err.show{display:block}
 
+/* ── HOME PAGINA ── */
+.home-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+@media(max-width:700px){.home-grid{grid-template-columns:1fr}}
+.home-card{background:white;border:1px solid var(--gray-200);border-radius:12px;padding:16px 18px}
+.home-card h3{font-size:13px;font-weight:600;color:var(--gray-600);margin-bottom:12px;display:flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:.5px}
+.home-aanwezig{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+.aanwezig-pill{display:flex;align-items:center;gap:7px;background:var(--green-light);border:1px solid #A8D8C0;border-radius:20px;padding:6px 12px;font-size:13px;font-weight:500;color:#145A3A}
+.aanwezig-pill.morgen{background:var(--blue-light);border-color:#C7D7F5;color:#1E40AF}
+.aanwezig-pill.afwezig{background:var(--gray-100);border-color:var(--gray-300);color:var(--gray-500)}
+.aanwezig-av{width:24px;height:24px;border-radius:50%;background:#1D9E75;color:white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600}
+.aanwezig-pill.morgen .aanwezig-av{background:var(--blue)}
+.aanwezig-pill.afwezig .aanwezig-av{background:var(--gray-400)}
+.home-taak{display:flex;align-items:flex-start;gap:9px;padding:9px 0;border-bottom:1px solid var(--gray-100)}
+.home-taak:last-child{border-bottom:none}
+.home-taak-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.home-taak-naam{font-size:13px;font-weight:500;color:var(--gray-800);flex:1}
+.home-taak-meta{font-size:11px;color:var(--gray-500);margin-top:2px}
+.home-welcome{background:var(--navy);color:white;border-radius:12px;padding:18px 22px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.home-welcome h2{font-family:'DM Serif Display',serif;font-size:20px;margin-bottom:3px}
+.home-welcome p{font-size:13px;opacity:.8}
+.home-stat{text-align:center;flex:1;min-width:80px}
+.home-stat-num{font-size:28px;font-weight:600}
+.home-stat-lbl{font-size:11px;opacity:.7;margin-top:2px}
+.home-stats-row{display:flex;gap:0;background:rgba(255,255,255,.1);border-radius:8px;padding:10px;flex-wrap:wrap}
+.home-empty{text-align:center;padding:20px;color:var(--gray-400);font-size:13px}
+.home-urgent-card{background:var(--red-light);border:1px solid #F5C6C2;border-radius:12px;padding:14px 16px;margin-bottom:14px}
+.home-urgent-card h3{color:var(--red);font-size:13px;font-weight:600;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
+
 /* ── VERWIJDERDE TAKEN ── */
 .tcard.verwijderd{border-left:3px solid var(--gray-300);opacity:.55;background:repeating-linear-gradient(45deg,#fff,#fff 8px,#f8f9fa 8px,#f8f9fa 16px)}
 .tcard.verwijderd .tname{text-decoration:line-through;color:var(--gray-500)}
@@ -262,6 +290,34 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
 .casus-top{display:flex;gap:10px;align-items:flex-start}
 .casus-reacties{margin-top:10px;padding-top:10px;border-top:1px solid var(--gray-100)}
 
+
+/* ── HOME PAGINA ── */
+.home-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+@media(max-width:700px){.home-grid{grid-template-columns:1fr}}
+.home-card{background:white;border:1px solid var(--gray-200);border-radius:12px;padding:16px 18px}
+.home-card h3{font-size:13px;font-weight:600;color:var(--gray-600);margin-bottom:12px;display:flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:.5px}
+.home-aanwezig{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+.aanwezig-pill{display:flex;align-items:center;gap:7px;background:var(--green-light);border:1px solid #A8D8C0;border-radius:20px;padding:6px 12px;font-size:13px;font-weight:500;color:#145A3A}
+.aanwezig-pill.morgen{background:var(--blue-light);border-color:#C7D7F5;color:#1E40AF}
+.aanwezig-pill.afwezig{background:var(--gray-100);border-color:var(--gray-300);color:var(--gray-500)}
+.aanwezig-av{width:24px;height:24px;border-radius:50%;background:#1D9E75;color:white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600}
+.aanwezig-pill.morgen .aanwezig-av{background:var(--blue)}
+.aanwezig-pill.afwezig .aanwezig-av{background:var(--gray-400)}
+.home-taak{display:flex;align-items:flex-start;gap:9px;padding:9px 0;border-bottom:1px solid var(--gray-100)}
+.home-taak:last-child{border-bottom:none}
+.home-taak-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.home-taak-naam{font-size:13px;font-weight:500;color:var(--gray-800);flex:1}
+.home-taak-meta{font-size:11px;color:var(--gray-500);margin-top:2px}
+.home-welcome{background:var(--navy);color:white;border-radius:12px;padding:18px 22px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.home-welcome h2{font-family:'DM Serif Display',serif;font-size:20px;margin-bottom:3px}
+.home-welcome p{font-size:13px;opacity:.8}
+.home-stat{text-align:center;flex:1;min-width:80px}
+.home-stat-num{font-size:28px;font-weight:600}
+.home-stat-lbl{font-size:11px;opacity:.7;margin-top:2px}
+.home-stats-row{display:flex;gap:0;background:rgba(255,255,255,.1);border-radius:8px;padding:10px;flex-wrap:wrap}
+.home-empty{text-align:center;padding:20px;color:var(--gray-400);font-size:13px}
+.home-urgent-card{background:var(--red-light);border:1px solid #F5C6C2;border-radius:12px;padding:14px 16px;margin-bottom:14px}
+.home-urgent-card h3{color:var(--red);font-size:13px;font-weight:600;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
 
 /* ── VERWIJDERDE TAKEN ── */
 .tcard.verwijderd{border-left:3px solid var(--gray-300);opacity:.55;background:repeating-linear-gradient(45deg,#fff,#fff 8px,#f8f9fa 8px,#f8f9fa 16px)}
@@ -376,7 +432,8 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
 </header>
 
 <div class="nav-tabs">
-  <button class="ntab active" onclick="goPage('taken',this)">📋 Lijst</button>
+  <button class="ntab active" onclick="goPage('home',this)">🏠 Home</button>
+  <button class="ntab" onclick="goPage('taken',this)">📋 Lijst</button>
   <button class="ntab" onclick="goPage('kanban',this)">📌 Kanban</button>
   <button class="ntab" onclick="goPage('dashboard',this)">📊 Overzicht</button>
   <button class="ntab" onclick="goPage('herinneringen',this)">🔔 Herinneringen</button>
@@ -401,8 +458,13 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
     <button class="btn btn-s" style="padding:4px 9px;font-size:12px" onclick="laad(true)" title="Ververs">🔄</button>
   </div>
 
+  <!-- ══ HOME ══ -->
+  <div class="page active" id="page-home">
+    <div id="home-content"></div>
+  </div>
+
   <!-- ══ LIJST ══ -->
-  <div class="page active" id="page-taken">
+  <div class="page" id="page-taken">
     <div class="dal" id="dal">⚠️ <div id="dal-text"></div></div>
     <div class="stats">
       <div class="stat"><div class="stat-num c-red" id="cu">–</div><div class="stat-label">Urgent</div></div>
@@ -1086,6 +1148,7 @@ async function sla(msg){
 
 function renderAll(){
   ruimVerwijderdeOp();
+  renderHome();
   renderTaken();renderKanban();renderDashboard();renderHerinneringen();renderRoster();
   if(typeof renderFeed==='function') renderFeed();
   if(typeof renderVergadering==='function') renderVergadering();
@@ -1099,6 +1162,7 @@ function goPage(id,btn){
   document.getElementById('page-'+id).classList.add('active');
   btn.classList.add('active');
   // Re-render modules on tab switch to ensure fresh data
+  if(id==='home') renderHome();
   if(id==='feed'&&typeof renderFeed==='function') renderFeed();
   if(id==='vergadering'&&typeof renderVergadering==='function') renderVergadering();
   if(id==='casus'&&typeof renderCasus==='function') renderCasus();
@@ -1584,6 +1648,209 @@ async function testBackupMail() {
 function renderBackupMailInstellingen(cfg) {
   if(cfg.backup_email) document.getElementById('backup-email').value = cfg.backup_email;
   if(cfg.backup_smtp_user) document.getElementById('backup-smtp-user').value = cfg.backup_smtp_user;
+}
+
+// ── HOME PAGINA ──────────────────────────────────────────────
+function renderHome() {
+  const el = document.getElementById('home-content');
+  if (!el) return;
+
+  const taken = D.taken || [];
+  const nu = new Date();
+  const vandaag = nu.toISOString().split('T')[0];
+  const morgen = new Date(nu.getTime() + 864e5).toISOString().split('T')[0];
+  const namen = D.namen || ['Karen','Alexandra','Sylvie','Jade'];
+
+  // Statistieken
+  const actief = taken.filter(t => !t.verwijderd && t.status !== 'done');
+  const urgent = taken.filter(t => !t.verwijderd && t.status === 'urgent');
+  const vandaagDeadline = taken.filter(t => !t.verwijderd && t.deadline === vandaag && t.status !== 'done');
+  const klaarVandaag = taken.filter(t => {
+    if(t.status !== 'done') return false;
+    const d = parseD(t.gop || t.op);
+    if(!d) return false;
+    return d.toISOString().split('T')[0] === vandaag;
+  });
+
+  // Aanwezigheid vandaag & morgen
+  function getAanwezig(dag) {
+    return namen.filter(n => {
+      const shifts = (D.rooster || []).filter(s => s.persoon === n && s.van <= dag && s.tot >= dag);
+      if (!shifts.length) return false;
+      return !shifts.some(s => s.type === 'off');
+    });
+  }
+  function getAfwezig(dag) {
+    return namen.filter(n => {
+      const shifts = (D.rooster || []).filter(s => s.persoon === n && s.van <= dag && s.tot >= dag);
+      return shifts.some(s => s.type === 'off');
+    });
+  }
+
+  const aanVandaag = getAanwezig(vandaag);
+  const afwVandaag = getAfwezig(vandaag);
+  const aanMorgen = getAanwezig(morgen);
+
+  // Urgente taken (max 5)
+  const urgenteTaken = urgent.slice(0, 5);
+
+  // Alle open taken gesorteerd op prioriteit dan deadline
+  const prioOrd = {high:0, med:1, low:2, '':3};
+  const openTaken = actief
+    .filter(t => !t.verwijderd)
+    .sort((a,b) => {
+      const pa = prioOrd[a.prio||''] || 3;
+      const pb = prioOrd[b.prio||''] || 3;
+      if(pa !== pb) return pa - pb;
+      if(a.deadline && b.deadline) return a.deadline > b.deadline ? 1 : -1;
+      if(a.deadline) return -1;
+      if(b.deadline) return 1;
+      return 0;
+    })
+    .slice(0, 8);
+
+  const uur = nu.getHours();
+  const groet = uur < 12 ? 'Goedemorgen' : uur < 18 ? 'Goedemiddag' : 'Goedenavond';
+  const dagNamen = ['zondag','maandag','dinsdag','woensdag','donderdag','vrijdag','zaterdag'];
+
+  el.innerHTML = `
+    <!-- WELKOM BANNER -->
+    <div class="home-welcome">
+      <div>
+        <h2>${groet}${user ? ', ' + user : ''}! 👋</h2>
+        <p>${dagNamen[nu.getDay()].charAt(0).toUpperCase() + dagNamen[nu.getDay()].slice(1)} ${nu.getDate()}/${nu.getMonth()+1}/${nu.getFullYear()}</p>
+      </div>
+      <div class="home-stats-row">
+        <div class="home-stat">
+          <div class="home-stat-num" style="color:#ff8080">${urgent.length}</div>
+          <div class="home-stat-lbl">Urgent</div>
+        </div>
+        <div class="home-stat" style="border-left:1px solid rgba(255,255,255,.2)">
+          <div class="home-stat-num">${actief.length}</div>
+          <div class="home-stat-lbl">Open</div>
+        </div>
+        <div class="home-stat" style="border-left:1px solid rgba(255,255,255,.2)">
+          <div class="home-stat-num" style="color:#4ade80">${klaarVandaag.length}</div>
+          <div class="home-stat-lbl">Klaar vandaag</div>
+        </div>
+        <div class="home-stat" style="border-left:1px solid rgba(255,255,255,.2)">
+          <div class="home-stat-num" style="color:#fbbf24">${vandaagDeadline.length}</div>
+          <div class="home-stat-lbl">Deadline</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- URGENTE TAKEN -->
+    ${urgenteTaken.length ? `
+    <div class="home-urgent-card">
+      <h3>🔴 Urgente taken (${urgent.length})</h3>
+      ${urgenteTaken.map(t => `
+        <div class="home-taak">
+          <div class="home-taak-dot" style="background:var(--red)"></div>
+          <div style="flex:1">
+            <div class="home-taak-naam">${t.naam}</div>
+            <div class="home-taak-meta">👤 ${t.verant||'?'}${t.deadline?' · 📅 '+fmtD(t.deadline):''}</div>
+          </div>
+          <button class="ibtn" onclick="goNaarTaak('${t.id}')" title="Bekijken">👁️</button>
+        </div>`).join('')}
+      ${urgent.length > 5 ? `<div style="font-size:12px;color:var(--red);margin-top:6px;text-align:center">+ ${urgent.length-5} meer → <a href="#" onclick="switchTab('taken')" style="color:var(--red)">bekijk alle taken</a></div>` : ''}
+    </div>` : ''}
+
+    <div class="home-grid">
+      <!-- AANWEZIGHEID VANDAAG -->
+      <div class="home-card">
+        <h3>👥 Aanwezig vandaag</h3>
+        ${aanVandaag.length === 0 && afwVandaag.length === 0 ? `
+          <div class="home-empty">Geen rooster ingevuld voor vandaag.<br><a href="#" onclick="switchTab('rooster')" style="color:var(--navy)">Rooster invullen →</a></div>
+        ` : `
+          <div class="home-aanwezig">
+            ${aanVandaag.map(n => `
+              <div class="aanwezig-pill">
+                <div class="aanwezig-av">${n[0]}</div>
+                ${n}
+              </div>`).join('')}
+            ${afwVandaag.map(n => `
+              <div class="aanwezig-pill afwezig">
+                <div class="aanwezig-av">${n[0]}</div>
+                ${n} <span style="font-size:10px">(afwezig)</span>
+              </div>`).join('')}
+          </div>
+        `}
+        <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--gray-100)">
+          <div style="font-size:12px;font-weight:600;color:var(--gray-500);margin-bottom:6px">MORGEN</div>
+          <div class="home-aanwezig">
+            ${aanMorgen.length ? aanMorgen.map(n => `
+              <div class="aanwezig-pill morgen">
+                <div class="aanwezig-av">${n[0]}</div>
+                ${n}
+              </div>`).join('') : `<span style="font-size:12px;color:var(--gray-400)">Geen rooster voor morgen</span>`}
+          </div>
+        </div>
+      </div>
+
+      <!-- OPEN TAKEN OVERZICHT -->
+      <div class="home-card">
+        <h3>📋 Open taken (${actief.length})</h3>
+        ${openTaken.length === 0 ? `<div class="home-empty">🎉 Geen open taken!</div>` :
+          openTaken.map(t => {
+            const kleur = t.status==='urgent'?'var(--red)':t.prio==='high'?'var(--red)':t.deadline&&isDS(t.deadline)?'var(--amber)':'var(--navy)';
+            return `<div class="home-taak">
+              <div class="home-taak-dot" style="background:${kleur}"></div>
+              <div style="flex:1">
+                <div class="home-taak-naam">${t.naam}</div>
+                <div class="home-taak-meta">👤 ${t.verant||'?'}${t.deadline?' · 📅 '+fmtD(t.deadline):''}${t.cat&&catL[t.cat]?' · '+catL[t.cat]:''}</div>
+              </div>
+              <button class="ibtn" onclick="goNaarTaak('${t.id}')" title="Bekijken">👁️</button>
+            </div>`;
+          }).join('')
+        }
+        ${actief.length > 8 ? `<div style="text-align:center;margin-top:8px"><a href="#" onclick="switchTab('taken')" style="font-size:12px;color:var(--navy);font-weight:500">Alle ${actief.length} taken bekijken →</a></div>` : ''}
+      </div>
+    </div>
+
+    <!-- TAKEN PER PERSOON -->
+    <div class="home-card">
+      <h3>👤 Taakverdeling</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px">
+        ${namen.filter(n=>n!=='Andere').map(n => {
+          const mijn = actief.filter(t => t.verant===n);
+          const mijnUrgent = mijn.filter(t => t.status==='urgent').length;
+          const mijnDeadline = mijn.filter(t => t.deadline && isDS(t.deadline)).length;
+          return `<div style="background:var(--gray-50);border-radius:8px;padding:10px 12px;cursor:pointer" onclick="switchTab('taken');setF('mine',document.querySelector('.fbtn:nth-child(5)'))">
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:7px">
+              <div style="width:28px;height:28px;border-radius:50%;background:var(--navy);color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600">${n[0]}</div>
+              <span style="font-size:13px;font-weight:600">${n}</span>
+            </div>
+            <div style="display:flex;gap:8px;font-size:12px">
+              <span style="color:var(--gray-600)">${mijn.length} open</span>
+              ${mijnUrgent?`<span style="color:var(--red)">🔴 ${mijnUrgent}</span>`:''}
+              ${mijnDeadline?`<span style="color:var(--amber)">⏰ ${mijnDeadline}</span>`:''}
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function goNaarTaak(id) {
+  // Ga naar lijst en scroll naar taak
+  const tab = document.querySelector('.ntab:nth-child(2)');
+  if(tab) { goPage('taken', tab); }
+  setTimeout(() => {
+    const el = document.getElementById('tc-' + id);
+    if (el) el.scrollIntoView({behavior:'smooth', block:'center'});
+    else { filter='alle'; renderTaken(); setTimeout(() => { const el2=document.getElementById('tc-'+id); if(el2) el2.scrollIntoView({behavior:'smooth',block:'center'}); }, 200); }
+  }, 200);
+}
+
+function switchTab(id) {
+  const tabs = {'home':0,'taken':1,'kanban':2,'dashboard':3,'herinneringen':4,'rooster':5,'instellingen':6,'feed':7,'vergadering':8,'casus':9};
+  const idx = tabs[id];
+  if(idx !== undefined) {
+    const btn = document.querySelectorAll('.ntab')[idx];
+    if(btn) goPage(id, btn);
+  }
 }
 
 // ── FUGA INTEGRATIE ──────────────────────────────────────────
