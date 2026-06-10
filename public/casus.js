@@ -1,160 +1,156 @@
-// ── PERSOONLIJK DAGBOEKJE ─────────────────────────────────────
-// Volledig lokaal — opgeslagen in localStorage, nooit naar server
+// ── CASUSBESPREKING ───────────────────────────────────────────
 
-function getDagboekKey() {
-  return 'dagboek-' + (window.user || 'anon');
-}
-
-function getDagboekItems() {
-  try { return JSON.parse(localStorage.getItem(getDagboekKey()) || '[]'); }
-  catch(e) { return []; }
-}
-
-function saveDagboekItems(items) {
-  localStorage.setItem(getDagboekKey(), JSON.stringify(items));
-}
-
-function renderDagboek() {
-  const el = document.getElementById('dagboek-content');
+function renderCasus() {
+  const el = document.getElementById('casus-content');
   if (!el) return;
+  const casussen = window.D.casussen || [];
+  const filter = window.casusFilter || 'alle';
 
-  if (!window.user) {
-    el.innerHTML = `<div class="dagboek-lock">
-      <div style="font-size:40px;margin-bottom:10px">🔒</div>
-      <h3>Persoonlijk dagboekje</h3>
-      <p>Kies je naam bovenaan om je dagboekje te openen.<br>Niemand anders kan jouw notities zien.</p>
-    </div>`;
-    return;
-  }
-
-  const items = getDagboekItems();
-  const filter = window.dagboekFilter || 'alle';
-  let lijst = items;
-  if (filter === 'notitie') lijst = items.filter(i=>i.type==='notitie');
-  else if (filter === 'reflectie') lijst = items.filter(i=>i.type==='reflectie');
-  else if (filter === 'idee') lijst = items.filter(i=>i.type==='idee');
-  else if (filter === 'todo') lijst = items.filter(i=>i.type==='todo');
-
-  const typeKleur = {notitie:'#EEF4FF',reflectie:'#F5F3FF',idee:'#FDF3E7',todo:'#EAF3DE'};
-  const typeTxt = {notitie:'📝 Notitie',reflectie:'💭 Reflectie',idee:'💡 Idee',todo:'☑️ To-do'};
-  const typeIcoon = {notitie:'📝',reflectie:'💭',idee:'💡',todo:'☑️'};
+  let lijst = casussen;
+  if (filter === 'open') lijst = casussen.filter(c => !c.opgelost);
+  else if (filter === 'opgelost') lijst = casussen.filter(c => c.opgelost);
+  else if (filter === 'mijne') lijst = casussen.filter(c => c.door === window.user);
+  else if (filter === 'vergadering') lijst = casussen.filter(c => c.bespreek);
 
   el.innerHTML = `
-    <div style="background:var(--purple-light);border:1px solid #C4B5FD;border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:10px">
-      <div style="font-size:20px">🔒</div>
-      <div>
-        <div style="font-size:13px;font-weight:600;color:var(--purple)">Alleen voor ${window.user}</div>
-        <div style="font-size:12px;color:var(--purple);opacity:.8">Deze notities staan alleen op dit toestel. Niemand anders kan ze zien.</div>
+    <div class="toolbar" style="margin-bottom:14px">
+      <div class="filters">
+        <button class="fbtn ${filter==='alle'?'active':''}" onclick="setCasusFilter('alle',this)">Alle</button>
+        <button class="fbtn ${filter==='open'?'active':''}" onclick="setCasusFilter('open',this)">🔍 Open</button>
+        <button class="fbtn ${filter==='opgelost'?'active':''}" onclick="setCasusFilter('opgelost',this)">✅ Opgelost</button>
+        <button class="fbtn ${filter==='mijne'?'active':''}" onclick="setCasusFilter('mijne',this)">👤 Van mij</button>
+        <button class="fbtn ${filter==='vergadering'?'active':''}" onclick="setCasusFilter('vergadering',this)">📌 Vergadering</button>
       </div>
+      <button class="btn btn-p" onclick="openCasusModal()">＋ Casus toevoegen</button>
     </div>
 
-    <!-- SCHRIJFVENSTER -->
-    <div class="dagboek-compose">
-      <div style="display:flex;gap:7px;margin-bottom:9px;flex-wrap:wrap">
-        ${Object.keys(typeTxt).map(t => `
-          <button class="dagboek-type-btn ${(window.dagboekNieuwType||'notitie')===t?'active':''}"
-            onclick="setDagboekType('${t}')" style="background:${typeKleur[t]}">
-            ${typeTxt[t]}
-          </button>`).join('')}
-      </div>
-      <textarea id="dagboek-input" placeholder="${
-        (window.dagboekNieuwType||'notitie')==='reflectie' ? 'Hoe was het vandaag? Wat wil je onthouden?' :
-        (window.dagboekNieuwType||'notitie')==='idee' ? 'Een idee voor de praktijk of het team...' :
-        (window.dagboekNieuwType||'notitie')==='todo' ? 'Iets wat je niet wil vergeten...' :
-        'Schrijf hier je notitie...'
-      }" style="width:100%;min-height:80px;padding:9px 11px;border:1px solid var(--gray-300);border-radius:7px;font-family:inherit;font-size:13px;resize:vertical;margin-bottom:8px"></textarea>
-      <div style="display:flex;justify-content:flex-end">
-        <button class="btn btn-p" onclick="saveDagboek()">💾 Opslaan</button>
-      </div>
-    </div>
-
-    <!-- FILTERS -->
-    <div class="filters" style="margin-bottom:12px">
-      <button class="fbtn ${filter==='alle'?'active':''}" onclick="setDagboekFilter('alle')">Alle</button>
-      ${Object.keys(typeTxt).map(t => `
-        <button class="fbtn ${filter===t?'active':''}" onclick="setDagboekFilter('${t}')">${typeTxt[t]}</button>`).join('')}
-    </div>
-
-    <!-- ITEMS -->
     ${lijst.length === 0 ? `
       <div class="empty">
-        <div class="empty-icon">${typeIcoon[filter]||'📓'}</div>
-        <h3>Nog niets geschreven</h3>
-        <p>Dit is jouw privé ruimte. Noteer wat je wil — niemand kan het zien.</p>
+        <div class="empty-icon">🐾</div>
+        <h3>Geen casussen</h3>
+        <p>Voeg een interessante of lastige casus toe om te bespreken met het team.</p>
       </div>` :
-      lijst.map(item => `
-        <div class="dagboek-item" style="border-left:3px solid ${typeKleur[item.type]?typeKleur[item.type].replace('F','D'):'#CBD5E0'}">
-          <div style="display:flex;align-items:flex-start;gap:8px">
+      lijst.map(c => {
+        const reacties = c.reacties || [];
+        const soortKleur = {vraag:'#EEF4FF',leermoment:'#EAF3DE',urgent:'#FDF0EF',interessant:'#FDF3E7'}[c.soort] || '#F8F9FA';
+        const soortTxt = {vraag:'❓ Vraag',leermoment:'💡 Leermoment',urgent:'🔴 Urgent',interessant:'🐾 Interessant'}[c.soort] || c.soort;
+        return `
+        <div class="casus-card ${c.opgelost?'opgelost':''}" id="cas-${c.id}">
+          <div class="casus-top">
             <div style="flex:1">
-              <div style="font-size:11px;font-weight:600;color:var(--gray-500);margin-bottom:4px">
-                ${typeTxt[item.type]||item.type} · ${item.datum||'?'}${item.tijd?' om '+item.tijd:''}
+              <div style="display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap;margin-bottom:5px">
+                <span style="font-size:14px;font-weight:600;color:var(--gray-800)">${c.titel}</span>
+                <span style="font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:${soortKleur}">${soortTxt}</span>
+                ${c.opgelost ? '<span style="font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--green-light);color:var(--green)">✅ Opgelost</span>' : ''}
+                ${c.bespreek ? '<span style="font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:#EEF4FF;color:#1E40AF">📌 Vergadering</span>' : ''}
               </div>
-              <div style="font-size:13px;color:var(--gray-800);line-height:1.6;white-space:pre-wrap">${item.tekst}</div>
+              <div style="font-size:13px;color:var(--gray-600);line-height:1.6;margin-bottom:7px">${c.beschrijving}</div>
+              ${c.diersoort ? `<div style="font-size:12px;color:var(--gray-500)">🐾 ${c.diersoort}${c.leeftijd?' · '+c.leeftijd:''}${c.ras?' · '+c.ras:''}</div>` : ''}
+              <div style="font-size:11px;color:var(--gray-400);margin-top:4px">Door ${c.door||'?'} · ${c.op||'?'} · ${reacties.length} reactie${reacties.length!==1?'s':''}</div>
             </div>
-            <button class="ibtn" onclick="delDagboek('${item.id}')" title="Verwijderen">🗑️</button>
+            <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end;flex-shrink:0">
+              <button class="ibtn" onclick="toggleCasusVergadering('${c.id}')" title="${c.bespreek?'Verwijder uit vergadering':'Markeer voor vergadering'}">📌</button>
+              <button class="ibtn" onclick="toggleOpgelost('${c.id}')" title="${c.opgelost?'Heropenen':'Markeer als opgelost'}">${c.opgelost?'↩️':'✅'}</button>
+              ${c.door===window.user?`<button class="ibtn" onclick="delCasus('${c.id}')">🗑️</button>`:''}
+            </div>
           </div>
-        </div>`).join('')
-    }
 
-    ${items.length > 0 ? `
-    <div style="text-align:center;margin-top:16px">
-      <button class="btn btn-s" style="font-size:12px" onclick="exportDagboek()">📥 Exporteren als tekst</button>
-    </div>` : ''}
+          <!-- REACTIES -->
+          <div class="casus-reacties" id="cr-${c.id}">
+            ${reacties.map(r => `
+              <div class="comment">
+                <div class="cav">${(r.door||'?')[0]}</div>
+                <div class="cbody">
+                  <div class="cname">${r.door} <span class="ctime">· ${r.op}</span></div>
+                  <div class="ctext">${r.tekst}</div>
+                </div>
+              </div>`).join('')}
+            <div class="cadd">
+              <input type="text" id="ri-${c.id}" placeholder="Reactie of antwoord..." onkeydown="if(event.key==='Enter')addCasusReactie('${c.id}')">
+              <button onclick="addCasusReactie('${c.id}')">Stuur</button>
+            </div>
+          </div>
+        </div>`;
+      }).join('')
+    }
   `;
 }
 
-function setDagboekType(t) {
-  window.dagboekNieuwType = t;
-  renderDagboek();
+function setCasusFilter(f, btn) {
+  window.casusFilter = f;
+  renderCasus();
 }
 
-function setDagboekFilter(f) {
-  window.dagboekFilter = f;
-  renderDagboek();
+function openCasusModal(id) {
+  window.editCasusId = id || null;
+  const c = id ? (window.D.casussen||[]).find(x=>x.id===id) : null;
+  document.getElementById('cm-titel').value = c ? c.titel : '';
+  document.getElementById('cm-soort').value = c ? c.soort : 'vraag';
+  document.getElementById('cm-beschrijving').value = c ? c.beschrijving : '';
+  document.getElementById('cm-diersoort').value = c ? c.diersoort||'' : '';
+  document.getElementById('cm-leeftijd').value = c ? c.leeftijd||'' : '';
+  document.getElementById('cm-ras').value = c ? c.ras||'' : '';
+  document.getElementById('casus-modal').style.display = 'flex';
+  setTimeout(() => document.getElementById('cm-titel').focus(), 50);
 }
 
-function saveDagboek() {
-  const tekst = document.getElementById('dagboek-input').value.trim();
-  if (!tekst) { window.toast('⚠️ Schrijf eerst iets'); return; }
-  const items = getDagboekItems();
-  const nu = new Date();
-  items.unshift({
-    id: window.uid(),
-    type: window.dagboekNieuwType || 'notitie',
-    tekst,
-    datum: window.vandaag(),
-    tijd: nu.toLocaleTimeString('nl-BE', {hour:'2-digit',minute:'2-digit'})
-  });
-  saveDagboekItems(items);
-  window.toast('💾 Opgeslagen');
-  renderDagboek();
+async function saveCasus() {
+  const titel = document.getElementById('cm-titel').value.trim();
+  if (!titel) { window.toast('⚠️ Vul een titel in'); return; }
+  if (!window.D.casussen) window.D.casussen = [];
+  const oud = window.editCasusId ? window.D.casussen.find(c=>c.id===window.editCasusId) : null;
+  const casus = {
+    id: window.editCasusId || window.uid(),
+    titel,
+    soort: document.getElementById('cm-soort').value,
+    beschrijving: document.getElementById('cm-beschrijving').value.trim(),
+    diersoort: document.getElementById('cm-diersoort').value.trim(),
+    leeftijd: document.getElementById('cm-leeftijd').value.trim(),
+    ras: document.getElementById('cm-ras').value.trim(),
+    door: oud ? oud.door : (window.user||'onbekend'),
+    op: oud ? oud.op : window.vandaag(),
+    opgelost: oud ? oud.opgelost : false,
+    bespreek: oud ? oud.bespreek : false,
+    reacties: oud ? oud.reacties||[] : []
+  };
+  if (window.editCasusId) window.D.casussen = window.D.casussen.map(c=>c.id===window.editCasusId?casus:c);
+  else window.D.casussen.unshift(casus);
+  document.getElementById('casus-modal').style.display = 'none';
+  await window.sla('🐾 Casus opgeslagen');
 }
 
-function delDagboek(id) {
-  if (!confirm('Notitie verwijderen?')) return;
-  const items = getDagboekItems().filter(i => i.id !== id);
-  saveDagboekItems(items);
-  renderDagboek();
+async function delCasus(id) {
+  if (!confirm('Casus verwijderen?')) return;
+  window.D.casussen = (window.D.casussen||[]).filter(c=>c.id!==id);
+  await window.sla();
 }
 
-function exportDagboek() {
-  const items = getDagboekItems();
-  const typeTxt = {notitie:'Notitie',reflectie:'Reflectie',idee:'Idee',todo:'To-do'};
-  let tekst = `DAGBOEKJE VAN ${(window.user||'').toUpperCase()}\n${'═'.repeat(40)}\n\n`;
-  items.forEach(i => {
-    tekst += `[${typeTxt[i.type]||i.type}] ${i.datum||''}${i.tijd?' om '+i.tijd:''}\n`;
-    tekst += `${i.tekst}\n\n`;
-  });
-  const blob = new Blob([tekst], {type:'text/plain;charset=utf-8'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href=url; a.download=`dagboek-${window.user||'mijn'}.txt`;
-  a.click(); URL.revokeObjectURL(url);
+async function toggleOpgelost(id) {
+  const c = (window.D.casussen||[]).find(x=>x.id===id);
+  if (c) { c.opgelost = !c.opgelost; await window.sla(c.opgelost?'✅ Casus opgelost':'↩️ Heropend'); }
 }
 
-window.renderDagboek = renderDagboek;
-window.setDagboekType = setDagboekType;
-window.setDagboekFilter = setDagboekFilter;
-window.saveDagboek = saveDagboek;
-window.delDagboek = delDagboek;
-window.exportDagboek = exportDagboek;
+async function toggleCasusVergadering(id) {
+  const c = (window.D.casussen||[]).find(x=>x.id===id);
+  if (c) { c.bespreek = !c.bespreek; await window.sla(c.bespreek?'📌 Gemarkeerd voor vergadering':'📌 Markering verwijderd'); }
+}
+
+async function addCasusReactie(id) {
+  if (!window.user) { window.toast('⚠️ Kies eerst je naam'); return; }
+  const inp = document.getElementById('ri-'+id);
+  const tekst = inp.value.trim(); if (!tekst) return;
+  const c = (window.D.casussen||[]).find(x=>x.id===id); if (!c) return;
+  if (!c.reacties) c.reacties = [];
+  c.reacties.push({ id:window.uid(), door:window.user, tekst, op:window.vandaag() });
+  inp.value = '';
+  await window.sla('💬 Reactie toegevoegd');
+}
+
+window.renderCasus = renderCasus;
+window.setCasusFilter = setCasusFilter;
+window.openCasusModal = openCasusModal;
+window.saveCasus = saveCasus;
+window.delCasus = delCasus;
+window.toggleOpgelost = toggleOpgelost;
+window.toggleCasusVergadering = toggleCasusVergadering;
+window.addCasusReactie = addCasusReactie;
