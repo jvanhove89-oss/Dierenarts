@@ -13,7 +13,7 @@ const CONFIG_FILE = path.join(__dirname, 'config.json');
 // ── INITIALISATIE ─────────────────────────────────────────────
 function readData() {
   if (!fs.existsSync(DATA_FILE)) {
-    const init = { taken:[], herinneringen:[], rooster:[], bijgewerktDoor:'', laatstBijgewerkt:'' };
+    const init = { taken:[], herinneringen:[], rooster:[], feed:[], vergadering:{status:'voorbereiding',agenda:[],aanwezig:[],notities:''}, vergaderingArchief:[], bijgewerktDoor:'', laatstBijgewerkt:'' };
     fs.writeFileSync(DATA_FILE, JSON.stringify(init, null, 2));
     return init;
   }
