@@ -227,6 +227,23 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
 .agenda-item.afgevinkt{background:var(--green-light);border-color:#A8D8C0}
 .bespreek-tag{display:inline-block;font-size:10px;font-weight:700;background:#EEF4FF;color:#1E40AF;border-radius:20px;padding:1px 7px;margin-left:4px;vertical-align:middle;cursor:pointer}
 
+
+/* ── CASUS ── */
+.casus-card{background:white;border:1px solid var(--gray-200);border-radius:10px;padding:14px 16px;margin-bottom:10px;transition:box-shadow .15s}
+.casus-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.casus-card.opgelost{opacity:.6}
+.casus-top{display:flex;gap:10px;align-items:flex-start}
+.casus-reacties{margin-top:10px;padding-top:10px;border-top:1px solid var(--gray-100)}
+
+/* ── DAGBOEK ── */
+.dagboek-lock{text-align:center;padding:60px 20px;color:var(--gray-500)}
+.dagboek-lock h3{font-size:16px;font-weight:600;margin-bottom:8px;color:var(--gray-600)}
+.dagboek-lock p{font-size:13px;line-height:1.6}
+.dagboek-compose{background:white;border:1px solid var(--gray-200);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+.dagboek-type-btn{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid var(--gray-300);cursor:pointer;font-family:inherit;transition:all .15s}
+.dagboek-type-btn.active{border-color:var(--purple);color:var(--purple);font-weight:700}
+.dagboek-item{background:white;border:1px solid var(--gray-200);border-radius:10px;padding:12px 15px;margin-bottom:9px}
+
 /* TOAST */
 .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--gray-800);color:white;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:500;z-index:200;opacity:0;transition:opacity .3s;white-space:nowrap;pointer-events:none}
 .toast.show{opacity:1}
@@ -267,6 +284,8 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
   <button class="ntab" onclick="goPage('instellingen',this)">⚙️ Instellingen</button>
   <button class="ntab" onclick="goPage('feed',this)">💬 Teamfeed</button>
   <button class="ntab" onclick="goPage('vergadering',this)">🗓️ Vergadering</button>
+  <button class="ntab" onclick="goPage('casus',this)">🐾 Casussen</button>
+  <button class="ntab" onclick="goPage('dagboek',this)">📓 Dagboekje</button>
 </div>
 
 <div class="main">
@@ -461,6 +480,17 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
     <div id="verg-content"></div>
   </div>
 
+
+  <!-- ══ CASUSBESPREKING ══ -->
+  <div class="page" id="page-casus">
+    <div id="casus-content"></div>
+  </div>
+
+  <!-- ══ DAGBOEKJE ══ -->
+  <div class="page" id="page-dagboek">
+    <div id="dagboek-content"></div>
+  </div>
+
 </div><!-- /main -->
 
 <!-- ══ TAAK MODAL ══ -->
@@ -617,6 +647,36 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
   </div>
 </div>
 
+
+<!-- ══ CASUS MODAL ══ -->
+<div class="overlay" id="casus-modal" style="display:none" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal">
+    <h3>🐾 Casus toevoegen</h3>
+    <div class="fg"><label>Titel *</label><input type="text" id="cm-titel" placeholder="bv. Ongewone reactie na vaccinatie"></div>
+    <div class="fg"><label>Soort</label>
+      <select id="cm-soort">
+        <option value="vraag">❓ Vraag — ik weet het niet zeker</option>
+        <option value="leermoment">💡 Leermoment — interessant om te delen</option>
+        <option value="urgent">🔴 Urgent — snel bespreken</option>
+        <option value="interessant">🐾 Interessant geval</option>
+      </select>
+    </div>
+    <div class="fg"><label>Beschrijving</label>
+      <textarea id="cm-beschrijving" placeholder="Beschrijf de casus, symptomen, bevindingen..." style="min-height:100px"></textarea>
+    </div>
+    <div class="mdiv">Patiëntinfo (optioneel)</div>
+    <div class="row3">
+      <div class="fg"><label>Diersoort</label><input type="text" id="cm-diersoort" placeholder="bv. Hond"></div>
+      <div class="fg"><label>Leeftijd</label><input type="text" id="cm-leeftijd" placeholder="bv. 3 jaar"></div>
+      <div class="fg"><label>Ras</label><input type="text" id="cm-ras" placeholder="bv. Labrador"></div>
+    </div>
+    <div class="mact">
+      <button class="btn btn-s" onclick="document.getElementById('casus-modal').style.display='none'">Annuleren</button>
+      <button class="btn btn-p" onclick="saveCasus()">Opslaan</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -719,6 +779,8 @@ function renderAll(){
   renderTaken();renderKanban();renderDashboard();renderHerinneringen();renderRoster();
   if(typeof renderFeed==='function') renderFeed();
   if(typeof renderVergadering==='function') renderVergadering();
+  if(typeof renderCasus==='function') renderCasus();
+  if(typeof renderDagboek==='function') renderDagboek();
 }
 
 // ── NAVIGATIE ──────────────────────────────────────────────────
@@ -1047,7 +1109,7 @@ async function archiveerKlaar(){
 
 // ── FILTER & USER ──────────────────────────────────────────────
 function setF(f,btn){filter=f;document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderTaken();}
-function setUser(n){user=n;window.user=n;localStorage.setItem('pk-user',n);document.getElementById('huser').textContent=n||'Kies je naam';renderAll();}
+function setUser(n){user=n;window.user=n;localStorage.setItem('pk-user',n);document.getElementById('huser').textContent=n||'Kies je naam';renderAll();if(typeof renderDagboek==='function')renderDagboek();}
 
 // ── HELPERS ────────────────────────────────────────────────────
 function cm(id){document.getElementById(id).style.display='none';}
@@ -1092,5 +1154,7 @@ function setUser(n){_origSetUser(n);window.user=n;}
 </script>
 <script src="teamfeed.js"></script>
 <script src="vergadering.js"></script>
+<script src="casus.js"></script>
+<script src="dagboek.js"></script>
 </body>
 </html>
