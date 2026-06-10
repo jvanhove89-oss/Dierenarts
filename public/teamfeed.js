@@ -56,6 +56,7 @@ async function saveFeed() {
   window.D.feed = window.D.feed.filter(m => Date.now() - m.ts < maxAge);
   document.getElementById('feed-modal').style.display = 'none';
   await window.sla('💬 Bericht geplaatst');
+  renderFeed();
 }
 
 async function delFeed(id) {
