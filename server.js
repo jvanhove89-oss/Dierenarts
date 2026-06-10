@@ -4,6 +4,15 @@ const path = require('path');
 const https = require('https');
 const app = express();
 
+// ── EMAIL BACKUP (nodemailer) ─────────────────────────────────
+let mailer = null;
+try {
+  const nodemailer = require('nodemailer');
+  mailer = nodemailer;
+} catch(e) {
+  console.log('nodemailer niet beschikbaar — backup mail uitgeschakeld');
+}
+
 app.use(express.json());
 app.use(express.static('public'));
 
@@ -165,7 +174,76 @@ function persoonlijkCheck() {
 }
 
 // Elke minuut checken
-setInterval(() => { groepCheck(); persoonlijkCheck(); }, 60000);
+setInterval(() => {
+  groepCheck();
+  persoonlijkCheck();
+  backupMailCheck();
+}, 60000);
+
+// ── WEKELIJKSE BACKUP MAIL ────────────────────────────────────
+let laasteBackupMail = '';
+
+function backupMailCheck() {
+  const config = readConfig();
+  if (!config.backup_email || !config.backup_smtp_user || !config.backup_smtp_pass) return;
+  if (!mailer) return;
+
+  const nu = new Date();
+  // Elke maandag om 07:00
+  const isDayOk = nu.getDay() === 1; // maandag
+  const tijdStip = `${String(nu.getHours()).padStart(2,'0')}:${String(nu.getMinutes()).padStart(2,'0')}`;
+  const dagKey = `backup-${nu.toDateString()}`;
+
+  if (!isDayOk || tijdStip !== '07:00' || laasteBackupMail === dagKey) return;
+  laasteBackupMail = dagKey;
+
+  try {
+    const data = fs.readFileSync(DATA_FILE, 'utf8');
+    const parsed = JSON.parse(data);
+    const aantalTaken = (parsed.taken || []).length;
+    const urgent = (parsed.taken || []).filter(t => t.status === 'urgent').length;
+    const lopend = (parsed.taken || []).filter(t => t.status === 'waiting').length;
+
+    const transporter = mailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: config.backup_smtp_user,
+        pass: config.backup_smtp_pass
+      }
+    });
+
+    transporter.sendMail({
+      from: config.backup_smtp_user,
+      to: config.backup_email,
+      subject: `🐾 Praktijkbord — wekelijkse backup ${nu.toLocaleDateString('nl-BE')}`,
+      html: `
+        <div style="font-family:Arial,sans-serif;max-width:500px">
+          <h2 style="color:#1B3557">🐾 Wekelijkse backup Praktijkbord</h2>
+          <p>Goeimorgen! Hier is de automatische backup van maandag ${nu.toLocaleDateString('nl-BE')}.</p>
+          <table style="border-collapse:collapse;width:100%;margin:16px 0">
+            <tr style="background:#1B3557;color:white">
+              <td style="padding:8px 12px">Overzicht</td><td style="padding:8px 12px">Aantal</td>
+            </tr>
+            <tr><td style="padding:7px 12px;border-bottom:1px solid #eee">Totaal taken</td><td style="padding:7px 12px;border-bottom:1px solid #eee">${aantalTaken}</td></tr>
+            <tr><td style="padding:7px 12px;border-bottom:1px solid #eee">🔴 Urgent</td><td style="padding:7px 12px;border-bottom:1px solid #eee">${urgent}</td></tr>
+            <tr><td style="padding:7px 12px">⏳ Lopend</td><td style="padding:7px 12px">${lopend}</td></tr>
+          </table>
+          <p style="color:#666;font-size:13px">De volledige backup staat als bijlage.</p>
+          <a href="https://dierenarts.onrender.com" style="display:inline-block;background:#1B3557;color:white;padding:10px 20px;border-radius:6px;text-decoration:none;margin-top:8px">🔗 Open het bord</a>
+        </div>`,
+      attachments: [{
+        filename: `backup-${nu.toISOString().split('T')[0]}.json`,
+        content: data,
+        contentType: 'application/json'
+      }]
+    }, (err, info) => {
+      if (err) console.log('Backup mail fout:', err.message);
+      else console.log('Backup mail verstuurd:', info.messageId);
+    });
+  } catch(e) {
+    console.log('Backup mail error:', e.message);
+  }
+}
 
 // ── ROUTES: DATA ──────────────────────────────────────────────
 app.get('/api/taken', (req, res) => {
@@ -218,6 +296,32 @@ app.post('/api/whatsapp-test', auth, async (req, res) => {
   const ontvanger = naam || 'het team';
   const result = await stuurWhatsApp(p, k, `🐾 Testbericht voor ${ontvanger} — het Praktijkbord werkt!`);
   res.json(result);
+});
+
+// ── TEST BACKUP MAIL ─────────────────────────────────────────
+app.post('/api/backup-mail-test', auth, async (req, res) => {
+  const config = readConfig();
+  if (!config.backup_email || !config.backup_smtp_user || !config.backup_smtp_pass) {
+    return res.json({ error: 'Vul eerst e-mail en Gmail-gegevens in' });
+  }
+  if (!mailer) {
+    return res.json({ error: 'nodemailer niet beschikbaar' });
+  }
+  try {
+    const transporter = mailer.createTransport({
+      service: 'gmail',
+      auth: { user: config.backup_smtp_user, pass: config.backup_smtp_pass }
+    });
+    await transporter.sendMail({
+      from: config.backup_smtp_user,
+      to: config.backup_email,
+      subject: '🐾 Praktijkbord — test backup mail',
+      html: '<p>Als je deze mail ziet, werkt de automatische backup correct! Elke maandag om 7u krijg je een backup.</p>'
+    });
+    res.json({ ok: true });
+  } catch(e) {
+    res.json({ error: e.message });
+  }
 });
 
 // ── START ─────────────────────────────────────────────────────
