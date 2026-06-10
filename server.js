@@ -37,7 +37,7 @@ function readConfig() {
   if (!fs.existsSync(CONFIG_FILE)) {
     const init = {
       wachtwoord: 'praktijk2024',
-      namen: ['Karen','Alexandra','Sylvie','Andere'],
+      namen: ['Karen','Alexandra','Sylvie','Jade'],
       // Groep WhatsApp (dagelijks overzicht)
       groep_apikey: '',
       groep_phone: '',
@@ -60,18 +60,63 @@ function auth(req, res, next) {
   res.status(401).json({ error: 'Ongeldig wachtwoord' });
 }
 
-// ── WHATSAPP ──────────────────────────────────────────────────
-function stuurWhatsApp(phone, apikey, tekst) {
-  if (!apikey || !phone) return Promise.resolve({ skip: true });
-  const msg = encodeURIComponent(tekst);
-  const url = `https://api.callmebot.com/whatsapp.php?phone=${phone}&text=${msg}&apikey=${apikey}`;
-  return new Promise((resolve) => {
-    https.get(url, (r) => {
-      let body = '';
-      r.on('data', d => body += d);
-      r.on('end', () => resolve({ ok: true, status: r.statusCode, body }));
-    }).on('error', (e) => resolve({ error: e.message }));
-  });
+// ── WHATSAPP VIA GREEN API ────────────────────────────────────
+function stuurWhatsApp(phone, token, tekst, idInstance) {
+  // Ondersteunt zowel CallMeBot (legacy) als Green API
+  if (!phone) return Promise.resolve({ skip: true });
+
+  // Green API formaat
+  if (idInstance && token) {
+    const chatId = phone.replace('+', '').replace(/\s/g, '') + '@c.us';
+    const url = `https://api.green-api.com/waInstance${idInstance}/sendMessage/${token}`;
+    const body = JSON.stringify({ chatId, message: tekst });
+    return new Promise((resolve) => {
+      const req = require('https').request(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) }
+      }, (r) => {
+        let data = '';
+        r.on('data', d => data += d);
+        r.on('end', () => resolve({ ok: r.statusCode === 200, status: r.statusCode, body: data }));
+      });
+      req.on('error', e => resolve({ error: e.message }));
+      req.write(body);
+      req.end();
+    });
+  }
+
+  // CallMeBot fallback (legacy)
+  if (token) {
+    const msg = encodeURIComponent(tekst);
+    const url = `https://api.callmebot.com/whatsapp.php?phone=${phone}&text=${msg}&apikey=${token}`;
+    return new Promise((resolve) => {
+      https.get(url, (r) => {
+        let data = '';
+        r.on('data', d => data += d);
+        r.on('end', () => resolve({ ok: true, status: r.statusCode }));
+      }).on('error', e => resolve({ error: e.message }));
+    });
+  }
+
+  return Promise.resolve({ skip: true });
+}
+
+// Helper: haal Green API config op
+function getGreenApiConfig(config, naam) {
+  // Groep of persoonlijk
+  if (naam && config.persoonlijk && config.persoonlijk[naam]) {
+    const p = config.persoonlijk[naam];
+    return {
+      phone: p.phone,
+      token: p.green_token || p.apikey,
+      idInstance: p.green_instance || null
+    };
+  }
+  return {
+    phone: config.groep_phone,
+    token: config.groep_green_token || config.groep_apikey,
+    idInstance: config.groep_green_instance || null
+  };
 }
 
 // ── DAGELIJKSE GROEPSMELDING ──────────────────────────────────
@@ -112,7 +157,8 @@ function groepCheck() {
   if (herin.length) bericht += `🔔 *Herinneringen*\n${herin.map(r=>`• ${r.titel}`).join('\n')}\n\n`;
   bericht += `👉 https://dierenarts.onrender.com`;
 
-  stuurWhatsApp(config.groep_phone, config.groep_apikey, bericht)
+  const gc = getGreenApiConfig(config, null);
+  stuurWhatsApp(gc.phone, gc.token, bericht, gc.idInstance)
     .then(r => console.log('Groep WhatsApp:', r));
 }
 
@@ -168,7 +214,8 @@ function persoonlijkCheck() {
     if (!berichten.length) return;
 
     const bericht = `🐾 *Goeiemorgen ${naam}!*\n\n${berichten.join('\n')}\n\n👉 https://dierenarts.onrender.com`;
-    stuurWhatsApp(instellingen.phone, instellingen.apikey, bericht)
+    const pc = getGreenApiConfig(config, naam);
+    stuurWhatsApp(pc.phone, pc.token, bericht, pc.idInstance)
       .then(r => console.log(`Persoonlijk WhatsApp ${naam}:`, r));
   });
 }
@@ -289,12 +336,13 @@ app.post('/api/config', auth, (req, res) => {
 
 // ── WHATSAPP TEST ─────────────────────────────────────────────
 app.post('/api/whatsapp-test', auth, async (req, res) => {
-  const { phone, apikey, naam } = req.body;
+  const { phone, apikey, naam, green_instance, green_token } = req.body;
   const config = readConfig();
   const p = phone || config.groep_phone;
-  const k = apikey || config.groep_apikey;
+  const k = green_token || apikey || config.groep_green_token || config.groep_apikey;
+  const inst = green_instance || config.groep_green_instance || null;
   const ontvanger = naam || 'het team';
-  const result = await stuurWhatsApp(p, k, `🐾 Testbericht voor ${ontvanger} — het Praktijkbord werkt!`);
+  const result = await stuurWhatsApp(p, k, `🐾 Testbericht voor ${ontvanger} — het Praktijkbord werkt!`, inst);
   res.json(result);
 });
 
