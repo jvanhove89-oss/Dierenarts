@@ -278,29 +278,6 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
 .home-urgent-card{background:var(--red-light);border:1px solid #F5C6C2;border-radius:12px;padding:14px 16px;margin-bottom:14px}
 .home-urgent-card h3{color:var(--red);font-size:13px;font-weight:600;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
 
-/* ── VETERINAIRE RADAR ── */
-.radar-loading{text-align:center;padding:48px 20px;color:var(--gray-500)}
-.radar-spinner{width:32px;height:32px;border:3px solid var(--gray-200);border-top-color:var(--navy);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 14px}
-@keyframes spin{to{transform:rotate(360deg)}}
-.radar-error{background:var(--red-light);border:1px solid #F5C6C2;border-radius:8px;padding:14px 16px;font-size:13px;color:var(--red)}
-.radar-section-title{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray-500);margin-bottom:10px}
-.radar-klinisch-item{padding:10px 0;border-bottom:1px solid var(--gray-100)}
-.radar-klinisch-item:last-child{border-bottom:none}
-.radar-trend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
-.trend-stijgend .radar-trend-dot,.radar-trend-dot.trend-stijgend{background:var(--red)}
-.trend-dalend .radar-trend-dot,.radar-trend-dot.trend-dalend{background:var(--green)}
-.trend-ongewoon .radar-trend-dot,.radar-trend-dot.trend-ongewoon{background:var(--amber)}
-.radar-trend-badge{font-size:10px;font-weight:700;padding:1px 7px;border-radius:3px;margin-left:6px}
-.trend-badge-stijgend{background:var(--red-light);color:var(--red)}
-.trend-badge-dalend{background:var(--green-light);color:var(--green)}
-.trend-badge-ongewoon{background:var(--amber-light);color:var(--amber)}
-.radar-weer{background:var(--blue-light);border:1px solid #C7D7F5;border-radius:10px;padding:14px 16px}
-.radar-nieuwsitem{border:1px solid var(--gray-200);border-radius:10px;padding:14px 16px;margin-bottom:10px;transition:box-shadow .15s}
-.radar-nieuwsitem:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.urgentie-hoog{border-left:3px solid var(--red)}
-.urgentie-medium{border-left:3px solid var(--amber)}
-.urgentie-laag{border-left:3px solid var(--green)}
-.radar-section{background:var(--gray-50);border-radius:10px;padding:14px 16px}
 
 /* ── VERWIJDERDE TAKEN ── */
 .tcard.verwijderd{border-left:3px solid var(--gray-300);opacity:.55;background:repeating-linear-gradient(45deg,#fff,#fff 8px,#f8f9fa 8px,#f8f9fa 16px)}
@@ -490,7 +467,6 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
   <button class="ntab" onclick="goPage('feed',this)">💬 Teamfeed</button>
   <button class="ntab" onclick="goPage('vergadering',this)">🗓️ Vergadering</button>
   <button class="ntab" onclick="goPage('casus',this)">🐾 Casussen</button>
-  <button class="ntab" onclick="goPage('radar',this)">📡 Radar</button>
 </div>
 
 <div class="main">
@@ -761,10 +737,7 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
 
 
 
-  <!-- ══ VETERINAIRE RADAR ══ -->
-  <div class="page" id="page-radar">
-    <div id="radar-content"></div>
-  </div>
+
 
 </div><!-- /main -->
 
@@ -1221,7 +1194,6 @@ function goPage(id,btn){
   if(id==='feed'&&typeof renderFeed==='function') renderFeed();
   if(id==='vergadering'&&typeof renderVergadering==='function') renderVergadering();
   if(id==='casus'&&typeof renderCasus==='function') renderCasus();
-  if(id==='radar'&&typeof renderRadar==='function') renderRadar();
   if(id==='dagboek'&&typeof renderDagboek==='function') renderDagboek();
 }
 
@@ -2080,6 +2052,5 @@ function setUser(n){_origSetUser(n);window.user=n;}
 <script src="teamfeed.js"></script>
 <script src="vergadering.js"></script>
 <script src="casus.js"></script>
-<script src="radar.js"></script>
 </body>
 </html>
