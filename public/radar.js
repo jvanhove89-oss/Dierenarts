@@ -59,84 +59,15 @@ async function laadRadar(forceer) {
 }
 
 async function fetchRadarViaAI() {
-  const vandaag = new Date().toLocaleDateString('nl-BE', {day:'2-digit', month:'long', year:'numeric'});
-  const maand = new Date().toLocaleDateString('nl-BE', {month:'long'});
-  const jaar = new Date().getFullYear();
-
-  const prompt = `Je bent een veterinaire nieuwsanalist voor een Vlaamse dierenartspraktijk (gezelschapsdieren: honden, katten). 
-Vandaag is het ${vandaag}. De praktijk is gevestigd in Tessenderlo, België.
-
-Zoek naar het MEEST RECENTE nieuws (laatste 2 weken) uit deze bronnen:
-- dgz.be (Dierengezondheidszorg Vlaanderen)  
-- amcra.be (antibioticabeleid)
-- vilt.be (landbouw en dier)
-- favv.be (voedselveiligheid en dierengezondheid)
-- SAVAB (Vlaamse kleine dierenartsen)
-- veterinary forums en internationale vaktijdschriften (VetRecord, JAVMA, Veterinary Times)
-- r/veterinary en andere professionele fora
-
-Geef een professioneel overzicht voor dierenartsen. GEEN basisinformatie die elke dierenarts al kent.
-Focus op:
-1. ACTUELE uitbraken, waarschuwingen of ongewone klinische trends in België/Vlaanderen
-2. Nieuwe regelgeving of protocollen die een praktijk raken
-3. Klinisch relevante signalen die collega's deze week melden (afwijkingen van het normale patroon)
-4. Relevante sectorontwikkelingen (niet algemeen maar specifiek actueel)
-
-Antwoord ENKEL in dit JSON-formaat, niets anders:
-{
-  "gegenereerd_op": "${vandaag}",
-  "bronnen_geraadpleegd": ["lijst van bronnen die je effectief hebt geraadpleegd"],
-  "secties": [
-    {
-      "type": "waarschuwing|nieuws|klinisch|regelgeving|sector",
-      "urgentie": "hoog|medium|laag",
-      "titel": "Korte pakkende titel (max 10 woorden)",
-      "inhoud": "2-3 zinnen. Concreet, professioneel, geen basisinfo. Wat is nieuw of afwijkend?",
-      "bron": "Naam van de bron",
-      "bron_url": "URL indien beschikbaar",
-      "datum": "Datum van het nieuws indien bekend"
-    }
-  ],
-  "klinische_radar": {
-    "omschrijving": "1 zin: wat verwacht je deze week te zien dat AFWIJKT van normaal voor ${maand} ${jaar}?",
-    "items": [
-      {"aandoening": "naam", "trend": "stijgend|dalend|ongewoon", "reden": "korte onderbouwing op basis van actuele data"}
-    ]
-  },
-  "weer_context": {
-    "situatie": "Beschrijf het huidige weer in Tessenderlo regio en klinische relevantie voor deze week",
-    "relevant_voor": ["lijst van aandoeningen die hierdoor beïnvloed worden"]
+  // Roept onze eigen server aan — die heeft de Anthropic API key
+  const r = await fetch('/api/radar');
+  if (!r.ok) {
+    const err = await r.json().catch(() => ({error: r.statusText}));
+    throw new Error(err.error || 'Server fout ' + r.status);
   }
-}
-
-Maximaal 6 secties. Enkel écht recente en relevante informatie. Als er niets significants is voor een categorie, laat die weg.`;
-
-  const response = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 2000,
-      tools: [{ type: 'web_search_20250305', name: 'web_search' }],
-      messages: [{ role: 'user', content: prompt }]
-    })
-  });
-
-  const data = await response.json();
-  
-  // Verzamel alle tekst uit content blocks
-  const tekst = data.content
-    .filter(b => b.type === 'text')
-    .map(b => b.text)
-    .join('');
-
-  // Parse JSON
-  const clean = tekst.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-  const startIdx = clean.indexOf('{');
-  const endIdx = clean.lastIndexOf('}');
-  if (startIdx === -1) throw new Error('Geen JSON gevonden in antwoord');
-  
-  return JSON.parse(clean.substring(startIdx, endIdx + 1));
+  const result = await r.json();
+  if (!result.ok) throw new Error(result.error || 'Onbekende fout');
+  return result.data;
 }
 
 function renderRadarContent(data) {
