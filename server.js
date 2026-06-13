@@ -20,7 +20,7 @@ app.use(express.static('public'));
 
 const DATA_FILE = path.join(__dirname, 'taken.json');
 const PUSH_FILE = path.join(__dirname, 'push_subscriptions.json');
-const VAPID_PUBLIC = process.env.VAPID_PUBLIC_KEY || '-afVWPgTXMIpj-k3XgjNoGVTY2EtJbVSA1JEn6b4kFyMzluk7Rl0dXH5LKglr6qsTgTmvRsmmIExlBdIVgKxzg';
+const VAPID_PUBLIC = process.env.VAPID_PUBLIC_KEY || 'BCzVTVsXHNTXcxprsle0O7gOViAjwil6aazVycSrh0jwdBpPPtRi8N5sdShKdRoDEsSiq-oVz09dFbKsBz3qFQ4';
 const VAPID_PRIVATE = process.env.VAPID_PRIVATE_KEY || '';
 
 // VAPID setup
