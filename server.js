@@ -1,4 +1,6 @@
 const express = require('express');
+let webpush = null;
+try { webpush = require('web-push'); } catch(e) { console.log('web-push niet beschikbaar'); }
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
@@ -17,6 +19,38 @@ app.use(express.json());
 app.use(express.static('public'));
 
 const DATA_FILE = path.join(__dirname, 'taken.json');
+const PUSH_FILE = path.join(__dirname, 'push_subscriptions.json');
+const VAPID_PUBLIC = process.env.VAPID_PUBLIC_KEY || '-afVWPgTXMIpj-k3XgjNoGVTY2EtJbVSA1JEn6b4kFyMzluk7Rl0dXH5LKglr6qsTgTmvRsmmIExlBdIVgKxzg';
+const VAPID_PRIVATE = process.env.VAPID_PRIVATE_KEY || '';
+
+// VAPID setup
+if (webpush && VAPID_PRIVATE) {
+  webpush.setVapidDetails('mailto:praktijk@dierenarts.be', VAPID_PUBLIC, VAPID_PRIVATE);
+}
+
+function readSubscriptions() {
+  if (!fs.existsSync(PUSH_FILE)) return [];
+  try { return JSON.parse(fs.readFileSync(PUSH_FILE, 'utf8')); } catch(e) { return []; }
+}
+
+function saveSubscriptions(subs) {
+  fs.writeFileSync(PUSH_FILE, JSON.stringify(subs, null, 2));
+}
+
+async function stuurPushNotificatie(titel, body, url, urgent, tag) {
+  if (!webpush || !VAPID_PRIVATE) return;
+  const subs = readSubscriptions();
+  const payload = JSON.stringify({ title: titel, body, url: url || '/', urgent: urgent || false, tag: tag || 'praktijkbord' });
+  const results = await Promise.allSettled(
+    subs.map(sub => webpush.sendNotification(sub.subscription, payload).catch(err => {
+      if (err.statusCode === 410) return 'expired'; // Verwijder verlopen subs
+      throw err;
+    }))
+  );
+  // Verwijder verlopen subscriptions
+  const actief = subs.filter((_, i) => results[i].value !== 'expired');
+  if (actief.length !== subs.length) saveSubscriptions(actief);
+}
 const CONFIG_FILE = path.join(__dirname, 'config.json');
 
 // ── INITIALISATIE ─────────────────────────────────────────────
@@ -298,11 +332,41 @@ app.get('/api/taken', (req, res) => {
   catch(e) { res.status(500).json({ error: e.message }); }
 });
 
-app.post('/api/taken', auth, (req, res) => {
+app.post('/api/taken', auth, async (req, res) => {
   try {
+    const oudeData = readData();
     const data = req.body;
     data.serverTijd = new Date().toISOString();
     fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
+    
+    // Check voor nieuwe urgente taken → push notificatie
+    const oudeUrgent = new Set((oudeData.taken || []).filter(t => t.status === 'urgent').map(t => t.id));
+    const nieuweUrgent = (data.taken || []).filter(t => t.status === 'urgent' && !oudeUrgent.has(t.id));
+    if (nieuweUrgent.length) {
+      const taak = nieuweUrgent[0];
+      stuurPushNotificatie(
+        '🔴 Urgente taak',
+        taak.naam + (taak.verant ? ' — ' + taak.verant : ''),
+        '/',
+        true,
+        'urgent-' + taak.id
+      ).catch(e => console.log('Push fout:', e.message));
+    }
+    
+    // Check voor nieuwe berichten in feed
+    const oudeFeed = new Set((oudeData.feed || []).map(f => f.id));
+    const nieuweFeed = (data.feed || []).filter(f => !oudeFeed.has(f.id));
+    if (nieuweFeed.length) {
+      const msg = nieuweFeed[0];
+      stuurPushNotificatie(
+        '💬 ' + (msg.door || 'Team') + ' via Teamfeed',
+        msg.tekst,
+        '/?tab=feed',
+        msg.tag === 'urgent',
+        'feed-' + msg.id
+      ).catch(e => console.log('Push fout:', e.message));
+    }
+    
     res.json({ ok: true });
   } catch(e) { res.status(500).json({ error: e.message }); }
 });
@@ -346,6 +410,49 @@ app.post('/api/whatsapp-test', auth, async (req, res) => {
   res.json(result);
 });
 
+
+// ── PUSH NOTIFICATIES ────────────────────────────────────────
+// VAPID public key ophalen (voor browser)
+app.get('/api/vapid-public', (req, res) => {
+  res.json({ publicKey: VAPID_PUBLIC });
+});
+
+// Subscription opslaan
+app.post('/api/push/subscribe', auth, (req, res) => {
+  const { subscription, naam } = req.body;
+  if (!subscription) return res.status(400).json({ error: 'Geen subscription' });
+  const subs = readSubscriptions();
+  // Vervang bestaande sub voor deze naam
+  const gefilterd = subs.filter(s => s.naam !== naam);
+  gefilterd.push({ naam: naam || 'onbekend', subscription, ts: Date.now() });
+  saveSubscriptions(gefilterd);
+  res.json({ ok: true });
+});
+
+// Subscription verwijderen (uitloggen)
+app.post('/api/push/unsubscribe', auth, (req, res) => {
+  const { naam } = req.body;
+  const subs = readSubscriptions().filter(s => s.naam !== naam);
+  saveSubscriptions(subs);
+  res.json({ ok: true });
+});
+
+// Test notificatie sturen
+app.post('/api/push/test', auth, async (req, res) => {
+  const { naam } = req.body;
+  try {
+    await stuurPushNotificatie(
+      '🐾 Praktijkbord test',
+      'Push notificaties werken! Je krijgt voortaan meldingen.',
+      '/',
+      false,
+      'test'
+    );
+    res.json({ ok: true });
+  } catch(e) {
+    res.status(500).json({ error: e.message });
+  }
+});
 
 // ── TEST BACKUP MAIL ─────────────────────────────────────────
 app.post('/api/backup-mail-test', auth, async (req, res) => {
