@@ -19,6 +19,88 @@ app.use(express.json());
 app.use(express.static('public'));
 
 const DATA_FILE = path.join(__dirname, 'taken.json');
+
+// ── GITHUB BACKUP ─────────────────────────────────────────────
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN || '';
+const GITHUB_REPO = 'jvanhove89-oss/Dierenarts';
+const GITHUB_FILE = 'data/taken.json';
+
+async function laadVanGitHub() {
+  if (!GITHUB_TOKEN) return null;
+  try {
+    return new Promise((resolve) => {
+      const options = {
+        hostname: 'api.github.com',
+        path: `/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`,
+        headers: {
+          'Authorization': `token ${GITHUB_TOKEN}`,
+          'User-Agent': 'Praktijkbord',
+          'Accept': 'application/vnd.github.v3+json'
+        }
+      };
+      https_module.get(options, (r) => {
+        let body = '';
+        r.on('data', d => body += d);
+        r.on('end', () => {
+          try {
+            const json = JSON.parse(body);
+            if (json.content) {
+              const data = JSON.parse(Buffer.from(json.content, 'base64').toString('utf8'));
+              console.log('✅ Data geladen van GitHub');
+              resolve({ data, sha: json.sha });
+            } else {
+              resolve(null);
+            }
+          } catch(e) { resolve(null); }
+        });
+      }).on('error', () => resolve(null));
+    });
+  } catch(e) { return null; }
+}
+
+async function slaOpGitHub(data) {
+  if (!GITHUB_TOKEN) return;
+  try {
+    // Haal huidige SHA op
+    const huidig = await laadVanGitHub();
+    const sha = huidig ? huidig.sha : null;
+    const content = Buffer.from(JSON.stringify(data, null, 2)).toString('base64');
+    const body = JSON.stringify({
+      message: 'Auto-backup: ' + new Date().toISOString(),
+      content,
+      ...(sha ? { sha } : {})
+    });
+    return new Promise((resolve) => {
+      const options = {
+        hostname: 'api.github.com',
+        path: `/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`,
+        method: 'PUT',
+        headers: {
+          'Authorization': `token ${GITHUB_TOKEN}`,
+          'User-Agent': 'Praktijkbord',
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(body)
+        }
+      };
+      const req = https_module.request(options, (r) => {
+        let resp = '';
+        r.on('data', d => resp += d);
+        r.on('end', () => {
+          if (r.statusCode === 200 || r.statusCode === 201) {
+            console.log('✅ Data opgeslagen op GitHub');
+          } else {
+            console.log('⚠️ GitHub backup fout:', r.statusCode, resp.substring(0, 100));
+          }
+          resolve();
+        });
+      });
+      req.on('error', (e) => { console.log('GitHub fout:', e.message); resolve(); });
+      req.write(body);
+      req.end();
+    });
+  } catch(e) { console.log('GitHub backup error:', e.message); }
+}
 const PUSH_FILE = path.join(__dirname, 'push_subscriptions.json');
 const VAPID_PUBLIC = process.env.VAPID_PUBLIC_KEY || 'BCzVTVsXHNTXcxprsle0O7gOViAjwil6aazVycSrh0jwdBpPPtRi8N5sdShKdRoDEsSiq-oVz09dFbKsBz3qFQ4';
 const VAPID_PRIVATE = process.env.VAPID_PRIVATE_KEY || '';
@@ -338,6 +420,8 @@ app.post('/api/taken', auth, async (req, res) => {
     const data = req.body;
     data.serverTijd = new Date().toISOString();
     fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
+    // Async backup naar GitHub (blokkeert niet)
+    slaOpGitHub(data).catch(e => console.log('Backup fout:', e.message));
     
     // Check voor nieuwe urgente taken → push notificatie
     const oudeUrgent = new Set((oudeData.taken || []).filter(t => t.status === 'urgent').map(t => t.id));
@@ -482,4 +566,14 @@ app.post('/api/backup-mail-test', auth, async (req, res) => {
 
 // ── START ─────────────────────────────────────────────────────
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Praktijkbord draait op poort ${PORT}`));
+app.listen(PORT, async () => {
+  console.log(`Praktijkbord draait op poort ${PORT}`);
+  // Laad data van GitHub bij opstarten
+  if (GITHUB_TOKEN && !fs.existsSync(DATA_FILE)) {
+    const result = await laadVanGitHub();
+    if (result && result.data) {
+      fs.writeFileSync(DATA_FILE, JSON.stringify(result.data, null, 2));
+      console.log('✅ Data hersteld van GitHub backup');
+    }
+  }
+});
