@@ -1,0 +1,65 @@
+{
+  "taken": [
+    {
+      "id": "mqe5iehyjmt5",
+      "naam": "Test",
+      "status": "urgent",
+      "prio": "high",
+      "cat": "klant",
+      "verant": "Karen",
+      "opvolger": "",
+      "belofte": "Ztest bellen",
+      "deadline": "2026-06-15",
+      "dossier": "",
+      "opmerking": "Ydyz",
+      "subtaken": [
+        {
+          "tekst": "A",
+          "done": false
+        },
+        {
+          "tekst": "B",
+          "done": false
+        },
+        {
+          "tekst": "C",
+          "done": false
+        },
+        {
+          "tekst": "D",
+          "done": false
+        },
+        {
+          "tekst": "D",
+          "done": false
+        }
+      ],
+      "comments": [],
+      "overdracht": false,
+      "door": "Karen",
+      "op": "14/06/2026",
+      "gdoor": null,
+      "gop": null
+    }
+  ],
+  "herinneringen": [],
+  "rooster": [],
+  "namen": [
+    "Karen",
+    "Alexandra",
+    "Sylvie",
+    "Jade"
+  ],
+  "feed": [],
+  "casussen": [],
+  "vergadering": {
+    "status": "voorbereiding",
+    "agenda": [],
+    "aanwezig": [],
+    "notities": ""
+  },
+  "vergaderingArchief": [],
+  "bijgewerktDoor": "Karen",
+  "laatstBijgewerkt": "14/06/2026",
+  "serverTijd": "2026-06-14T19:02:13.846Z"
+}
