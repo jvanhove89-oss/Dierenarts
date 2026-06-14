@@ -38,7 +38,7 @@ async function laadVanGitHub() {
           'Accept': 'application/vnd.github.v3+json'
         }
       };
-      https_module.get(options, (r) => {
+      https.get(options, (r) => {
         let body = '';
         r.on('data', d => body += d);
         r.on('end', () => {
@@ -83,7 +83,7 @@ async function slaOpGitHub(data) {
           'Content-Length': Buffer.byteLength(body)
         }
       };
-      const req = https_module.request(options, (r) => {
+      const req = https.request(options, (r) => {
         let resp = '';
         r.on('data', d => resp += d);
         r.on('end', () => {
