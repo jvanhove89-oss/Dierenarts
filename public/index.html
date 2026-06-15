@@ -845,7 +845,14 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
       </div>
     </div>
     <div class="fg"><label>Opmerking</label><textarea id="f-opmerking" placeholder="Extra info voor collega's..."></textarea></div>
-    <div class="fg"><label>Subtaken (één per regel)</label><textarea id="f-subtaken" placeholder="bv.&#10;Bloedstaal nemen&#10;Resultaat opvragen&#10;Eigenaar bellen"></textarea></div>
+    <div class="fg">
+      <label>Subtaken</label>
+      <div id="f-subtaken-editor" style="border:1px solid var(--gray-200);border-radius:8px;overflow:hidden;background:white">
+        <div id="f-subtaken-lijst"></div>
+        <button type="button" onclick="voegSubtaakToe()" style="width:100%;padding:9px;background:var(--gray-50);border:none;border-top:1px solid var(--gray-100);cursor:pointer;font-size:13px;color:var(--navy);font-family:inherit;font-weight:500">＋ Subtaak toevoegen</button>
+      </div>
+      <textarea id="f-subtaken" style="display:none" placeholder=""></textarea>
+    </div>
     <div class="mact">
       <button class="btn btn-s" onclick="cm('modal')">Annuleren</button>
       <button class="btn btn-p" onclick="saveTask()">Opslaan</button>
