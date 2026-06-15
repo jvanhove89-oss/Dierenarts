@@ -1585,7 +1585,7 @@ function openModal(id){
     document.getElementById('f-dossier').value=t.dossier||'';
     const fugaBtn=document.getElementById('f-fuga-btn');
     if(fugaBtn) fugaBtn.style.display=t.dossier?'block':'none';document.getElementById('f-opmerking').value=t.opmerking||'';
-    document.getElementById('f-subtaken').value=(t.subtaken||[]).map(s=>s.tekst).join('\n');
+    document.getElementById('f-subtaken').value=(t.subtaken||[]).map(s=>s.tekst+(s.eigenaar?' ['+s.eigenaar+']':'')).join('\n');
   }else{
     ['f-naam','f-belofte','f-opvolger','f-verant','f-opmerking','f-dossier','f-deadline','f-subtaken'].forEach(i=>document.getElementById(i).value='');
     document.getElementById('f-status').value='waiting';document.getElementById('f-prio').value='';document.getElementById('f-cat').value='';
@@ -1602,7 +1602,21 @@ async function saveTask(){
   const naam=document.getElementById('f-naam').value.trim();if(!naam){toast('⚠️ Geef een omschrijving');return;}
   const oud=editTId?D.taken.find(t=>t.id===editTId):null;
   const stxt=document.getElementById('f-subtaken').value.trim();
-  const subtaken=stxt?stxt.split('\n').filter(s=>s.trim()).map(s=>({tekst:s.trim(),done:false})):(oud&&oud.subtaken?oud.subtaken:[]);
+  const subtaken=stxt?stxt.split('\n').filter(s=>s.trim()).map((s,i) => {
+    // Parse [naam] syntax: "Tekst [Karen]" of "Tekst"
+    const match = s.trim().match(/^(.+?)\s*\[([^\]]+)\]\s*$/);
+    const tekst = match ? match[1].trim() : s.trim();
+    const eigenaar = match ? match[2].trim() : '';
+    // Bewaar bestaande done/afgevinktstatus als tekst overeenkomt
+    const bestaand = oud?.subtaken?.find(x => x.tekst === tekst);
+    return {
+      tekst,
+      eigenaar,
+      done: bestaand ? bestaand.done : false,
+      afgevinktDoor: bestaand?.afgevinktDoor || null,
+      afgevinktOp: bestaand?.afgevinktOp || null
+    };
+  }):(oud&&oud.subtaken?oud.subtaken:[]);
   const taak={id:editTId||uid(),naam,status:document.getElementById('f-status').value,prio:document.getElementById('f-prio').value,cat:document.getElementById('f-cat').value,verant:document.getElementById('f-verant').value.trim(),opvolger:document.getElementById('f-opvolger').value.trim(),belofte:document.getElementById('f-belofte').value.trim(),deadline:document.getElementById('f-deadline').value,dossier:document.getElementById('f-dossier').value.trim(),opmerking:document.getElementById('f-opmerking').value.trim(),subtaken,comments:oud?oud.comments||[]:[],overdracht:oud?oud.overdracht:false,door:oud?oud.door:(user||'onbekend'),op:oud?oud.op:vandaag(),gdoor:editTId?(user||'onbekend'):null,gop:editTId?vandaag():null};
   if(editTId)D.taken=D.taken.map(t=>t.id===editTId?taak:t);else D.taken.unshift(taak);
   cm('modal');await sla('✅ Taak opgeslagen');
@@ -2130,6 +2144,7 @@ async function slaTemplateOp() {
       .split('\n')
       .map(s => s.trim())
       .filter(Boolean)
+      // Bewaar [naam] in template als tekst inclusief eigenaar
   };
   
   const templates = getTemplates();
@@ -2179,7 +2194,7 @@ function laadTemplate(idx) {
     if (sel && [...sel.options].some(o => o.value === t.opvolger)) sel.value = t.opvolger;
   }
   
-  // Subtaken — correct veld ID is f-subtaken
+  // Subtaken — toon met eigenaar in [naam] formaat
   if (t.subtaken?.length) {
     set('f-subtaken', t.subtaken.join('\n'));
   }
