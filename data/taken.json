@@ -1,34 +1,6 @@
 {
   "taken": [
     {
-      "id": "mqflwql0lo7w",
-      "naam": "test",
-      "status": "waiting",
-      "prio": "high",
-      "cat": "klant",
-      "verant": "Karen",
-      "opvolger": "",
-      "belofte": "",
-      "deadline": "",
-      "dossier": "",
-      "opmerking": "",
-      "subtaken": [
-        {
-          "tekst": ",k",
-          "done": true
-        }
-      ],
-      "comments": [],
-      "overdracht": false,
-      "door": "Karen",
-      "op": "15/06/2026",
-      "gdoor": "Karen",
-      "gop": "15/06/2026",
-      "verwijderd": true,
-      "verwijderdDoor": "Karen",
-      "verwijderdOp": 1781552492696
-    },
-    {
       "id": "mqf6zh6xed7x",
       "naam": "Aerts Kyara",
       "status": "waiting",
@@ -173,5 +145,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "15/06/2026",
-  "serverTijd": "2026-06-15T19:41:32.529Z"
+  "serverTijd": "2026-06-15T19:44:53.546Z"
 }
