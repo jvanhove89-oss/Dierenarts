@@ -24,10 +24,10 @@
         {
           "tekst": "B",
           "eigenaar": "Alexandra",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Karen",
+          "afgevinktOp": "15/06/2026",
+          "afgevinktTijd": "22:00"
         },
         {
           "tekst": "C",
@@ -50,8 +50,8 @@
       "overdracht": false,
       "door": "Karen",
       "op": "15/06/2026",
-      "gdoor": null,
-      "gop": null
+      "gdoor": "Karen",
+      "gop": "15/06/2026"
     },
     {
       "id": "mqfmyab9ar11",
@@ -266,5 +266,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "15/06/2026",
-  "serverTijd": "2026-06-15T20:00:53.608Z"
+  "serverTijd": "2026-06-15T20:00:56.514Z"
 }
