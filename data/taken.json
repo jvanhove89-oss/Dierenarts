@@ -1,6 +1,26 @@
 {
   "taken": [
     {
+      "id": "mqf5yn8kvvoj",
+      "naam": "Mestonderzoek van Choco Geyskens is naar het labo moet opgevolgd worden.",
+      "status": "waiting",
+      "prio": "med",
+      "cat": "onderzoek",
+      "verant": "Karen",
+      "opvolger": "Alexandra",
+      "belofte": "mailen indien resultaten binnen komen",
+      "deadline": "",
+      "dossier": "",
+      "opmerking": "Was Giardia -",
+      "subtaken": [],
+      "comments": [],
+      "overdracht": false,
+      "door": "Sylvie",
+      "op": "15/06/2026",
+      "gdoor": null,
+      "gop": null
+    },
+    {
       "id": "mqe5iehyjmt5",
       "naam": "Test",
       "status": "urgent",
@@ -59,7 +79,7 @@
     "notities": ""
   },
   "vergaderingArchief": [],
-  "bijgewerktDoor": "Karen",
-  "laatstBijgewerkt": "14/06/2026",
-  "serverTijd": "2026-06-14T19:02:13.846Z"
+  "bijgewerktDoor": "Sylvie",
+  "laatstBijgewerkt": "15/06/2026",
+  "serverTijd": "2026-06-15T12:02:38.065Z"
 }
