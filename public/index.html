@@ -293,6 +293,16 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
 .template-naam{font-size:13px;font-weight:600;color:var(--gray-800);margin-bottom:3px}
 .template-sub{font-size:12px;color:var(--gray-500)}
 
+/* ── SUBTAKEN EDITOR ── */
+.sub-editor-rij{display:flex;align-items:center;gap:7px;padding:8px 10px;border-bottom:1px solid var(--gray-100)}
+.sub-editor-rij:last-child{border-bottom:none}
+.sub-editor-rij input[type=text]{flex:1;border:none;background:transparent;font-family:inherit;font-size:13px;color:var(--gray-800);outline:none}
+.sub-editor-rij input[type=text]::placeholder{color:var(--gray-400)}
+.sub-editor-rij select{font-size:12px;border:1px solid var(--gray-200);border-radius:5px;padding:3px 6px;font-family:inherit;color:var(--gray-700);background:white;max-width:110px}
+.sub-editor-rij .sub-del{background:none;border:none;cursor:pointer;color:var(--gray-400);font-size:14px;padding:2px 4px;flex-shrink:0}
+.sub-editor-rij .sub-del:hover{color:var(--red)}
+.sub-drag{cursor:grab;color:var(--gray-300);font-size:14px;flex-shrink:0}
+
 /* ── VERWIJDERDE TAKEN ── */
 .tcard.verwijderd{border-left:3px solid var(--gray-300);opacity:.55;background:repeating-linear-gradient(45deg,#fff,#fff 8px,#f8f9fa 8px,#f8f9fa 16px)}
 .tcard.verwijderd .tname{text-decoration:line-through;color:var(--gray-500)}
@@ -364,6 +374,16 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
 .template-info{flex:1}
 .template-naam{font-size:13px;font-weight:600;color:var(--gray-800);margin-bottom:3px}
 .template-sub{font-size:12px;color:var(--gray-500)}
+
+/* ── SUBTAKEN EDITOR ── */
+.sub-editor-rij{display:flex;align-items:center;gap:7px;padding:8px 10px;border-bottom:1px solid var(--gray-100)}
+.sub-editor-rij:last-child{border-bottom:none}
+.sub-editor-rij input[type=text]{flex:1;border:none;background:transparent;font-family:inherit;font-size:13px;color:var(--gray-800);outline:none}
+.sub-editor-rij input[type=text]::placeholder{color:var(--gray-400)}
+.sub-editor-rij select{font-size:12px;border:1px solid var(--gray-200);border-radius:5px;padding:3px 6px;font-family:inherit;color:var(--gray-700);background:white;max-width:110px}
+.sub-editor-rij .sub-del{background:none;border:none;cursor:pointer;color:var(--gray-400);font-size:14px;padding:2px 4px;flex-shrink:0}
+.sub-editor-rij .sub-del:hover{color:var(--red)}
+.sub-drag{cursor:grab;color:var(--gray-300);font-size:14px;flex-shrink:0}
 
 /* ── VERWIJDERDE TAKEN ── */
 .tcard.verwijderd{border-left:3px solid var(--gray-300);opacity:.55;background:repeating-linear-gradient(45deg,#fff,#fff 8px,#f8f9fa 8px,#f8f9fa 16px)}
@@ -1476,6 +1496,44 @@ async function addComment(id){
   t.gdoor=user;t.gop=vandaag();inp.value='';
   await sla('💬 Reactie toegevoegd');
 }
+// ── SUBTAKEN EDITOR ──────────────────────────────────────────
+function voegSubtaakToe(tekst, eigenaar) {
+  const lijst = document.getElementById('f-subtaken-lijst');
+  if (!lijst) return;
+  const namen = D.namen || ['Karen','Alexandra','Sylvie','Jade'];
+  const eigenaarOpties = '<option value="">— niemand —</option>' + 
+    namen.filter(n=>n!=='Andere').map(n=>`<option value="${n}"${eigenaar===n?' selected':''}>${n}</option>`).join('');
+  
+  const rij = document.createElement('div');
+  rij.className = 'sub-editor-rij';
+  rij.innerHTML = `
+    <span class="sub-drag">⠿</span>
+    <input type="text" placeholder="Beschrijving subtaak..." value="${(tekst||'').replace(/"/g,'&quot;')}">
+    <select title="Verantwoordelijke">${eigenaarOpties}</select>
+    <button type="button" class="sub-del" onclick="this.closest('.sub-editor-rij').remove()">✕</button>
+  `;
+  lijst.appendChild(rij);
+}
+
+function getSubtakenFromEditor() {
+  const lijst = document.getElementById('f-subtaken-lijst');
+  if (!lijst) return [];
+  return [...lijst.querySelectorAll('.sub-editor-rij')].map(rij => ({
+    tekst: rij.querySelector('input[type=text]').value.trim(),
+    eigenaar: rij.querySelector('select').value,
+    done: false,
+    afgevinktDoor: null,
+    afgevinktOp: null
+  })).filter(s => s.tekst);
+}
+
+function laadSubtakenInEditor(subtaken) {
+  const lijst = document.getElementById('f-subtaken-lijst');
+  if (!lijst) return;
+  lijst.innerHTML = '';
+  (subtaken || []).forEach(s => voegSubtaakToe(s.tekst, s.eigenaar));
+}
+
 async function toggleSub(tId,idx,val){
   const t=D.taken.find(x=>x.id===tId);if(!t)return;
   t.subtaken[idx].done=val;t.gdoor=user;t.gop=vandaag();
@@ -1585,9 +1643,10 @@ function openModal(id){
     document.getElementById('f-dossier').value=t.dossier||'';
     const fugaBtn=document.getElementById('f-fuga-btn');
     if(fugaBtn) fugaBtn.style.display=t.dossier?'block':'none';document.getElementById('f-opmerking').value=t.opmerking||'';
-    document.getElementById('f-subtaken').value=(t.subtaken||[]).map(s=>s.tekst+(s.eigenaar?' ['+s.eigenaar+']':'')).join('\n');
+    laadSubtakenInEditor(t.subtaken||[]);
   }else{
-    ['f-naam','f-belofte','f-opvolger','f-verant','f-opmerking','f-dossier','f-deadline','f-subtaken'].forEach(i=>document.getElementById(i).value='');
+    ['f-naam','f-belofte','f-opvolger','f-verant','f-opmerking','f-dossier','f-deadline'].forEach(i=>document.getElementById(i).value='');
+    laadSubtakenInEditor([]);
     document.getElementById('f-status').value='waiting';document.getElementById('f-prio').value='';document.getElementById('f-cat').value='';
     vulPersoonDropdowns('f-verant','f-opvolger');
     document.getElementById('f-verant').value=user||'';
@@ -1601,22 +1660,20 @@ function openModal(id){
 async function saveTask(){
   const naam=document.getElementById('f-naam').value.trim();if(!naam){toast('⚠️ Geef een omschrijving');return;}
   const oud=editTId?D.taken.find(t=>t.id===editTId):null;
-  const stxt=document.getElementById('f-subtaken').value.trim();
-  const subtaken=stxt?stxt.split('\n').filter(s=>s.trim()).map((s,i) => {
-    // Parse [naam] syntax: "Tekst [Karen]" of "Tekst"
-    const match = s.trim().match(/^(.+?)\s*\[([^\]]+)\]\s*$/);
-    const tekst = match ? match[1].trim() : s.trim();
-    const eigenaar = match ? match[2].trim() : '';
+  // Haal subtaken op uit de editor
+  const nieuweSubs = getSubtakenFromEditor();
+  const subtaken = nieuweSubs.length > 0 ? nieuweSubs.map(s => {
     // Bewaar bestaande done/afgevinktstatus als tekst overeenkomt
-    const bestaand = oud?.subtaken?.find(x => x.tekst === tekst);
+    const bestaand = oud?.subtaken?.find(x => x.tekst === s.tekst);
     return {
-      tekst,
-      eigenaar,
+      tekst: s.tekst,
+      eigenaar: s.eigenaar || '',
       done: bestaand ? bestaand.done : false,
       afgevinktDoor: bestaand?.afgevinktDoor || null,
-      afgevinktOp: bestaand?.afgevinktOp || null
+      afgevinktOp: bestaand?.afgevinktOp || null,
+      afgevinktTijd: bestaand?.afgevinktTijd || null
     };
-  }):(oud&&oud.subtaken?oud.subtaken:[]);
+  }) : (oud&&oud.subtaken ? oud.subtaken : []);
   const taak={id:editTId||uid(),naam,status:document.getElementById('f-status').value,prio:document.getElementById('f-prio').value,cat:document.getElementById('f-cat').value,verant:document.getElementById('f-verant').value.trim(),opvolger:document.getElementById('f-opvolger').value.trim(),belofte:document.getElementById('f-belofte').value.trim(),deadline:document.getElementById('f-deadline').value,dossier:document.getElementById('f-dossier').value.trim(),opmerking:document.getElementById('f-opmerking').value.trim(),subtaken,comments:oud?oud.comments||[]:[],overdracht:oud?oud.overdracht:false,door:oud?oud.door:(user||'onbekend'),op:oud?oud.op:vandaag(),gdoor:editTId?(user||'onbekend'):null,gop:editTId?vandaag():null};
   if(editTId)D.taken=D.taken.map(t=>t.id===editTId?taak:t);else D.taken.unshift(taak);
   cm('modal');await sla('✅ Taak opgeslagen');
@@ -2194,9 +2251,12 @@ function laadTemplate(idx) {
     if (sel && [...sel.options].some(o => o.value === t.opvolger)) sel.value = t.opvolger;
   }
   
-  // Subtaken — toon met eigenaar in [naam] formaat
+  // Subtaken — laad in editor
   if (t.subtaken?.length) {
-    set('f-subtaken', t.subtaken.join('\n'));
+    laadSubtakenInEditor(t.subtaken.map(s => ({
+      tekst: s,
+      eigenaar: ''
+    })));
   }
   
   // Status
