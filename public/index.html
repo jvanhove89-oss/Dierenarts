@@ -837,6 +837,15 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
     <div class="fg"><label>📞 Belofte aan eigenaar</label><input type="text" id="f-belofte" placeholder="bv. Bellen als resultaten binnen zijn"></div>
     <div class="row2">
       <div class="fg"><label>Deadline</label><input type="date" id="f-deadline"></div>
+      <div class="fg"><label>Herhaling</label>
+        <select id="f-herhaling">
+          <option value="">— geen herhaling —</option>
+          <option value="dagelijks">🔁 Dagelijks</option>
+          <option value="wekelijks">🔁 Wekelijks</option>
+          <option value="tweewekelijks">🔁 Tweewekelijks</option>
+          <option value="maandelijks">🔁 Maandelijks</option>
+        </select>
+      </div>
       <div class="fg"><label>Fuga dossiernummer</label>
         <div style="display:flex;gap:6px;align-items:center">
           <input type="text" id="f-dossier" placeholder="bv. 12345" style="flex:1" oninput="document.getElementById('f-fuga-btn').style.display=this.value?'block':'none'">
@@ -1417,6 +1426,7 @@ function kaartHTML(t){
   if(t.dossier)meta.push(`<span>📁 <a href="javascript:void(0)" onclick="openFugaDossier('${t.dossier}')" style="color:var(--navy);text-decoration:none;font-weight:500" title="Open in Fuga">${t.dossier} 🔗</a></span>`);
   const bel=t.belofte?`<div class="pbox">📞 ${t.belofte}</div>`:'';
   const sc=(t.subtaken||[]).length,sd=(t.subtaken||[]).filter(s=>s.done).length;
+  const subPct = sc>0 ? Math.round(sd/sc*100) : 0;
   const subs=(t.subtaken||[]).map((s,i)=>`
   <div class="subtaak ${s.done?'ds':''}">
     <input type="checkbox" ${s.done?'checked':''} onchange="toggleSub('${t.id}',${i},this.checked)">
@@ -1428,8 +1438,8 @@ function kaartHTML(t){
   const cc=(t.comments||[]).length;
   return `<div class="tcard ${t.status} ${pc}" id="tc-${t.id}">
     <div class="tcard-top"><div>
-      <div class="ttop"><span class="tname">${t.naam}${vtag}</span>${badge}${catB}${prioB}</div>
-      <div class="tmeta">${meta.join('')}${sc?`<span>☑️ ${sd}/${sc}</span>`:''}</div>
+      <div class="ttop"><span class="tname">${t.naam}${vtag}${t.herhaling?`<span style="font-size:10px;background:#EEF4FF;color:var(--navy);padding:1px 6px;border-radius:10px;margin-left:5px;font-weight:500">🔁 ${t.herhaling}</span>`:''}</span>${badge}${catB}${prioB}</div>
+      <div class="tmeta">${meta.join('')}${sc?`<div style="display:flex;align-items:center;gap:5px;margin-top:3px"><div style="width:60px;height:4px;background:var(--gray-100);border-radius:2px;overflow:hidden"><div style="height:100%;width:${subPct}%;background:${subPct===100?'var(--green)':'var(--navy)'};border-radius:2px"></div></div><span style="font-size:10px;color:${subPct===100?'var(--green)':'var(--gray-500)'}">${sd}/${sc}${subPct===100?' ✅':''}</span></div>`:''}</div>
       ${bel}<div class="tfooter">Door ${t.door||'?'} · ${t.op||'?'}${t.gdoor?' · gewijzigd door '+t.gdoor:''}${cc?' · 💬 '+cc:''}</div>
     </div>
     <div class="tactions">
@@ -1665,11 +1675,12 @@ function openModal(id){
     document.getElementById('f-verant').value=t.verant||'';document.getElementById('f-opvolger').value=t.opvolger||'';
     document.getElementById('f-belofte').value=t.belofte||'';document.getElementById('f-deadline').value=t.deadline||'';
     document.getElementById('f-dossier').value=t.dossier||'';
+    const fherh=document.getElementById('f-herhaling');if(fherh)fherh.value=t.herhaling||'';
     const fugaBtn=document.getElementById('f-fuga-btn');
     if(fugaBtn) fugaBtn.style.display=t.dossier?'block':'none';document.getElementById('f-opmerking').value=t.opmerking||'';
     laadSubtakenInEditor(t.subtaken||[]);
   }else{
-    ['f-naam','f-belofte','f-opvolger','f-verant','f-opmerking','f-dossier','f-deadline'].forEach(i=>document.getElementById(i).value='');
+    ['f-naam','f-belofte','f-opvolger','f-verant','f-opmerking','f-dossier','f-deadline','f-herhaling'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';});
     laadSubtakenInEditor([]);
     document.getElementById('f-status').value='waiting';document.getElementById('f-prio').value='';document.getElementById('f-cat').value='';
     vulPersoonDropdowns('f-verant','f-opvolger');
@@ -1698,9 +1709,11 @@ async function saveTask(){
       afgevinktTijd: bestaand?.afgevinktTijd || null
     };
   }) : (oud&&oud.subtaken ? oud.subtaken : []);
-  const taak={id:editTId||uid(),naam,status:document.getElementById('f-status').value,prio:document.getElementById('f-prio').value,cat:document.getElementById('f-cat').value,verant:document.getElementById('f-verant').value.trim(),opvolger:document.getElementById('f-opvolger').value.trim(),belofte:document.getElementById('f-belofte').value.trim(),deadline:document.getElementById('f-deadline').value,dossier:document.getElementById('f-dossier').value.trim(),opmerking:document.getElementById('f-opmerking').value.trim(),subtaken,comments:oud?oud.comments||[]:[],overdracht:oud?oud.overdracht:false,door:oud?oud.door:(user||'onbekend'),op:oud?oud.op:vandaag(),gdoor:editTId?(user||'onbekend'):null,gop:editTId?vandaag():null};
+  const taak={id:editTId||uid(),naam,status:document.getElementById('f-status').value,prio:document.getElementById('f-prio').value,cat:document.getElementById('f-cat').value,verant:document.getElementById('f-verant').value.trim(),opvolger:document.getElementById('f-opvolger').value.trim(),belofte:document.getElementById('f-belofte').value.trim(),deadline:document.getElementById('f-deadline').value,dossier:document.getElementById('f-dossier').value.trim(),opmerking:document.getElementById('f-opmerking').value.trim(),herhaling:document.getElementById('f-herhaling')?.value||'',subtaken,comments:oud?oud.comments||[]:[],overdracht:oud?oud.overdracht:false,door:oud?oud.door:(user||'onbekend'),op:oud?oud.op:vandaag(),gdoor:editTId?(user||'onbekend'):null,gop:editTId?vandaag():null};
+  const _oudeVerant=oud?.verant;
   if(editTId)D.taken=D.taken.map(t=>t.id===editTId?taak:t);else D.taken.unshift(taak);
   cm('modal');await sla('✅ Taak opgeslagen');
+  if(taak.verant&&taak.verant!==user&&taak.verant!==_oudeVerant){fetch('/api/push/notify-assign',{method:'POST',...h(),body:JSON.stringify({naam:taak.verant,taakNaam:taak.naam,door:user})}).catch(()=>{});}
 }
 
 async function delTaak(id){
@@ -1907,6 +1920,14 @@ function renderBackupMailInstellingen(cfg) {
 }
 
 // ── HOME PAGINA ──────────────────────────────────────────────
+// Helper: is datum binnenkort (binnen X dagen)
+function isDS(datum, dagen) {
+  if (!datum) return false;
+  const d = new Date(datum); d.setHours(0,0,0,0);
+  const nu = new Date(); nu.setHours(0,0,0,0);
+  return (d - nu) / 864e5 <= (dagen||2) && d >= nu;
+}
+
 function renderHome() {
   const el = document.getElementById('home-content');
   if (!el) return;
@@ -2063,6 +2084,45 @@ function renderHome() {
         ${actief.length > 8 ? `<div style="text-align:center;margin-top:8px"><a href="#" onclick="switchTab('taken')" style="font-size:12px;color:var(--navy);font-weight:500">Alle ${actief.length} taken bekijken →</a></div>` : ''}
       </div>
     </div>
+
+    <!-- AGENDA TIJDLIJN -->
+    ${(() => {
+      const komende = [];
+      // Herinneringen komende 7 dagen
+      (D.herinneringen||[]).forEach(r => {
+        if (!r.datum) return;
+        const d = new Date(r.datum); d.setHours(0,0,0,0);
+        const nu2 = new Date(); nu2.setHours(0,0,0,0);
+        const diff = Math.round((d-nu2)/864e5);
+        if (diff >= 0 && diff <= 7) komende.push({type:'herinnering', titel:r.titel, datum:r.datum, diff, voor:r.voor||'Iedereen'});
+      });
+      // Taken met deadline komende 7 dagen
+      actief.filter(t=>t.deadline).forEach(t => {
+        const d = new Date(t.deadline); d.setHours(0,0,0,0);
+        const nu2 = new Date(); nu2.setHours(0,0,0,0);
+        const diff = Math.round((d-nu2)/864e5);
+        if (diff >= 0 && diff <= 7) komende.push({type:'taak', titel:t.naam, datum:t.deadline, diff, verant:t.verant, status:t.status});
+      });
+      komende.sort((a,b) => a.diff - b.diff);
+      if (!komende.length) return '';
+      const dagNm = ['zo','ma','di','wo','do','vr','za'];
+      return `<div class="home-card" style="grid-column:span 2">
+        <h3>📅 Komende 7 dagen</h3>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          ${komende.slice(0,8).map(k => {
+            const d = new Date(k.datum);
+            const dagStr = k.diff===0?'Vandaag':k.diff===1?'Morgen':dagNm[d.getDay()]+' '+d.getDate()+'/'+(d.getMonth()+1);
+            const kleur = k.diff===0?'var(--red)':k.diff===1?'var(--amber)':'var(--gray-600)';
+            return `<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--gray-100)">
+              <div style="width:72px;font-size:12px;font-weight:600;color:${kleur};flex-shrink:0">${dagStr}</div>
+              <div style="font-size:11px;padding:2px 7px;border-radius:10px;background:${k.type==='herinnering'?'#FDF3E7':'var(--blue-light)'};color:${k.type==='herinnering'?'#92400E':'var(--navy)'};flex-shrink:0">${k.type==='herinnering'?'🔔':'📋'}</div>
+              <div style="flex:1;font-size:13px;color:var(--gray-800)">${k.titel}</div>
+              <div style="font-size:11px;color:var(--gray-400)">${k.verant||k.voor||''}</div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>`;
+    })()}
 
     <!-- TAKEN PER PERSOON -->
     <div class="home-card">
