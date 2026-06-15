@@ -1417,7 +1417,13 @@ function kaartHTML(t){
   if(t.dossier)meta.push(`<span>📁 <a href="javascript:void(0)" onclick="openFugaDossier('${t.dossier}')" style="color:var(--navy);text-decoration:none;font-weight:500" title="Open in Fuga">${t.dossier} 🔗</a></span>`);
   const bel=t.belofte?`<div class="pbox">📞 ${t.belofte}</div>`:'';
   const sc=(t.subtaken||[]).length,sd=(t.subtaken||[]).filter(s=>s.done).length;
-  const subs=(t.subtaken||[]).map((s,i)=>`<div class="subtaak ${s.done?'ds':''}"><input type="checkbox" ${s.done?'checked':''} onchange="toggleSub('${t.id}',${i},this.checked)"><span>${s.tekst}</span></div>`).join('');
+  const subs=(t.subtaken||[]).map((s,i)=>`
+  <div class="subtaak ${s.done?'ds':''}">
+    <input type="checkbox" ${s.done?'checked':''} onchange="toggleSub('${t.id}',${i},this.checked)">
+    <span class="stekst">${s.tekst}</span>
+    ${s.eigenaar&&!s.done?`<span class="subtaak-eigenaar">👤 ${s.eigenaar}</span>`:''}
+    ${s.done?`<span class="subtaak-afgevinkt">✓ uitgevoerd door: <strong>${s.afgevinktDoor||'onbekend'}</strong>${s.afgevinktTijd?' om '+s.afgevinktTijd:''}${s.afgevinktOp?' · '+s.afgevinktOp:''}</span>`:''}
+  </div>`).join('');
   const coms=(t.comments||[]).map(c=>`<div class="comment"><div class="cav">${(c.door||'?')[0]}</div><div class="cbody"><div class="cname">${c.door} <span class="ctime">· ${c.op}</span></div><div class="ctext">${c.tekst}</div></div></div>`).join('');
   const cc=(t.comments||[]).length;
   return `<div class="tcard ${t.status} ${pc}" id="tc-${t.id}">
