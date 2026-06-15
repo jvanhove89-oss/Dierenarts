@@ -1,6 +1,35 @@
 {
   "taken": [
     {
+      "id": "mqf6zh6xed7x",
+      "naam": "Aerts Kyara",
+      "status": "waiting",
+      "prio": "high",
+      "cat": "",
+      "verant": "Karen",
+      "opvolger": "Jade",
+      "belofte": "Belen als resultaten binnen.",
+      "deadline": "",
+      "dossier": "https://sonetas.eu/fuga/vc?action=displayAnimal&actionTableId=AnimalTable&id=347-901",
+      "opmerking": "",
+      "subtaken": [
+        {
+          "tekst": "Mailen velab",
+          "done": false
+        },
+        {
+          "tekst": "Bellen eigenaar",
+          "done": false
+        }
+      ],
+      "comments": [],
+      "overdracht": false,
+      "door": "Karen",
+      "op": "15/06/2026",
+      "gdoor": null,
+      "gop": null
+    },
+    {
       "id": "mqf5yn8kvvoj",
       "naam": "Mestonderzoek van Choco Geyskens is naar het labo moet opgevolgd worden.",
       "status": "waiting",
@@ -79,7 +108,7 @@
     "notities": ""
   },
   "vergaderingArchief": [],
-  "bijgewerktDoor": "Sylvie",
+  "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "15/06/2026",
-  "serverTijd": "2026-06-15T12:02:38.065Z"
+  "serverTijd": "2026-06-15T12:31:16.490Z"
 }
