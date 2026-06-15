@@ -32,10 +32,10 @@
         {
           "tekst": "C",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Karen",
+          "afgevinktOp": "15/06/2026",
+          "afgevinktTijd": "22:01"
         },
         {
           "tekst": "B",
@@ -266,5 +266,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "15/06/2026",
-  "serverTijd": "2026-06-15T20:01:20.499Z"
+  "serverTijd": "2026-06-15T20:01:26.942Z"
 }
