@@ -1723,6 +1723,19 @@ async function delTaak(id){
   await sla('🗑️ Taak verwijderd — blijft 48u zichtbaar');
 }
 
+async function herstelTaak(id) {
+  const t = D.taken.find(x => x.id === id);
+  if (!t) return;
+  if (!magAanpassen(t) && user !== t.verwijderdDoor) {
+    toast('⚠️ Alleen de verwijderaar of Karen kan dit herstellen');
+    return;
+  }
+  t.verwijderd = false;
+  t.verwijderdDoor = null;
+  t.verwijderdOp = null;
+  await sla('↩️ Taak hersteld');
+}
+
 function ruimVerwijderdeOp(){
   const nu=Date.now();
   const grens=48*60*60*1000; // 48 uur
