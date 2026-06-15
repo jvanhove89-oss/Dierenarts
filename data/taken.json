@@ -24,10 +24,10 @@
         {
           "tekst": "doe nieuw ondergoed aan",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Karen",
+          "afgevinktOp": "15/06/2026",
+          "afgevinktTijd": "22:02"
         },
         {
           "tekst": "grondig wasje",
@@ -311,5 +311,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "15/06/2026",
-  "serverTijd": "2026-06-15T20:02:38.195Z"
+  "serverTijd": "2026-06-15T20:02:41.779Z"
 }
