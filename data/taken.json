@@ -16,10 +16,10 @@
         {
           "tekst": "sschrijf een boek",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Karen",
+          "afgevinktOp": "15/06/2026",
+          "afgevinktTijd": "22:02"
         },
         {
           "tekst": "doe nieuw ondergoed aan",
@@ -42,8 +42,8 @@
       "overdracht": false,
       "door": "Karen",
       "op": "15/06/2026",
-      "gdoor": null,
-      "gop": null
+      "gdoor": "Karen",
+      "gop": "15/06/2026"
     },
     {
       "id": "mqfn1ouino72",
@@ -311,5 +311,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "15/06/2026",
-  "serverTijd": "2026-06-15T20:02:31.797Z"
+  "serverTijd": "2026-06-15T20:02:38.195Z"
 }
