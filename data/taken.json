@@ -40,7 +40,7 @@
         {
           "tekst": "B",
           "eigenaar": "",
-          "done": false,
+          "done": true,
           "afgevinktDoor": null,
           "afgevinktOp": null,
           "afgevinktTijd": null
@@ -51,7 +51,10 @@
       "door": "Karen",
       "op": "15/06/2026",
       "gdoor": "Karen",
-      "gop": "15/06/2026"
+      "gop": "15/06/2026",
+      "verwijderd": true,
+      "verwijderdDoor": "Karen",
+      "verwijderdOp": 1781553503386
     },
     {
       "id": "mqfmrhylfhxz",
@@ -207,5 +210,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "15/06/2026",
-  "serverTijd": "2026-06-15T19:58:18.924Z"
+  "serverTijd": "2026-06-15T19:58:23.479Z"
 }
