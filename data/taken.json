@@ -15,7 +15,7 @@
       "subtaken": [
         {
           "tekst": "Mailen velab",
-          "done": false
+          "done": true
         },
         {
           "tekst": "Bellen eigenaar",
@@ -26,8 +26,8 @@
       "overdracht": false,
       "door": "Karen",
       "op": "15/06/2026",
-      "gdoor": null,
-      "gop": null
+      "gdoor": "Karen",
+      "gop": "15/06/2026"
     },
     {
       "id": "mqf5yn8kvvoj",
@@ -110,5 +110,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "15/06/2026",
-  "serverTijd": "2026-06-15T12:31:16.490Z"
+  "serverTijd": "2026-06-15T12:31:30.511Z"
 }
