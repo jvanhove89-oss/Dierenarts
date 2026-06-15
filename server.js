@@ -154,6 +154,7 @@ function readConfig() {
     const init = {
       wachtwoord: 'praktijk2024',
       namen: ['Karen','Alexandra','Sylvie','Jade'],
+      templates: [],
       // Groep WhatsApp (dagelijks overzicht)
       groep_apikey: '',
       groep_phone: '',
@@ -482,6 +483,12 @@ app.post('/api/config', auth, (req, res) => {
   } catch(e) { res.status(500).json({ error: e.message }); }
 });
 
+// Config ophalen voor GitHub backup (zodat namen etc bewaard blijven)
+app.get('/api/config-backup', auth, (req, res) => {
+  try { res.json(readConfig()); }
+  catch(e) { res.status(500).json({ error: e.message }); }
+});
+
 // ── WHATSAPP TEST ─────────────────────────────────────────────
 app.post('/api/whatsapp-test', auth, async (req, res) => {
   const { phone, apikey, naam, green_instance, green_token } = req.body;
@@ -566,14 +573,27 @@ app.post('/api/backup-mail-test', auth, async (req, res) => {
 
 // ── START ─────────────────────────────────────────────────────
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, async () => {
-  console.log(`Praktijkbord draait op poort ${PORT}`);
-  // Laad data van GitHub bij opstarten
+
+// Laad data van GitHub VOOR server start
+async function startServer() {
   if (GITHUB_TOKEN && !fs.existsSync(DATA_FILE)) {
-    const result = await laadVanGitHub();
-    if (result && result.data) {
-      fs.writeFileSync(DATA_FILE, JSON.stringify(result.data, null, 2));
-      console.log('✅ Data hersteld van GitHub backup');
+    console.log('⏳ Data ophalen van GitHub...');
+    try {
+      const result = await laadVanGitHub();
+      if (result && result.data) {
+        fs.writeFileSync(DATA_FILE, JSON.stringify(result.data, null, 2));
+        console.log('✅ Data hersteld van GitHub (' + (result.data.taken||[]).length + ' taken)');
+      } else {
+        console.log('ℹ️ Geen GitHub data gevonden, start met lege dataset');
+      }
+    } catch(e) {
+      console.log('⚠️ GitHub ophalen mislukt:', e.message);
     }
   }
-});
+  
+  app.listen(PORT, () => {
+    console.log('Praktijkbord draait op poort ' + PORT);
+  });
+}
+
+startServer();
