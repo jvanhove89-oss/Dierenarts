@@ -43,7 +43,10 @@
       "door": "Karen",
       "op": "15/06/2026",
       "gdoor": "Karen",
-      "gop": "15/06/2026"
+      "gop": "15/06/2026",
+      "verwijderd": true,
+      "verwijderdDoor": "Karen",
+      "verwijderdOp": 1781553770929
     },
     {
       "id": "mqfn1ouino72",
@@ -311,5 +314,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "15/06/2026",
-  "serverTijd": "2026-06-15T20:02:41.779Z"
+  "serverTijd": "2026-06-15T20:02:51.029Z"
 }
