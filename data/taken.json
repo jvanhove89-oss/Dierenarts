@@ -1,6 +1,51 @@
 {
   "taken": [
     {
+      "id": "mqfn3slyyh1q",
+      "naam": "bloedtesten",
+      "status": "urgent",
+      "prio": "",
+      "cat": "",
+      "verant": "Karen",
+      "opvolger": "",
+      "belofte": "lkdslfjsldf",
+      "deadline": "",
+      "dossier": "",
+      "opmerking": "dfsdf",
+      "subtaken": [
+        {
+          "tekst": "sschrijf een boek",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "doe nieuw ondergoed aan",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "grondig wasje",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        }
+      ],
+      "comments": [],
+      "overdracht": false,
+      "door": "Karen",
+      "op": "15/06/2026",
+      "gdoor": null,
+      "gop": null
+    },
+    {
       "id": "mqfn1ouino72",
       "naam": "bla bla bla",
       "status": "waiting",
@@ -266,5 +311,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "15/06/2026",
-  "serverTijd": "2026-06-15T20:01:53.170Z"
+  "serverTijd": "2026-06-15T20:02:31.797Z"
 }
