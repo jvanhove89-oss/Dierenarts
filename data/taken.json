@@ -41,13 +41,26 @@
       "deadline": "",
       "dossier": "",
       "opmerking": "Was Giardia -",
-      "subtaken": [],
+      "subtaken": [
+        {
+          "tekst": "giardia snap",
+          "done": false
+        },
+        {
+          "tekst": "bacteriologie uitslag",
+          "done": false
+        },
+        {
+          "tekst": "opvolging medicatie naar huis",
+          "done": false
+        }
+      ],
       "comments": [],
       "overdracht": false,
       "door": "Sylvie",
       "op": "15/06/2026",
-      "gdoor": null,
-      "gop": null
+      "gdoor": "Karen",
+      "gop": "15/06/2026"
     },
     {
       "id": "mqe5iehyjmt5",
@@ -110,5 +123,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "15/06/2026",
-  "serverTijd": "2026-06-15T12:31:32.538Z"
+  "serverTijd": "2026-06-15T12:32:05.304Z"
 }
