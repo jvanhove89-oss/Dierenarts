@@ -15,15 +15,15 @@
       "subtaken": [
         {
           "tekst": ",k",
-          "done": false
+          "done": true
         }
       ],
       "comments": [],
       "overdracht": false,
       "door": "Karen",
       "op": "15/06/2026",
-      "gdoor": null,
-      "gop": null
+      "gdoor": "Karen",
+      "gop": "15/06/2026"
     },
     {
       "id": "mqf6zh6xed7x",
@@ -170,5 +170,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "15/06/2026",
-  "serverTijd": "2026-06-15T19:29:02.946Z"
+  "serverTijd": "2026-06-15T19:29:06.931Z"
 }
