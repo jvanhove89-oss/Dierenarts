@@ -15,7 +15,7 @@
       "subtaken": [
         {
           "tekst": "Mailen velab",
-          "done": true
+          "done": false
         },
         {
           "tekst": "Bellen eigenaar",
@@ -110,5 +110,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "15/06/2026",
-  "serverTijd": "2026-06-15T12:31:31.345Z"
+  "serverTijd": "2026-06-15T12:31:32.538Z"
 }
