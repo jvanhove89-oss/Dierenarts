@@ -286,6 +286,13 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
 .home-urgent-card h3{color:var(--red);font-size:13px;font-weight:600;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
 
 
+/* ── TAAK TEMPLATES ── */
+.template-kaart{background:white;border:1px solid var(--gray-200);border-radius:9px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px}
+.template-kaart:hover{border-color:var(--navy);box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.template-info{flex:1}
+.template-naam{font-size:13px;font-weight:600;color:var(--gray-800);margin-bottom:3px}
+.template-sub{font-size:12px;color:var(--gray-500)}
+
 /* ── VERWIJDERDE TAKEN ── */
 .tcard.verwijderd{border-left:3px solid var(--gray-300);opacity:.55;background:repeating-linear-gradient(45deg,#fff,#fff 8px,#f8f9fa 8px,#f8f9fa 16px)}
 .tcard.verwijderd .tname{text-decoration:line-through;color:var(--gray-500)}
@@ -350,6 +357,13 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
 .urgentie-medium{border-left:3px solid var(--amber)}
 .urgentie-laag{border-left:3px solid var(--green)}
 .radar-section{background:var(--gray-50);border-radius:10px;padding:14px 16px}
+
+/* ── TAAK TEMPLATES ── */
+.template-kaart{background:white;border:1px solid var(--gray-200);border-radius:9px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px}
+.template-kaart:hover{border-color:var(--navy);box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.template-info{flex:1}
+.template-naam{font-size:13px;font-weight:600;color:var(--gray-800);margin-bottom:3px}
+.template-sub{font-size:12px;color:var(--gray-500)}
 
 /* ── VERWIJDERDE TAKEN ── */
 .tcard.verwijderd{border-left:3px solid var(--gray-300);opacity:.55;background:repeating-linear-gradient(45deg,#fff,#fff 8px,#f8f9fa 8px,#f8f9fa 16px)}
@@ -650,12 +664,13 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
       <div class="sc">
         <h4>📦 Data beheer</h4>
         <div style="display:flex;flex-direction:column;gap:8px">
-          <a href="/api/backup" class="btn btn-s">📥 Backup downloaden</a>
+          <button class="btn btn-s" onclick="downloadBackup()">📥 Backup downloaden</button>
           <label class="btn btn-s" style="cursor:pointer;justify-content:center">
             📤 Backup terugzetten
             <input type="file" id="restore-file" accept=".json" style="display:none" onchange="backupTerugzetten(this)">
           </label>
           <button class="btn btn-r2" onclick="archiveerKlaar()">🗄️ Afgehandelde taken archiveren</button>
+          <button class="btn btn-s" onclick="laadDemoData()" style="border:1px dashed var(--gray-300)">🐾 Demo data laden</button>
         </div>
         <div id="restore-result" style="font-size:13px;margin-top:8px"></div>
         <p style="font-size:12px;color:var(--gray-500);margin-top:6px">Archiveren verplaatst alle "Klaar"-taken. Ze blijven in de backup.</p>
@@ -708,6 +723,21 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
           <span id="push-result" style="font-size:13px"></span>
         </div>
         <p style="font-size:11px;color:var(--gray-500);margin-top:8px">Werkt op Android. Op iPhone enkel via de geïnstalleerde app (Safari → Deel → Zet op beginscherm).</p>
+      </div>
+
+      <div class="sc" style="grid-column:span 2">
+        <h4>📋 Taak templates</h4>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px">Maak standaard taken aan met vooraf ingevulde subtaken. Templates worden gedeeld met het hele team — iedereen ziet dezelfde templates.</p>
+        <div id="template-lijst"></div>
+        <button class="btn btn-p" onclick="openTemplateModal()" style="margin-top:10px">＋ Nieuw template</button>
+      </div>
+
+      <div class="sc" style="grid-column:span 2">
+        <h4>🔐 Login geschiedenis</h4>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px">Overzicht van wie zich wanneer heeft aangemeld.</p>
+        <div id="login-history-content">
+          <button class="btn btn-s" onclick="laadLoginHistory()">📊 Laad overzicht</button>
+        </div>
       </div>
 
       <div class="sc">
@@ -763,6 +793,11 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
 <div class="overlay" id="modal" style="display:none" onclick="cbg(event,'modal')">
   <div class="modal">
     <h3 id="mtitle">Nieuwe taak</h3>
+    <div id="template-kies-wrap" style="margin-bottom:12px">
+      <select id="template-kies" onchange="laadTemplate(this.value)" style="width:100%;padding:7px 10px;border:1px solid var(--gray-200);border-radius:7px;font-family:inherit;font-size:13px;color:var(--gray-600)">
+        <option value="">📋 Kies een template (optioneel)...</option>
+      </select>
+    </div>
     <div class="fg"><label>Omschrijving *</label><input type="text" id="f-naam" placeholder="bv. Bloedresultaten Rex – eigenaar bellen"></div>
     <div class="row3">
       <div class="fg"><label>Status</label><select id="f-status"><option value="waiting">⏳ Lopend</option><option value="urgent">🔴 Urgent</option><option value="done">✅ Klaar</option></select></div>
@@ -958,6 +993,53 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
   </div>
 </div>
 
+<!-- ══ TEMPLATE MODAL ══ -->
+<div class="overlay" id="template-modal" style="display:none" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal">
+    <h3 id="template-modal-title">📋 Nieuw template</h3>
+    <div class="fg"><label>Naam van het template *</label>
+      <input type="text" id="tm-naam" placeholder="bv. Bloedresultaten opvolgen">
+    </div>
+    <div class="fg"><label>Omschrijving (optioneel)</label>
+      <input type="text" id="tm-omschrijving" placeholder="bv. Standaard opvolging na bloedafname">
+    </div>
+    <div class="row2">
+      <div class="fg"><label>Categorie</label>
+        <select id="tm-cat">
+          <option value="">— geen —</option>
+          <option value="onderzoek">🔬 Onderzoek</option>
+          <option value="medicatie">💊 Medicatie</option>
+          <option value="klant">📞 Klant</option>
+          <option value="bestelling">🛒 Bestelling</option>
+          <option value="opvolging">📋 Opvolging</option>
+          <option value="andere">💬 Andere</option>
+        </select>
+      </div>
+      <div class="fg"><label>Prioriteit</label>
+        <select id="tm-prio">
+          <option value="">— geen —</option>
+          <option value="high">🔴 Hoog</option>
+          <option value="med">🟡 Normaal</option>
+          <option value="low">🟢 Laag</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg"><label>Standaard verantwoordelijke</label>
+      <select id="tm-verant"></select>
+    </div>
+    <div class="fg"><label>Belofte aan eigenaar (optioneel)</label>
+      <input type="text" id="tm-belofte" placeholder="bv. Eigenaar bellen met resultaten">
+    </div>
+    <div class="fg"><label>Subtaken (één per regel)</label>
+      <textarea id="tm-subtaken" placeholder="bv.&#10;Resultaten opvragen bij labo&#10;Eigenaar telefoneren&#10;Resultaten noteren in dossier" style="min-height:100px"></textarea>
+    </div>
+    <div class="mact">
+      <button class="btn btn-s" onclick="document.getElementById('template-modal').style.display='none'">Annuleren</button>
+      <button class="btn btn-p" onclick="slaTemplateOp()">💾 Opslaan</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1090,6 +1172,8 @@ async function doeLogin(naam) {
   setInterval(() => laad(false, true), 25000);
   // Activeer push notificaties na login (vraagt eenmalig toestemming)
   setTimeout(() => activeerPushNotificaties(naam), 3000);
+  // Login bijhouden
+  fetch('/api/login-track', {method:'POST',headers:{'Content-Type':'application/json','x-praktijk-pw':pw},body:JSON.stringify({naam})}).catch(()=>{});
 }
 
 async function resetPIN(naam) {
@@ -1110,10 +1194,12 @@ function applyConfig(cfg){
   if(cfg.groep_green_token){const el=document.getElementById('s-green-token');if(el)el.value=cfg.groep_green_token;}
   if(cfg.groep_tijd){const el=document.getElementById('s-tijd');if(el)el.value=cfg.groep_tijd;}
   if(cfg.namen){[1,2,3,4,5,6].forEach(i=>{const el=document.getElementById('sn'+i);if(el)el.value=cfg.namen[i-1]||'';});}
+  if(cfg.templates) D.templates = cfg.templates;
   renderPersoonlijkWA(cfg);
   renderPINBeheer();
   renderFugaInstellingen();
   renderBackupMailInstellingen(cfg);
+  renderTemplates();
 }
 
 function vulPersoonDropdowns(...ids) {
@@ -1214,6 +1300,7 @@ function goPage(id,btn){
   if(id==='feed'&&typeof renderFeed==='function') renderFeed();
   if(id==='vergadering'&&typeof renderVergadering==='function') renderVergadering();
   if(id==='casus'&&typeof renderCasus==='function') renderCasus();
+  if(id==='instellingen') renderTemplates();
   if(id==='dagboek'&&typeof renderDagboek==='function') renderDagboek();
 }
 
@@ -1492,6 +1579,7 @@ function openModal(id){
     document.getElementById('f-status').value='waiting';document.getElementById('f-prio').value='';document.getElementById('f-cat').value='';
     vulPersoonDropdowns('f-verant','f-opvolger');
     document.getElementById('f-verant').value=user||'';
+    vulTemplateDropdown();
     document.getElementById('f-opvolger').value='';
   }
   document.getElementById('modal').style.display='flex';
@@ -1939,21 +2027,216 @@ async function testPushNotificatie() {
   else el.innerHTML = `<span style="color:var(--red)">⚠️ ${d.error||'Geen subscriptions gevonden'}</span>`;
 }
 
+// ── TAAK TEMPLATES ───────────────────────────────────────────
+function getTemplates() {
+  return D.templates || [];
+}
+
+async function saveTemplates(templates) {
+  D.templates = templates;
+  // Sla op via config API
+  const r = await fetch('/api/config', {method:'POST',...h(),body:JSON.stringify({templates})});
+  if (!r.ok) toast('⚠️ Templates opslaan mislukt');
+}
+
+function renderTemplates() {
+  const el = document.getElementById('template-lijst');
+  if (!el) return;
+  const templates = getTemplates();
+  
+  if (!templates.length) {
+    el.innerHTML = '<p style="font-size:13px;color:var(--gray-400);font-style:italic;margin-bottom:8px">Nog geen templates. Maak er een aan!</p>';
+    return;
+  }
+  
+  el.innerHTML = templates.map((t, i) => `
+    <div class="template-kaart">
+      <div class="template-info">
+        <div class="template-naam">${t.naam}</div>
+        <div class="template-sub">
+          ${t.cat ? catL[t.cat]+' · ' : ''}
+          ${t.subtaken?.length ? t.subtaken.length + ' subtaken' : 'geen subtaken'}
+          ${t.omschrijving ? ' · ' + t.omschrijving : ''}
+        </div>
+      </div>
+      <div style="display:flex;gap:4px">
+        <button class="ibtn" onclick="openTemplateModal(${i})" title="Bewerken">✏️</button>
+        <button class="ibtn" onclick="verwijderTemplate(${i})" title="Verwijderen">🗑️</button>
+      </div>
+    </div>`).join('');
+    
+  // Update dropdown in taak modal
+  vulTemplateDropdown();
+}
+
+function vulTemplateDropdown() {
+  const sel = document.getElementById('template-kies');
+  if (!sel) return;
+  const templates = getTemplates();
+  sel.innerHTML = '<option value="">📋 Kies een template (optioneel)...</option>' +
+    templates.map((t, i) => `<option value="${i}">${t.naam}</option>`).join('');
+}
+
+function openTemplateModal(idx) {
+  window._editTemplateIdx = idx !== undefined ? idx : null;
+  const t = idx !== undefined ? getTemplates()[idx] : null;
+  
+  document.getElementById('template-modal-title').textContent = t ? '✏️ Template bewerken' : '📋 Nieuw template';
+  document.getElementById('tm-naam').value = t ? t.naam : '';
+  document.getElementById('tm-omschrijving').value = t ? t.omschrijving||'' : '';
+  document.getElementById('tm-cat').value = t ? t.cat||'' : '';
+  document.getElementById('tm-prio').value = t ? t.prio||'' : '';
+  document.getElementById('tm-belofte').value = t ? t.belofte||'' : '';
+  document.getElementById('tm-subtaken').value = t ? (t.subtaken||[]).join('\n') : '';
+  
+  // Vul verantwoordelijke dropdown
+  vulPersoonDropdowns('tm-verant');
+  document.getElementById('tm-verant').value = t ? t.verant||'' : (user||'');
+  
+  document.getElementById('template-modal').style.display = 'flex';
+  setTimeout(() => document.getElementById('tm-naam').focus(), 50);
+}
+
+async function slaTemplateOp() {
+  const naam = document.getElementById('tm-naam').value.trim();
+  if (!naam) { toast('⚠️ Vul een naam in'); return; }
+  
+  const template = {
+    naam,
+    omschrijving: document.getElementById('tm-omschrijving').value.trim(),
+    cat: document.getElementById('tm-cat').value,
+    prio: document.getElementById('tm-prio').value,
+    verant: document.getElementById('tm-verant').value,
+    belofte: document.getElementById('tm-belofte').value.trim(),
+    subtaken: document.getElementById('tm-subtaken').value
+      .split('\n')
+      .map(s => s.trim())
+      .filter(Boolean)
+  };
+  
+  const templates = getTemplates();
+  if (window._editTemplateIdx !== null && window._editTemplateIdx !== undefined) {
+    templates[window._editTemplateIdx] = template;
+  } else {
+    templates.push(template);
+  }
+  
+  await saveTemplates(templates);
+  document.getElementById('template-modal').style.display = 'none';
+  renderTemplates();
+  toast('✅ Template opgeslagen');
+}
+
+async function verwijderTemplate(idx) {
+  if (!confirm('Template verwijderen?')) return;
+  const templates = getTemplates();
+  templates.splice(idx, 1);
+  await saveTemplates(templates);
+  renderTemplates();
+  toast('🗑️ Template verwijderd');
+}
+
+function laadTemplate(idx) {
+  if (idx === '') return;
+  const t = getTemplates()[parseInt(idx)];
+  if (!t) return;
+  
+  // Vul taak modal in met template waarden
+  if (t.cat) document.getElementById('f-cat').value = t.cat;
+  if (t.prio) document.getElementById('f-prio').value = t.prio;
+  if (t.belofte) document.getElementById('f-belofte').value = t.belofte;
+  if (t.verant) document.getElementById('f-verant').value = t.verant;
+  if (t.subtaken?.length) {
+    document.getElementById('f-sub').value = t.subtaken.join('\n');
+  }
+  
+  toast('📋 Template "' + t.naam + '" geladen');
+}
+
+async function laadLoginHistory() {
+  const el = document.getElementById('login-history-content');
+  el.innerHTML = '<p style="font-size:13px;color:var(--gray-400)">⏳ Laden...</p>';
+  
+  try {
+    const r = await fetch('/api/login-history', {headers:{'x-praktijk-pw':pw}});
+    const d = await r.json();
+    const namen = D.namen || ['Karen','Alexandra','Sylvie','Jade'];
+    const kleuren = {'Karen':'#1B3557','Alexandra':'#1D6A96','Sylvie':'#1D9E75','Jade':'#8B4FA8'};
+    
+    el.innerHTML = `
+      <!-- Statistieken per persoon -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:16px">
+        ${namen.filter(n=>n!=='Andere').map(n => {
+          const st = d.stats[n];
+          const kleur = kleuren[n] || 'var(--navy)';
+          return `<div style="background:white;border:1px solid var(--gray-200);border-radius:9px;padding:12px;text-align:center">
+            <div style="width:36px;height:36px;border-radius:50%;background:${kleur};color:white;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;margin:0 auto 8px">${n[0]}</div>
+            <div style="font-size:13px;font-weight:600;color:var(--gray-800)">${n}</div>
+            <div style="font-size:22px;font-weight:700;color:${kleur};margin:4px 0">${st?.totaal||0}</div>
+            <div style="font-size:11px;color:var(--gray-500)">aanmeldingen</div>
+            ${st?.laatste ? `<div style="font-size:10px;color:var(--gray-400);margin-top:4px">Laatste: ${st.laatste.datum} ${st.laatste.tijd}</div>` : '<div style="font-size:10px;color:var(--gray-400);margin-top:4px">Nog niet ingelogd</div>'}
+          </div>`;
+        }).join('')}
+      </div>
+      
+      <!-- Recente logins -->
+      <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--gray-500);margin-bottom:8px;text-transform:uppercase">Recente aanmeldingen</div>
+      <div style="background:white;border:1px solid var(--gray-200);border-radius:9px;overflow:hidden">
+        ${d.logins.slice(0,20).map((l,i) => `
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 14px;${i>0?'border-top:1px solid var(--gray-100)':''}">
+            <div style="width:28px;height:28px;border-radius:50%;background:${kleuren[l.naam]||'var(--navy)'};color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0">${(l.naam||'?')[0]}</div>
+            <div style="flex:1;font-size:13px;font-weight:500;color:var(--gray-800)">${l.naam}</div>
+            <div style="font-size:12px;color:var(--gray-500)">${l.datum} om ${l.tijd}</div>
+          </div>`).join('')}
+        ${!d.logins.length ? '<div style="padding:16px;text-align:center;color:var(--gray-400);font-size:13px">Nog geen logins geregistreerd</div>' : ''}
+      </div>`;
+  } catch(e) {
+    el.innerHTML = '<p style="color:var(--red);font-size:13px">⚠️ Kon login geschiedenis niet laden</p>';
+  }
+}
+
 function renderPINBeheer() {
   const el = document.getElementById('pin-reset-lijst');
   if (!el) return;
   const namen = (D.namen || ['Karen','Alexandra','Sylvie']).filter(n => n !== 'Andere');
   el.innerHTML = namen.map(n => {
     const heeftPin = !!localStorage.getItem('pin-' + n);
+    const isIngelogd = user === n;
     return `<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--gray-100)">
       <div style="display:flex;align-items:center;gap:8px">
         <div style="width:26px;height:26px;border-radius:50%;background:var(--navy);color:white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600">${n[0]}</div>
         <span style="font-size:13px">${n}</span>
-        <span style="font-size:11px;color:${heeftPin?'var(--green)':'var(--amber)'}">${heeftPin?'✅ PIN ingesteld':'⚠️ Nog geen PIN'}</span>
+        <span style="font-size:11px;color:${heeftPin?'var(--green)':isIngelogd&&!heeftPin?'var(--amber)':'var(--gray-400)'}">${heeftPin?'✅ PIN ingesteld':isIngelogd&&!heeftPin?'⚠️ Ingelogd zonder PIN':'— Nog niet ingelogd'}</span>
       </div>
       ${heeftPin?`<button class="btn btn-s" style="font-size:11px;padding:3px 9px" onclick="resetPIN('${n}')">Reset</button>`:''}
     </div>`;
   }).join('');
+}
+
+async function downloadBackup() {
+  try {
+    const r = await fetch('/api/backup', {headers:{'x-praktijk-pw': pw}});
+    if (!r.ok) { toast('⚠️ Backup ophalen mislukt — ' + r.status); return; }
+    const blob = await r.blob();
+    const datum = new Date().toISOString().split('T')[0];
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `praktijkbord-backup-${datum}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast('✅ Backup gedownload');
+  } catch(e) {
+    toast('⚠️ Download mislukt: ' + e.message);
+  }
+}
+
+async function laadDemoData() {
+  if (!confirm('Demo data laden? Dit werkt enkel als er nog geen taken zijn.')) return;
+  const r = await fetch('/api/demo-data', {method:'POST',...h()});
+  const d = await r.json();
+  if(d.ok) { toast('✅ ' + d.taken + ' demo taken geladen'); await laad(true); }
+  else toast('ℹ️ ' + (d.msg || d.error));
 }
 
 async function backupTerugzetten(input) {
