@@ -44,7 +44,7 @@
       "subtaken": [
         {
           "tekst": "giardia snap",
-          "done": false
+          "done": true
         },
         {
           "tekst": "bacteriologie uitslag",
@@ -123,5 +123,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "15/06/2026",
-  "serverTijd": "2026-06-15T12:32:05.304Z"
+  "serverTijd": "2026-06-15T12:32:06.991Z"
 }
