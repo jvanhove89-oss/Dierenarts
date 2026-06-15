@@ -57,62 +57,6 @@
       "verwijderdOp": 1781557459385
     },
     {
-      "id": "mqfmyab9ar11",
-      "naam": "test",
-      "status": "waiting",
-      "prio": "",
-      "cat": "onderzoek",
-      "verant": "Karen",
-      "opvolger": "",
-      "belofte": "trollen",
-      "deadline": "",
-      "dossier": "",
-      "opmerking": "bollen",
-      "subtaken": [
-        {
-          "tekst": "A",
-          "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
-        },
-        {
-          "tekst": "B",
-          "eigenaar": "",
-          "done": true,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
-        },
-        {
-          "tekst": "C",
-          "eigenaar": "",
-          "done": true,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
-        },
-        {
-          "tekst": "B",
-          "eigenaar": "",
-          "done": true,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
-        }
-      ],
-      "comments": [],
-      "overdracht": false,
-      "door": "Karen",
-      "op": "15/06/2026",
-      "gdoor": "Karen",
-      "gop": "15/06/2026",
-      "verwijderd": true,
-      "verwijderdDoor": "Karen",
-      "verwijderdOp": 1781553503386
-    },
-    {
       "id": "mqfmrhylfhxz",
       "naam": "test",
       "status": "waiting",
@@ -269,5 +213,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "15/06/2026",
-  "serverTijd": "2026-06-15T21:04:22.097Z"
+  "serverTijd": "2026-06-15T21:04:23.483Z"
 }
