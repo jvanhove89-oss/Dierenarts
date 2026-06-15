@@ -1030,6 +1030,18 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
     <div class="fg"><label>Belofte aan eigenaar (optioneel)</label>
       <input type="text" id="tm-belofte" placeholder="bv. Eigenaar bellen met resultaten">
     </div>
+    <div class="fg"><label>Opmerking (optioneel)</label>
+      <input type="text" id="tm-opmerking" placeholder="bv. Extra info voor het team">
+    </div>
+    <div class="fg"><label>Standaard opvolger (optioneel)</label>
+      <select id="tm-opvolger"></select>
+    </div>
+    <div class="fg"><label>Standaard status</label>
+      <select id="tm-status">
+        <option value="waiting">⏳ Lopend</option>
+        <option value="urgent">🔴 Urgent</option>
+      </select>
+    </div>
     <div class="fg"><label>Subtaken (één per regel)</label>
       <textarea id="tm-subtaken" placeholder="bv.&#10;Resultaten opvragen bij labo&#10;Eigenaar telefoneren&#10;Resultaten noteren in dossier" style="min-height:100px"></textarea>
     </div>
@@ -2087,11 +2099,14 @@ function openTemplateModal(idx) {
   document.getElementById('tm-cat').value = t ? t.cat||'' : '';
   document.getElementById('tm-prio').value = t ? t.prio||'' : '';
   document.getElementById('tm-belofte').value = t ? t.belofte||'' : '';
+  document.getElementById('tm-opmerking').value = t ? t.opmerking||'' : '';
+  document.getElementById('tm-status').value = t ? t.status||'waiting' : 'waiting';
   document.getElementById('tm-subtaken').value = t ? (t.subtaken||[]).join('\n') : '';
   
-  // Vul verantwoordelijke dropdown
-  vulPersoonDropdowns('tm-verant');
+  // Vul dropdowns
+  vulPersoonDropdowns('tm-verant', 'tm-opvolger');
   document.getElementById('tm-verant').value = t ? t.verant||'' : (user||'');
+  document.getElementById('tm-opvolger').value = t ? t.opvolger||'' : '';
   
   document.getElementById('template-modal').style.display = 'flex';
   setTimeout(() => document.getElementById('tm-naam').focus(), 50);
@@ -2106,8 +2121,11 @@ async function slaTemplateOp() {
     omschrijving: document.getElementById('tm-omschrijving').value.trim(),
     cat: document.getElementById('tm-cat').value,
     prio: document.getElementById('tm-prio').value,
+    status: document.getElementById('tm-status').value,
     verant: document.getElementById('tm-verant').value,
+    opvolger: document.getElementById('tm-opvolger').value,
     belofte: document.getElementById('tm-belofte').value.trim(),
+    opmerking: document.getElementById('tm-opmerking').value.trim(),
     subtaken: document.getElementById('tm-subtaken').value
       .split('\n')
       .map(s => s.trim())
@@ -2141,14 +2159,33 @@ function laadTemplate(idx) {
   const t = getTemplates()[parseInt(idx)];
   if (!t) return;
   
-  // Vul taak modal in met template waarden
-  if (t.cat) document.getElementById('f-cat').value = t.cat;
-  if (t.prio) document.getElementById('f-prio').value = t.prio;
-  if (t.belofte) document.getElementById('f-belofte').value = t.belofte;
-  if (t.verant) document.getElementById('f-verant').value = t.verant;
-  if (t.subtaken?.length) {
-    document.getElementById('f-sub').value = t.subtaken.join('\n');
+  // Vul taak modal in met template waarden - gebruik exacte veld IDs
+  const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
+  
+  set('f-cat', t.cat);
+  set('f-prio', t.prio);
+  set('f-belofte', t.belofte);
+  set('f-opmerking', t.opmerking);
+  
+  // Verantwoordelijke — enkel als dropdown de naam kent
+  if (t.verant) {
+    const sel = document.getElementById('f-verant');
+    if (sel && [...sel.options].some(o => o.value === t.verant)) sel.value = t.verant;
   }
+  
+  // Opvolger
+  if (t.opvolger) {
+    const sel = document.getElementById('f-opvolger');
+    if (sel && [...sel.options].some(o => o.value === t.opvolger)) sel.value = t.opvolger;
+  }
+  
+  // Subtaken — correct veld ID is f-subtaken
+  if (t.subtaken?.length) {
+    set('f-subtaken', t.subtaken.join('\n'));
+  }
+  
+  // Status
+  if (t.status) set('f-status', t.status);
   
   toast('📋 Template "' + t.naam + '" geladen');
 }
