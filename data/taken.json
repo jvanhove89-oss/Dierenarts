@@ -1,6 +1,59 @@
 {
   "taken": [
     {
+      "id": "mqfmrhylfhxz",
+      "naam": "test",
+      "status": "waiting",
+      "prio": "",
+      "cat": "onderzoek",
+      "verant": "Karen",
+      "opvolger": "",
+      "belofte": "trollen",
+      "deadline": "",
+      "dossier": "",
+      "opmerking": "bollen",
+      "subtaken": [
+        {
+          "tekst": "A",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "B",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "C",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "B",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        }
+      ],
+      "comments": [],
+      "overdracht": false,
+      "door": "Karen",
+      "op": "15/06/2026",
+      "gdoor": null,
+      "gop": null
+    },
+    {
       "id": "mqf6zh6xed7x",
       "naam": "Aerts Kyara",
       "status": "waiting",
@@ -101,5 +154,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "15/06/2026",
-  "serverTijd": "2026-06-15T19:44:56.866Z"
+  "serverTijd": "2026-06-15T19:52:58.127Z"
 }
