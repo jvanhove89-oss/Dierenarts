@@ -19,7 +19,7 @@
         },
         {
           "tekst": "Bellen eigenaar",
-          "done": true
+          "done": false
         }
       ],
       "comments": [],
@@ -123,5 +123,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "15/06/2026",
-  "serverTijd": "2026-06-15T12:32:06.991Z"
+  "serverTijd": "2026-06-15T12:32:18.359Z"
 }
