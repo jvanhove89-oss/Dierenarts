@@ -1,6 +1,31 @@
 {
   "taken": [
     {
+      "id": "mqflwql0lo7w",
+      "naam": "test",
+      "status": "waiting",
+      "prio": "high",
+      "cat": "klant",
+      "verant": "Karen",
+      "opvolger": "",
+      "belofte": "",
+      "deadline": "",
+      "dossier": "",
+      "opmerking": "",
+      "subtaken": [
+        {
+          "tekst": ",k",
+          "done": false
+        }
+      ],
+      "comments": [],
+      "overdracht": false,
+      "door": "Karen",
+      "op": "15/06/2026",
+      "gdoor": null,
+      "gop": null
+    },
+    {
       "id": "mqf6zh6xed7x",
       "naam": "Aerts Kyara",
       "status": "waiting",
@@ -115,6 +140,25 @@
     "Sylvie",
     "Jade"
   ],
+  "templates": [
+    {
+      "naam": "Test",
+      "omschrijving": "mail sturen naar de eigenaar",
+      "cat": "onderzoek",
+      "prio": "",
+      "status": "waiting",
+      "verant": "",
+      "opvolger": "",
+      "belofte": "trollen",
+      "opmerking": "bollen",
+      "subtaken": [
+        "A",
+        "B",
+        "C",
+        "B"
+      ]
+    }
+  ],
   "feed": [],
   "casussen": [],
   "vergadering": {
@@ -126,5 +170,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "15/06/2026",
-  "serverTijd": "2026-06-15T12:55:45.766Z"
+  "serverTijd": "2026-06-15T19:29:02.946Z"
 }
