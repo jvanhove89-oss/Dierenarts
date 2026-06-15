@@ -342,6 +342,7 @@ setInterval(() => {
   groepCheck();
   persoonlijkCheck();
   backupMailCheck();
+  herhalingCheck();
 }, 60000);
 
 // ── WEKELIJKSE BACKUP MAIL ────────────────────────────────────
@@ -544,6 +545,81 @@ app.post('/api/push/test', auth, async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
+
+// Push notificatie bij toewijzen taak
+app.post('/api/push/notify-assign', auth, async (req, res) => {
+  const { naam, taakNaam, door } = req.body;
+  if (!naam || !taakNaam) return res.json({ ok: false });
+  try {
+    const subs = readSubscriptions().filter(s => s.naam === naam);
+    if (!subs.length) return res.json({ ok: false, msg: 'Geen subscription voor ' + naam });
+    
+    const payload = JSON.stringify({
+      title: '📋 Nieuwe taak van ' + (door||'team'),
+      body: taakNaam,
+      url: '/',
+      urgent: false,
+      tag: 'taak-assign-' + Date.now()
+    });
+    
+    await Promise.allSettled(
+      subs.map(sub => webpush.sendNotification(sub.subscription, payload))
+    );
+    res.json({ ok: true });
+  } catch(e) {
+    res.json({ error: e.message });
+  }
+});
+
+// ── TERUGKERENDE TAKEN CHECK ──────────────────────────────────
+let laasteHerhalingCheck = '';
+
+function herhalingCheck() {
+  const nu = new Date();
+  const tijdStip = `${String(nu.getHours()).padStart(2,'0')}:${String(nu.getMinutes()).padStart(2,'0')}`;
+  const dagKey = `herhaling-${nu.toDateString()}`;
+  if (tijdStip !== '00:01' || laasteHerhalingCheck === dagKey) return;
+  laasteHerhalingCheck = dagKey;
+
+  const data = readData();
+  const vandaag = nu.toISOString().split('T')[0];
+  const dag = nu.getDay(); // 0=zo, 1=ma
+  let gewijzigd = false;
+
+  (data.taken || []).filter(t => t.herhaling && t.status === 'done').forEach(t => {
+    let maakNieuw = false;
+    if (t.herhaling === 'dagelijks') maakNieuw = true;
+    if (t.herhaling === 'wekelijks' && dag === 1) maakNieuw = true; // elke maandag
+    if (t.herhaling === 'tweewekelijks' && dag === 1) {
+      // Check of het een even week is
+      const week = Math.floor((nu - new Date(nu.getFullYear(), 0, 1)) / 6048e5);
+      maakNieuw = week % 2 === 0;
+    }
+    if (t.herhaling === 'maandelijks' && nu.getDate() === 1) maakNieuw = true;
+
+    if (maakNieuw) {
+      const nieuweId = Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+      data.taken.push({
+        ...t,
+        id: nieuweId,
+        status: 'waiting',
+        done: false,
+        subtaken: (t.subtaken||[]).map(s=>({...s, done:false, afgevinktDoor:null, afgevinktOp:null, afgevinktTijd:null})),
+        comments: [],
+        op: new Date().toLocaleDateString('nl-BE'),
+        gdoor: null, gop: null,
+        verwijderd: false, verwijderdDoor: null, verwijderdOp: null
+      });
+      gewijzigd = true;
+    }
+  });
+
+  if (gewijzigd) {
+    fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
+    slaOpGitHub(data).catch(()=>{});
+    console.log('✅ Terugkerende taken aangemaakt');
+  }
+}
 
 // ── TEST BACKUP MAIL ─────────────────────────────────────────
 app.post('/api/backup-mail-test', auth, async (req, res) => {
