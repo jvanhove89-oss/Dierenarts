@@ -1422,7 +1422,7 @@ function kaartHTML(t){
     <input type="checkbox" ${s.done?'checked':''} onchange="toggleSub('${t.id}',${i},this.checked)">
     <span class="stekst">${s.tekst}</span>
     ${s.eigenaar&&!s.done?`<span class="subtaak-eigenaar">👤 ${s.eigenaar}</span>`:''}
-    ${s.done?`<span class="subtaak-afgevinkt">✓ uitgevoerd door: <strong>${s.afgevinktDoor||'onbekend'}</strong>${s.afgevinktTijd?' om '+s.afgevinktTijd:''}${s.afgevinktOp?' · '+s.afgevinktOp:''}</span>`:''}
+    ${s.done&&s.afgevinktDoor?`<span class="subtaak-afgevinkt" style="text-decoration:none!important">✓ <em>uitgevoerd door:</em> <strong>${s.afgevinktDoor}</strong>${s.afgevinktTijd?' om '+s.afgevinktTijd:''}${s.afgevinktOp?' · '+s.afgevinktOp:''}</span>`:''}
   </div>`).join('');
   const coms=(t.comments||[]).map(c=>`<div class="comment"><div class="cav">${(c.door||'?')[0]}</div><div class="cbody"><div class="cname">${c.door} <span class="ctime">· ${c.op}</span></div><div class="ctext">${c.tekst}</div></div></div>`).join('');
   const cc=(t.comments||[]).length;
@@ -1549,7 +1549,18 @@ function laadSubtakenInEditor(subtaken) {
 
 async function toggleSub(tId,idx,val){
   const t=D.taken.find(x=>x.id===tId);if(!t)return;
-  t.subtaken[idx].done=val;t.gdoor=user;t.gop=vandaag();
+  t.subtaken[idx].done=val;
+  if(val){
+    t.subtaken[idx].afgevinktDoor=user||'onbekend';
+    const nu=new Date();
+    t.subtaken[idx].afgevinktOp=vandaag();
+    t.subtaken[idx].afgevinktTijd=nu.toLocaleTimeString('nl-BE',{hour:'2-digit',minute:'2-digit'});
+  } else {
+    t.subtaken[idx].afgevinktDoor=null;
+    t.subtaken[idx].afgevinktOp=null;
+    t.subtaken[idx].afgevinktTijd=null;
+  }
+  t.gdoor=user;t.gop=vandaag();
   await sla();
 }
 
