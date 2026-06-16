@@ -293,6 +293,16 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
 .template-naam{font-size:13px;font-weight:600;color:var(--gray-800);margin-bottom:3px}
 .template-sub{font-size:12px;color:var(--gray-500)}
 
+/* ── CATEGORIE KLEUREN ── */
+.tcard[data-cat="onderzoek"]{border-left-color:#1D6A96}
+.tcard[data-cat="medicatie"]{border-left-color:#C0392B}
+.tcard[data-cat="klant"]{border-left-color:#1D9E75}
+.tcard[data-cat="bestelling"]{border-left-color:#D4872A}
+.tcard[data-cat="opvolging"]{border-left-color:#8B4FA8}
+.tcard[data-cat="andere"]{border-left-color:#64748B}
+/* Te lang open indicator */
+.tcard.te-lang-open{border-left-color:#D4872A!important;box-shadow:0 0 0 1px rgba(212,135,42,.2)}
+
 /* ── SUBTAKEN EDITOR ── */
 .sub-editor-rij{display:flex;align-items:center;gap:7px;padding:8px 10px;border-bottom:1px solid var(--gray-100)}
 .sub-editor-rij:last-child{border-bottom:none}
@@ -374,6 +384,16 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
 .template-info{flex:1}
 .template-naam{font-size:13px;font-weight:600;color:var(--gray-800);margin-bottom:3px}
 .template-sub{font-size:12px;color:var(--gray-500)}
+
+/* ── CATEGORIE KLEUREN ── */
+.tcard[data-cat="onderzoek"]{border-left-color:#1D6A96}
+.tcard[data-cat="medicatie"]{border-left-color:#C0392B}
+.tcard[data-cat="klant"]{border-left-color:#1D9E75}
+.tcard[data-cat="bestelling"]{border-left-color:#D4872A}
+.tcard[data-cat="opvolging"]{border-left-color:#8B4FA8}
+.tcard[data-cat="andere"]{border-left-color:#64748B}
+/* Te lang open indicator */
+.tcard.te-lang-open{border-left-color:#D4872A!important;box-shadow:0 0 0 1px rgba(212,135,42,.2)}
 
 /* ── SUBTAKEN EDITOR ── */
 .sub-editor-rij{display:flex;align-items:center;gap:7px;padding:8px 10px;border-bottom:1px solid var(--gray-100)}
@@ -651,36 +671,6 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
         <p style="font-size:11px;color:var(--gray-500);margin-top:8px">Na opslaan herlaad je de pagina.</p>
       </div>
 
-      <div class="sc" style="grid-column:span 2">
-        <h4>💬 WhatsApp — Dagelijkse meldingen</h4>
-        <div class="banner bg2" style="margin-bottom:12px"><div>
-          ✅ <strong>CallMeBot actief</strong> — vul je nummer en API key in hieronder.<br>
-          Geen CallMeBot? Ga naar <strong>wa.me/34644527448</strong> en stuur <code>I allow callmebot to send me messages</code> — je krijgt een API key terug.
-        </div></div>
-        <div class="row3">
-          <div class="fg"><label>GSM-nummer (met +32...)</label><input type="text" id="s-phone" placeholder="+32497123456"></div>
-          <div class="fg"><label>CallMeBot API Key</label><input type="text" id="s-apikey" placeholder="abc123..."></div>
-          <div class="fg"><label>Verstuur dagelijks om</label><input type="time" id="s-tijd" value="08:00"></div>
-        </div>
-        <div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center">
-          <button class="btn btn-p" onclick="saveWhatsApp()">💾 Opslaan</button>
-          <button class="btn btn-s" onclick="testWhatsApp('groep')">📤 Test bericht sturen</button>
-          <span id="wa-result" style="font-size:13px"></span>
-        </div>
-        <!-- Hidden Green API velden (voor later) -->
-        <input type="hidden" id="s-green-instance" value="">
-        <input type="hidden" id="s-green-token" value="">
-      </div>
-
-      <div class="sc" style="grid-column:span 2">
-        <h4>📱 WhatsApp — Persoonlijke reminders</h4>
-        <div class="banner bg2" style="margin-bottom:14px"><div>
-          Elke collega kan haar eigen nummer instellen voor <strong>persoonlijke reminders</strong> — alleen zijzelf ziet die. Niemand anders.<br>
-          Activeer CallMeBot op je eigen gsm: stuur <code>I allow callmebot to send me messages</code> naar <strong>+34 644 52 74 48</strong>.
-        </div></div>
-        <div id="persoonlijk-wa-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px"></div>
-      </div>
-
       <div class="sc">
         <h4>📦 Data beheer</h4>
         <div style="display:flex;flex-direction:column;gap:8px">
@@ -845,6 +835,13 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
           <option value="tweewekelijks">🔁 Tweewekelijks</option>
           <option value="maandelijks">🔁 Maandelijks</option>
         </select>
+      </div>
+      <div class="fg"><label>🐾 Patiënt (optioneel)</label>
+        <div style="display:flex;gap:6px">
+          <input type="text" id="f-diersoort" placeholder="bv. Hond" style="flex:1">
+          <input type="text" id="f-diernaam" placeholder="bv. Rex" style="flex:1">
+          <input type="text" id="f-eigenaar" placeholder="Eigenaar" style="flex:1">
+        </div>
       </div>
       <div class="fg"><label>Fuga dossiernummer</label>
         <div style="display:flex;gap:6px;align-items:center">
@@ -1012,6 +1009,13 @@ header p{font-size:11px;color:#A8C4D8;margin-top:1px}
     </div>
     <div class="mdiv">Patiëntinfo (optioneel)</div>
     <div class="row3">
+      <div class="fg"><label>🐾 Patiënt (optioneel)</label>
+        <div style="display:flex;gap:6px">
+          <input type="text" id="f-diersoort" placeholder="bv. Hond" style="flex:1">
+          <input type="text" id="f-diernaam" placeholder="bv. Rex" style="flex:1">
+          <input type="text" id="f-eigenaar" placeholder="Eigenaar" style="flex:1">
+        </div>
+      </div>
       <div class="fg"><label>Fuga dossiernummer</label>
         <div style="display:flex;gap:6px;align-items:center">
           <input type="text" id="cm-dossier" placeholder="bv. 12345" style="flex:1" oninput="document.getElementById('cm-fuga-btn').style.display=this.value?'block':'none'">
@@ -1236,14 +1240,12 @@ function applyConfig(cfg){
   renderLoginNamen();
   if(cfg.namen&&cfg.namen.length)D.namen=cfg.namen;
   updatePersonSelects();
-  if(cfg.groep_phone){const el=document.getElementById('s-phone');if(el)el.value=cfg.groep_phone;}
-  if(cfg.groep_apikey){const el=document.getElementById('s-apikey');if(el)el.value=cfg.groep_apikey;}
-  if(cfg.groep_green_instance){const el=document.getElementById('s-green-instance');if(el)el.value=cfg.groep_green_instance;}
-  if(cfg.groep_green_token){const el=document.getElementById('s-green-token');if(el)el.value=cfg.groep_green_token;}
-  if(cfg.groep_tijd){const el=document.getElementById('s-tijd');if(el)el.value=cfg.groep_tijd;}
+
+
+
+
   if(cfg.namen){[1,2,3,4,5,6].forEach(i=>{const el=document.getElementById('sn'+i);if(el)el.value=cfg.namen[i-1]||'';});}
   if(cfg.templates) D.templates = cfg.templates;
-  renderPersoonlijkWA(cfg);
   renderPINBeheer();
   renderFugaInstellingen();
   renderBackupMailInstellingen(cfg);
@@ -1423,6 +1425,7 @@ function kaartHTML(t){
   if(t.verant)meta.push(`<span>👤 ${t.verant}</span>`);
   if(t.opvolger&&!t.overdracht)meta.push(`<span>🔄 ${t.opvolger}</span>`);
   if(t.deadline)meta.push(`<span>📅 ${fmtD(t.deadline)}${isDS(t.deadline)?' ⚠️':''}</span>`);
+  if(t.diersoort||t.diernaam||t.eigenaar){const p=[t.diersoort,t.diernaam].filter(Boolean).join(' ');const e=t.eigenaar?' — '+t.eigenaar:'';meta.push(`<span>🐾 ${p}${e}</span>`);}
   if(t.dossier)meta.push(`<span>📁 <a href="javascript:void(0)" onclick="openFugaDossier('${t.dossier}')" style="color:var(--navy);text-decoration:none;font-weight:500" title="Open in Fuga">${t.dossier} 🔗</a></span>`);
   const bel=t.belofte?`<div class="pbox">📞 ${t.belofte}</div>`:'';
   const sc=(t.subtaken||[]).length,sd=(t.subtaken||[]).filter(s=>s.done).length;
@@ -1434,9 +1437,11 @@ function kaartHTML(t){
     ${s.eigenaar&&!s.done?`<span class="subtaak-eigenaar">👤 ${s.eigenaar}</span>`:''}
     ${s.done&&s.afgevinktDoor?`<span class="subtaak-afgevinkt" style="text-decoration:none!important">✓ <em>uitgevoerd door:</em> <strong>${s.afgevinktDoor}</strong>${s.afgevinktTijd?' om '+s.afgevinktTijd:''}${s.afgevinktOp?' · '+s.afgevinktOp:''}</span>`:''}
   </div>`).join('');
-  const coms=(t.comments||[]).map(c=>`<div class="comment"><div class="cav">${(c.door||'?')[0]}</div><div class="cbody"><div class="cname">${c.door} <span class="ctime">· ${c.op}</span></div><div class="ctext">${c.tekst}</div></div></div>`).join('');
+  const coms=(t.comments||[]).map(c=>`<div class="comment"><div class="cav">${(c.door||'?')[0]}</div><div class="cbody"><div class="cname">${c.door} <span class="ctime">· ${c.op}</span></div><div class="ctext">${(c.tekst||'').replace(/@(\w+)/g,'<strong style="color:var(--navy)">@$1</strong>')}</div></div></div>`).join('');
   const cc=(t.comments||[]).length;
-  return `<div class="tcard ${t.status} ${pc}" id="tc-${t.id}">
+  const _opDate = t.op ? parseD(t.op) : null; const dagenOpen = _opDate ? Math.floor((Date.now() - _opDate.getTime()) / 864e5) : 0;
+  const teLang = t.status !== 'done' && dagenOpen > 3;
+  return `<div class="tcard ${t.status} ${pc} ${teLang?'te-lang-open':''}" data-cat="${t.cat||''}" id="tc-${t.id}">
     <div class="tcard-top"><div>
       <div class="ttop"><span class="tname">${t.naam}${vtag}${t.herhaling?`<span style="font-size:10px;background:#EEF4FF;color:var(--navy);padding:1px 6px;border-radius:10px;margin-left:5px;font-weight:500">🔁 ${t.herhaling}</span>`:''}</span>${badge}${catB}${prioB}</div>
       <div class="tmeta">${meta.join('')}${sc?`<div style="display:flex;align-items:center;gap:5px;margin-top:3px"><div style="width:60px;height:4px;background:var(--gray-100);border-radius:2px;overflow:hidden"><div style="height:100%;width:${subPct}%;background:${subPct===100?'var(--green)':'var(--navy)'};border-radius:2px"></div></div><span style="font-size:10px;color:${subPct===100?'var(--green)':'var(--gray-500)'}">${sd}/${sc}${subPct===100?' ✅':''}</span></div>`:''}</div>
@@ -1450,7 +1455,7 @@ function kaartHTML(t){
       <button class="ibtn" onclick="delTaak('${t.id}')">🗑️</button>
     </div></div>
     ${sc?`<div class="subtaken">${subs}</div>`:''}
-    <div class="comments" id="com-${t.id}">${coms}<div class="cadd"><input type="text" id="ci-${t.id}" placeholder="Reactie..." onkeydown="if(event.key==='Enter')addComment('${t.id}')"><button onclick="addComment('${t.id}')">Stuur</button></div></div>
+    <div class="comments" id="com-${t.id}">${coms}<div class="cadd"><input type="text" id="ci-${t.id}" placeholder="Reactie... (@naam om iemand te taggen)" onkeydown="if(event.key==='Enter')addComment('${t.id}')"><button onclick="addComment('${t.id}')">Stuur</button></div></div>
   </div>`;
 }
 
@@ -1518,6 +1523,14 @@ async function addComment(id){
   t.comments.push({id:uid(),door:user,tekst,op:vandaag()});
   t.gdoor=user;t.gop=vandaag();inp.value='';
   await sla('💬 Reactie toegevoegd');
+  // FIX 7: @vermelding → push notificatie
+  const namen = D.namen || [];
+  const vermeld = namen.filter(n => new RegExp('@'+n,'i').test(tekst));
+  vermeld.forEach(naam => {
+    if(naam !== user){
+      fetch('/api/push/notify-assign',{method:'POST',...h(),body:JSON.stringify({naam,taakNaam:'@vermelding door '+user+': '+tekst.slice(0,60),door:user})}).catch(()=>{});
+    }
+  });
 }
 // ── SUBTAKEN EDITOR ──────────────────────────────────────────
 function voegSubtaakToe(tekst, eigenaar) {
@@ -1676,11 +1689,14 @@ function openModal(id){
     document.getElementById('f-belofte').value=t.belofte||'';document.getElementById('f-deadline').value=t.deadline||'';
     document.getElementById('f-dossier').value=t.dossier||'';
     const fherh=document.getElementById('f-herhaling');if(fherh)fherh.value=t.herhaling||'';
+    if(document.getElementById('f-diersoort'))document.getElementById('f-diersoort').value=t.diersoort||'';
+    if(document.getElementById('f-diernaam'))document.getElementById('f-diernaam').value=t.diernaam||'';
+    if(document.getElementById('f-eigenaar'))document.getElementById('f-eigenaar').value=t.eigenaar||'';
     const fugaBtn=document.getElementById('f-fuga-btn');
     if(fugaBtn) fugaBtn.style.display=t.dossier?'block':'none';document.getElementById('f-opmerking').value=t.opmerking||'';
     laadSubtakenInEditor(t.subtaken||[]);
   }else{
-    ['f-naam','f-belofte','f-opvolger','f-verant','f-opmerking','f-dossier','f-deadline','f-herhaling'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';});
+    ['f-naam','f-belofte','f-opvolger','f-verant','f-opmerking','f-dossier','f-deadline','f-herhaling','f-diersoort','f-diernaam','f-eigenaar'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';});
     laadSubtakenInEditor([]);
     document.getElementById('f-status').value='waiting';document.getElementById('f-prio').value='';document.getElementById('f-cat').value='';
     vulPersoonDropdowns('f-verant','f-opvolger');
@@ -1690,6 +1706,13 @@ function openModal(id){
   }
   document.getElementById('modal').style.display='flex';
   setTimeout(()=>document.getElementById('f-naam').focus(),50);
+}
+
+const MEDICIJNEN = ['amoxicilline','metacam','meloxicam','antibiotica','antibioticum','vaccin','rabies','noroclav','synulox','clavaseptin','prednisolon','cortisone','insuline','frontline','milbemax','drontal','panacur','baytril','marbocyl','convenia','onsior','cerenia','buprenorfine','ketamine','propofol','isoflurane'];
+
+function checkMedicatie(tekst) {
+  const lower = tekst.toLowerCase();
+  return MEDICIJNEN.find(m => lower.includes(m));
 }
 
 async function saveTask(){
@@ -1709,11 +1732,32 @@ async function saveTask(){
       afgevinktTijd: bestaand?.afgevinktTijd || null
     };
   }) : (oud&&oud.subtaken ? oud.subtaken : []);
-  const taak={id:editTId||uid(),naam,status:document.getElementById('f-status').value,prio:document.getElementById('f-prio').value,cat:document.getElementById('f-cat').value,verant:document.getElementById('f-verant').value.trim(),opvolger:document.getElementById('f-opvolger').value.trim(),belofte:document.getElementById('f-belofte').value.trim(),deadline:document.getElementById('f-deadline').value,dossier:document.getElementById('f-dossier').value.trim(),opmerking:document.getElementById('f-opmerking').value.trim(),herhaling:document.getElementById('f-herhaling')?.value||'',subtaken,comments:oud?oud.comments||[]:[],overdracht:oud?oud.overdracht:false,door:oud?oud.door:(user||'onbekend'),op:oud?oud.op:vandaag(),gdoor:editTId?(user||'onbekend'):null,gop:editTId?vandaag():null};
+  const taak={id:editTId||uid(),naam,status:document.getElementById('f-status').value,prio:document.getElementById('f-prio').value,cat:document.getElementById('f-cat').value,verant:document.getElementById('f-verant').value.trim(),opvolger:document.getElementById('f-opvolger').value.trim(),belofte:document.getElementById('f-belofte').value.trim(),deadline:document.getElementById('f-deadline').value,dossier:document.getElementById('f-dossier').value.trim(),opmerking:document.getElementById('f-opmerking').value.trim(),herhaling:document.getElementById('f-herhaling')?.value||'',diersoort:document.getElementById('f-diersoort')?.value.trim()||'',diernaam:document.getElementById('f-diernaam')?.value.trim()||'',eigenaar:document.getElementById('f-eigenaar')?.value.trim()||'',subtaken,comments:oud?oud.comments||[]:[],overdracht:oud?oud.overdracht:false,door:oud?oud.door:(user||'onbekend'),op:oud?oud.op:vandaag(),gdoor:editTId?(user||'onbekend'):null,gop:editTId?vandaag():null};
   const _oudeVerant=oud?.verant;
   if(editTId)D.taken=D.taken.map(t=>t.id===editTId?taak:t);else D.taken.unshift(taak);
   cm('modal');await sla('✅ Taak opgeslagen');
   if(taak.verant&&taak.verant!==user&&taak.verant!==_oudeVerant){fetch('/api/push/notify-assign',{method:'POST',...h(),body:JSON.stringify({naam:taak.verant,taakNaam:taak.naam,door:user})}).catch(()=>{});}
+  // FIX 9: Medicatie waarschuwing
+  if(!editTId){
+    const med = checkMedicatie(taak.naam + ' ' + (taak.opmerking||''));
+    if(med){
+      setTimeout(() => {
+        if(confirm(`💊 "${med}" gedetecteerd in deze taak.\n\nWil je een herinnering toevoegen om de voorraad te controleren?`)){
+          const herinnering = {
+            id: uid(),
+            titel: 'Voorraad ' + med + ' controleren',
+            datum: new Date(Date.now()+2*864e5).toISOString().split('T')[0],
+            voor: user || 'Iedereen',
+            type: 'eenmalig',
+            opmerking: 'Automatisch aangemaakt n.a.v. taak: ' + taak.naam
+          };
+          if(!D.herinneringen) D.herinneringen = [];
+          D.herinneringen.unshift(herinnering);
+          sla('💊 Voorraad-herinnering toegevoegd');
+        }
+      }, 500);
+    }
+  }
 }
 
 async function delTaak(id){
@@ -1734,6 +1778,25 @@ async function delTaak(id){
   t.verwijderdOp=Date.now();
   t.gdoor=user;t.gop=vandaag();
   await sla('🗑️ Taak verwijderd — blijft 48u zichtbaar');
+}
+
+async function dupliceerTaak(id) {
+  const t = D.taken.find(x => x.id === id);
+  if (!t) return;
+  const kopie = {
+    ...t,
+    id: uid(),
+    naam: t.naam + ' (kopie)',
+    status: 'waiting',
+    subtaken: (t.subtaken||[]).map(s => ({...s, done:false, afgevinktDoor:null, afgevinktOp:null, afgevinktTijd:null})),
+    comments: [],
+    door: user || 'onbekend',
+    op: vandaag(),
+    gdoor: null, gop: null,
+    verwijderd: false, verwijderdDoor: null, verwijderdOp: null
+  };
+  D.taken.unshift(kopie);
+  await sla('📑 Taak gedupliceerd');
 }
 
 async function herstelTaak(id) {
@@ -1786,105 +1849,15 @@ async function saveWachtwoord(){
   toast('🔒 Wachtwoord bijgewerkt');document.getElementById('s-pw').value='';document.getElementById('s-pw-confirm').value='';
 }
 
-async function saveWhatsApp(){
-  const body={
-    groep_phone:document.getElementById('s-phone').value.trim(),
-    groep_apikey:document.getElementById('s-apikey')?.value.trim()||'',
-    groep_green_instance:document.getElementById('s-green-instance')?.value.trim()||'',
-    groep_green_token:document.getElementById('s-green-token')?.value.trim()||'',
-    groep_tijd:document.getElementById('s-tijd').value
-  };
-  const r=await fetch('/api/config',{method:'POST',...h(),body:JSON.stringify(body)});
-  if(r.ok)toast('💾 WhatsApp instellingen opgeslagen');else toast('⚠️ Opslaan mislukt');
-}
 
-async function testWhatsApp(type){
-  const el=document.getElementById('wa-result');
-  el.textContent='⏳ Sturen...';
-  let body={};
-  if(type==='groep'){
-    body={
-      phone:document.getElementById('s-phone').value.trim(),
-      apikey:document.getElementById('s-apikey')?.value.trim()||'',
-      green_instance:document.getElementById('s-green-instance')?.value.trim()||'',
-      green_token:document.getElementById('s-green-token')?.value.trim()||'',
-      naam:'het team'
-    };
-  }
-  const r=await fetch('/api/whatsapp-test',{method:'POST',...h(),body:JSON.stringify(body)});
-  const d=await r.json();
-  if(d.skip)el.innerHTML='<span style="color:var(--amber)">⚠️ Vul Instance ID, Token en nummer in.</span>';
-  else if(d.ok)el.innerHTML='<span style="color:var(--green)">✅ Verstuurd!</span>';
-  else el.innerHTML=`<span style="color:var(--red)">⚠️ ${d.error||'Mislukt'}</span>`;
-}
 
-function renderPersoonlijkWA(config) {
-  const namen = D.namen || ['Karen','Alexandra','Sylvie','Jade'];
-  const pers = config.persoonlijk || {};
-  const el = document.getElementById('persoonlijk-wa-grid');
-  if (!el) return;
-  el.innerHTML = namen.filter(n => n !== 'Andere').map(naam => {
-    const inst = pers[naam] || {};
-    return `<div style="background:var(--gray-50);border:1px solid var(--gray-200);border-radius:9px;padding:14px">
-      <div style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;gap:7px">
-        <div style="width:28px;height:28px;border-radius:50%;background:var(--navy);color:white;display:flex;align-items:center;justify-content:center;font-size:12px">${naam[0]}</div>
-        ${naam}
-      </div>
-      <div class="fg"><label>GSM-nummer</label>
-        <input type="text" id="pw-phone-${naam}" value="${inst.phone||''}" placeholder="+32497...">
-      </div>
-      <div class="fg"><label>API Key</label>
-        <input type="text" id="pw-key-${naam}" value="${inst.apikey||''}" placeholder="Van CallMeBot">
-      </div>
-      <div class="fg"><label>Reminder om</label>
-        <input type="time" id="pw-tijd-${naam}" value="${inst.reminder_tijd||'08:00'}">
-      </div>
-      <div style="font-size:12px;color:var(--gray-500);margin-bottom:8px">
-        <label style="display:flex;align-items:center;gap:5px;cursor:pointer">
-          <input type="checkbox" id="pw-taken-${naam}" ${inst.reminders_taken!==false?'checked':''}> Eigen taken & deadlines
-        </label>
-        <label style="display:flex;align-items:center;gap:5px;cursor:pointer;margin-top:4px">
-          <input type="checkbox" id="pw-herin-${naam}" ${inst.reminders_herinneringen!==false?'checked':''}> Herinneringen
-        </label>
-      </div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap">
-        <button class="btn btn-p" style="font-size:12px;padding:5px 11px" onclick="savePersoonlijkWA('${naam}')">💾 Opslaan</button>
-        <button class="btn btn-s" style="font-size:12px;padding:5px 11px" onclick="testPersoonlijkWA('${naam}')">📤 Test</button>
-      </div>
-      <div id="pw-result-${naam}" style="font-size:12px;margin-top:6px"></div>
-    </div>`;
-  }).join('');
-}
 
-async function savePersoonlijkWA(naam) {
-  const huidigConfig = await fetch('/api/config',{headers:{'x-praktijk-pw':pw}}).then(r=>r.json());
-  const pers = huidigConfig.persoonlijk || {};
-  pers[naam] = {
-    phone: document.getElementById(`pw-phone-${naam}`).value.trim(),
-    apikey: document.getElementById(`pw-key-${naam}`).value.trim(),
-    green_instance: document.getElementById(`pw-instance-${naam}`)?.value.trim()||'',
-    green_token: '',
-    reminder_tijd: document.getElementById(`pw-tijd-${naam}`).value,
-    reminders_taken: document.getElementById(`pw-taken-${naam}`).checked,
-    reminders_herinneringen: document.getElementById(`pw-herin-${naam}`).checked,
-  };
-  const r = await fetch('/api/config',{method:'POST',...h(),body:JSON.stringify({persoonlijk:pers})});
-  const el = document.getElementById(`pw-result-${naam}`);
-  if(r.ok){el.innerHTML='<span style="color:var(--green)">✅ Opgeslagen</span>';}
-  else{el.innerHTML='<span style="color:var(--red)">⚠️ Mislukt</span>';}
-}
 
-async function testPersoonlijkWA(naam) {
-  const el = document.getElementById(`pw-result-${naam}`);
-  el.textContent = '⏳ Sturen...';
-  const phone = document.getElementById(`pw-phone-${naam}`).value.trim();
-  const apikey = document.getElementById(`pw-key-${naam}`).value.trim();
-  const r = await fetch('/api/whatsapp-test',{method:'POST',...h(),body:JSON.stringify({phone,apikey,naam})});
-  const d = await r.json();
-  if(d.skip)el.innerHTML='<span style="color:var(--amber)">⚠️ Vul nummer en key in.</span>';
-  else if(d.ok)el.innerHTML='<span style="color:var(--green)">✅ Verstuurd naar '+naam+'!</span>';
-  else el.innerHTML=`<span style="color:var(--red)">⚠️ ${d.error||'Mislukt'}</span>`;
-}
+
+
+
+
+
 
 async function saveNamen(){
   const namen=[1,2,3,4,5,6].map(i=>document.getElementById('sn'+i).value.trim()).filter(Boolean);
@@ -2645,6 +2618,64 @@ function toonInstallHint() {
   }
 }
 window.addEventListener('load', toonInstallHint);
+
+// FIX 5: Swipe op mobiel (rechts=afvinken, links=verwijderen)
+let touchStartX = 0, touchStartY = 0, touchCard = null;
+document.addEventListener('touchstart', (e) => {
+  const card = e.target.closest('.tcard');
+  if (card && !card.classList.contains('verwijderd')) {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchCard = card;
+  }
+}, {passive:true});
+
+document.addEventListener('touchend', (e) => {
+  if (!touchCard) return;
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  const dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
+  // Alleen horizontale swipe (niet scrollen)
+  if (Math.abs(dx) > 90 && dy < 50) {
+    const id = touchCard.id?.replace('tc-','');
+    if (id) {
+      if (dx > 0) {
+        // Swipe rechts = afvinken
+        snelKlaar(id);
+      } else {
+        // Swipe links = verwijderen
+        delTaak(id);
+      }
+    }
+  }
+  touchCard = null;
+}, {passive:true});
+
+// FIX 1: / snelzoeken keyboard shortcut
+document.addEventListener('keydown', (e) => {
+  // Negeer als in input/textarea
+  if (e.target.matches('input,textarea,select')) return;
+  // FIX 3: Ctrl+Enter opslaan in modal
+  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+    const modal = document.getElementById('modal');
+    if (modal && modal.style.display === 'flex') {
+      e.preventDefault();
+      saveTask();
+      return;
+    }
+  }
+  if (e.key === '/') {
+    e.preventDefault();
+    const zoek = document.getElementById('zoek');
+    if (zoek && document.getElementById('page-taken').classList.contains('active')) {
+      zoek.focus();
+    } else if (zoek) {
+      // Ga naar lijst en focus
+      const tab = document.querySelectorAll('.ntab')[1];
+      if (tab) goPage('taken', tab);
+      setTimeout(() => zoek.focus(), 100);
+    }
+  }
+});
 </script>
 <script src="teamfeed.js"></script>
 <script src="vergadering.js"></script>
