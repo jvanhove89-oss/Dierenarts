@@ -1455,7 +1455,7 @@ function kaartHTML(t){
       <button class="ibtn" onclick="delTaak('${t.id}')">🗑️</button>
     </div></div>
     ${sc?`<div class="subtaken">${subs}</div>`:''}
-    <div class="comments" id="com-${t.id}">${coms}<div class="cadd"><input type="text" id="ci-${t.id}" placeholder="Reactie... (@naam om iemand te taggen)" onkeydown="if(event.key==='Enter')addComment('${t.id}')"><button onclick="addComment('${t.id}')">Stuur</button></div></div>
+    <div class="comments" id="com-${t.id}">${coms}<div class="cadd"><input type="text" id="ci-${t.id}" placeholder="Reactie... (@naam om iemand te taggen)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-1p-ignore data-lpignore="true" onkeydown="if(event.key==='Enter')addComment('${t.id}')"><button onclick="addComment('${t.id}')">Stuur</button></div></div>
   </div>`;
 }
 
