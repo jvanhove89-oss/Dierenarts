@@ -32,6 +32,12 @@
           "door": "Karen",
           "tekst": "@karen dit werk niet",
           "op": "16/06/2026"
+        },
+        {
+          "id": "mqgj3cx6dzpj",
+          "door": "Karen",
+          "tekst": "@karen testen of dit gaat",
+          "op": "16/06/2026"
         }
       ],
       "overdracht": false,
@@ -162,5 +168,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "16/06/2026",
-  "serverTijd": "2026-06-16T10:54:03.431Z"
+  "serverTijd": "2026-06-16T10:57:59.133Z"
 }
