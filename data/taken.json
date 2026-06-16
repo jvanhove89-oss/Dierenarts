@@ -146,25 +146,6 @@
     "Sylvie",
     "Jade"
   ],
-  "templates": [
-    {
-      "naam": "Test",
-      "omschrijving": "mail sturen naar de eigenaar",
-      "cat": "onderzoek",
-      "prio": "",
-      "status": "waiting",
-      "verant": "",
-      "opvolger": "",
-      "belofte": "trollen",
-      "opmerking": "bollen",
-      "subtaken": [
-        "A",
-        "B",
-        "C",
-        "B"
-      ]
-    }
-  ],
   "feed": [],
   "casussen": [],
   "vergadering": {
@@ -176,5 +157,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Sylvie",
   "laatstBijgewerkt": "16/06/2026",
-  "serverTijd": "2026-06-16T11:58:11.997Z"
+  "serverTijd": "2026-06-16T16:15:22.993Z"
 }
