@@ -1,0 +1,44 @@
+{
+  "wachtwoord": "praktijk2024",
+  "namen": [
+    "Karen",
+    "Alexandra",
+    "Sylvie",
+    "Jade"
+  ],
+  "templates": [
+    {
+      "naam": "Test",
+      "omschrijving": "mail sturen naar de eigenaar",
+      "cat": "onderzoek",
+      "prio": "",
+      "status": "waiting",
+      "verant": "",
+      "opvolger": "",
+      "belofte": "trollen",
+      "opmerking": "bollen",
+      "subtaken": [
+        "A",
+        "B",
+        "C",
+        "B"
+      ]
+    },
+    {
+      "naam": "bloedtest",
+      "omschrijving": "boeha",
+      "cat": "medicatie",
+      "prio": "",
+      "status": "waiting",
+      "verant": "Karen",
+      "opvolger": "",
+      "belofte": "boeha",
+      "opmerking": "boeha",
+      "subtaken": [
+        "boeha1",
+        "boeha 2",
+        "Tralalala"
+      ]
+    }
+  ]
+}
