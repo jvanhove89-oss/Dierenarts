@@ -7,7 +7,7 @@
       "prio": "med",
       "cat": "",
       "verant": "Karen",
-      "opvolger": "",
+      "opvolger": "Jade",
       "belofte": "Bellen met de uitslag.",
       "deadline": "",
       "dossier": "",
@@ -51,8 +51,8 @@
       "overdracht": false,
       "door": "Sylvie",
       "op": "16/06/2026",
-      "gdoor": null,
-      "gop": null
+      "gdoor": "Sylvie",
+      "gop": "16/06/2026"
     },
     {
       "id": "mqf6zh6xed7x",
@@ -176,5 +176,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Sylvie",
   "laatstBijgewerkt": "16/06/2026",
-  "serverTijd": "2026-06-16T11:57:45.633Z"
+  "serverTijd": "2026-06-16T11:58:09.175Z"
 }
