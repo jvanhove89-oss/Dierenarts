@@ -26,12 +26,19 @@
           "afgevinktTijd": null
         }
       ],
-      "comments": [],
+      "comments": [
+        {
+          "id": "mqgiyb1khp8n",
+          "door": "Karen",
+          "tekst": "@karen dit werk niet",
+          "op": "16/06/2026"
+        }
+      ],
       "overdracht": false,
       "door": "Karen",
       "op": "16/06/2026",
-      "gdoor": null,
-      "gop": null
+      "gdoor": "Karen",
+      "gop": "16/06/2026"
     },
     {
       "id": "mqf6zh6xed7x",
@@ -155,5 +162,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "16/06/2026",
-  "serverTijd": "2026-06-16T10:53:05.372Z"
+  "serverTijd": "2026-06-16T10:54:03.431Z"
 }
