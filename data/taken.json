@@ -1,6 +1,39 @@
 {
   "taken": [
     {
+      "id": "mqgix28owt96",
+      "naam": "test",
+      "status": "waiting",
+      "prio": "",
+      "cat": "bestelling",
+      "verant": "Karen",
+      "opvolger": "",
+      "belofte": "test",
+      "deadline": "",
+      "dossier": "",
+      "opmerking": "test",
+      "herhaling": "",
+      "diersoort": "Kat",
+      "diernaam": "Poes",
+      "eigenaar": "Jimmy B",
+      "subtaken": [
+        {
+          "tekst": "test",
+          "eigenaar": "Karen",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        }
+      ],
+      "comments": [],
+      "overdracht": false,
+      "door": "Karen",
+      "op": "16/06/2026",
+      "gdoor": null,
+      "gop": null
+    },
+    {
       "id": "mqf6zh6xed7x",
       "naam": "Aerts Kyara",
       "status": "waiting",
@@ -120,7 +153,7 @@
     "notities": ""
   },
   "vergaderingArchief": [],
-  "bijgewerktDoor": "Sylvie",
+  "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "16/06/2026",
-  "serverTijd": "2026-06-16T08:49:15.990Z"
+  "serverTijd": "2026-06-16T10:53:05.372Z"
 }
