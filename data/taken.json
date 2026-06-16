@@ -1,55 +1,6 @@
 {
   "taken": [
     {
-      "id": "mqgix28owt96",
-      "naam": "test",
-      "status": "waiting",
-      "prio": "",
-      "cat": "bestelling",
-      "verant": "Karen",
-      "opvolger": "",
-      "belofte": "test",
-      "deadline": "",
-      "dossier": "",
-      "opmerking": "test",
-      "herhaling": "",
-      "diersoort": "Kat",
-      "diernaam": "Poes",
-      "eigenaar": "Jimmy B",
-      "subtaken": [
-        {
-          "tekst": "test",
-          "eigenaar": "Karen",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
-        }
-      ],
-      "comments": [
-        {
-          "id": "mqgiyb1khp8n",
-          "door": "Karen",
-          "tekst": "@karen dit werk niet",
-          "op": "16/06/2026"
-        },
-        {
-          "id": "mqgj3cx6dzpj",
-          "door": "Karen",
-          "tekst": "@karen testen of dit gaat",
-          "op": "16/06/2026"
-        }
-      ],
-      "overdracht": false,
-      "door": "Karen",
-      "op": "16/06/2026",
-      "gdoor": "Karen",
-      "gop": "16/06/2026",
-      "verwijderd": true,
-      "verwijderdDoor": "Karen",
-      "verwijderdOp": 1781607744686
-    },
-    {
       "id": "mqf6zh6xed7x",
       "naam": "Aerts Kyara",
       "status": "waiting",
@@ -171,5 +122,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "16/06/2026",
-  "serverTijd": "2026-06-16T11:03:03.789Z"
+  "serverTijd": "2026-06-16T11:03:05.684Z"
 }
