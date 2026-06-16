@@ -154,14 +154,7 @@ function readConfig() {
     const init = {
       wachtwoord: 'praktijk2024',
       namen: ['Karen','Alexandra','Sylvie','Jade'],
-      templates: [],
-      // Groep WhatsApp (dagelijks overzicht)
-      groep_apikey: '',
-      groep_phone: '',
-      groep_tijd: '08:00',
-      // Persoonlijke nummers per collega
-      // { naam: { phone, apikey, reminders_deadline, reminders_herinneringen } }
-      persoonlijk: {}
+      templates: []
     };
     fs.writeFileSync(CONFIG_FILE, JSON.stringify(init, null, 2));
     return init;
@@ -177,170 +170,8 @@ function auth(req, res, next) {
   res.status(401).json({ error: 'Ongeldig wachtwoord' });
 }
 
-// ── WHATSAPP VIA GREEN API ────────────────────────────────────
-function stuurWhatsApp(phone, token, tekst, idInstance) {
-  // Ondersteunt zowel CallMeBot (legacy) als Green API
-  if (!phone) return Promise.resolve({ skip: true });
-
-  // Green API formaat
-  if (idInstance && token) {
-    const chatId = phone.replace('+', '').replace(/\s/g, '') + '@c.us';
-    const url = `https://api.green-api.com/waInstance${idInstance}/sendMessage/${token}`;
-    const body = JSON.stringify({ chatId, message: tekst });
-    return new Promise((resolve) => {
-      const req = require('https').request(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) }
-      }, (r) => {
-        let data = '';
-        r.on('data', d => data += d);
-        r.on('end', () => resolve({ ok: r.statusCode === 200, status: r.statusCode, body: data }));
-      });
-      req.on('error', e => resolve({ error: e.message }));
-      req.write(body);
-      req.end();
-    });
-  }
-
-  // CallMeBot fallback (legacy)
-  if (token) {
-    const msg = encodeURIComponent(tekst);
-    const url = `https://api.callmebot.com/whatsapp.php?phone=${phone}&text=${msg}&apikey=${token}`;
-    return new Promise((resolve) => {
-      https.get(url, (r) => {
-        let data = '';
-        r.on('data', d => data += d);
-        r.on('end', () => resolve({ ok: true, status: r.statusCode }));
-      }).on('error', e => resolve({ error: e.message }));
-    });
-  }
-
-  return Promise.resolve({ skip: true });
-}
-
-// Helper: haal Green API config op
-function getGreenApiConfig(config, naam) {
-  // Groep of persoonlijk
-  if (naam && config.persoonlijk && config.persoonlijk[naam]) {
-    const p = config.persoonlijk[naam];
-    return {
-      phone: p.phone,
-      token: p.green_token || p.apikey,
-      idInstance: p.green_instance || null
-    };
-  }
-  return {
-    phone: config.groep_phone,
-    token: config.groep_green_token || config.groep_apikey,
-    idInstance: config.groep_green_instance || null
-  };
-}
-
-// ── DAGELIJKSE GROEPSMELDING ──────────────────────────────────
-let laasteGroepCheck = '';
-
-function groepCheck() {
-  const config = readConfig();
-  if (!config.groep_apikey || !config.groep_phone) return;
-
-  const nu = new Date();
-  const tijdStip = `${String(nu.getHours()).padStart(2,'0')}:${String(nu.getMinutes()).padStart(2,'0')}`;
-  const gewenstTijd = config.groep_tijd || '08:00';
-  const dagKey = `groep-${nu.toDateString()}-${gewenstTijd}`;
-
-  if (tijdStip !== gewenstTijd || laasteGroepCheck === dagKey) return;
-  laasteGroepCheck = dagKey;
-
-  const data = readData();
-  const today = new Date(); today.setHours(0,0,0,0);
-
-  const deadline = data.taken.filter(t => {
-    if (!t.deadline || t.status === 'done') return false;
-    const d = new Date(t.deadline); d.setHours(0,0,0,0);
-    return (d - today) / 864e5 <= 1;
-  });
-  const urgent = data.taken.filter(t => t.status === 'urgent');
-  const herin = (data.herinneringen || []).filter(r => {
-    if (!r.datum) return false;
-    const d = new Date(r.datum); d.setHours(0,0,0,0);
-    return d.getTime() === today.getTime();
-  });
-
-  if (!deadline.length && !urgent.length && !herin.length) return;
-
-  let bericht = `🐾 *Praktijkbord – dagelijks overzicht*\n\n`;
-  if (urgent.length) bericht += `🔴 *Urgent (${urgent.length})*\n${urgent.map(t=>`• ${t.naam} (${t.verant||'?'})`).join('\n')}\n\n`;
-  if (deadline.length) bericht += `⏰ *Deadline vandaag/morgen*\n${deadline.map(t=>`• ${t.naam}`).join('\n')}\n\n`;
-  if (herin.length) bericht += `🔔 *Herinneringen*\n${herin.map(r=>`• ${r.titel}`).join('\n')}\n\n`;
-  bericht += `👉 https://dierenarts.onrender.com`;
-
-  const gc = getGreenApiConfig(config, null);
-  stuurWhatsApp(gc.phone, gc.token, bericht, gc.idInstance)
-    .then(r => console.log('Groep WhatsApp:', r));
-}
-
-// ── PERSOONLIJKE REMINDERS ────────────────────────────────────
-const laatstePersoonlijk = {};
-
-function persoonlijkCheck() {
-  const config = readConfig();
-  const persoonlijk = config.persoonlijk || {};
-  if (!Object.keys(persoonlijk).length) return;
-
-  const nu = new Date();
-  const tijdStip = `${String(nu.getHours()).padStart(2,'0')}:${String(nu.getMinutes()).padStart(2,'0')}`;
-  const data = readData();
-  const today = new Date(); today.setHours(0,0,0,0);
-
-  Object.entries(persoonlijk).forEach(([naam, instellingen]) => {
-    if (!instellingen.phone || !instellingen.apikey) return;
-
-    const reminderTijd = instellingen.reminder_tijd || '08:00';
-    const dagKey = `${naam}-${nu.toDateString()}-${reminderTijd}`;
-    if (tijdStip !== reminderTijd || laatstePersoonlijk[dagKey]) return;
-    laatstePersoonlijk[dagKey] = true;
-
-    const berichten = [];
-
-    // Taken waar deze persoon verantwoordelijke of opvolger is
-    if (instellingen.reminders_taken !== false) {
-      const mijnTaken = data.taken.filter(t =>
-        (t.verant === naam || t.opvolger === naam) && t.status !== 'done'
-      );
-      const urgent = mijnTaken.filter(t => t.status === 'urgent');
-      const deadline = mijnTaken.filter(t => {
-        if (!t.deadline) return false;
-        const d = new Date(t.deadline); d.setHours(0,0,0,0);
-        return (d - today) / 864e5 <= 1;
-      });
-      if (urgent.length) berichten.push(`🔴 ${urgent.length} urgente taak${urgent.length>1?'en':''}`);
-      if (deadline.length) berichten.push(`⏰ ${deadline.length} deadline vandaag/morgen`);
-    }
-
-    // Herinneringen voor deze persoon
-    if (instellingen.reminders_herinneringen !== false) {
-      const herinVandaag = (data.herinneringen || []).filter(r => {
-        if (!r.datum) return false;
-        if (r.voor && r.voor !== naam && r.voor !== 'Iedereen' && r.voor !== '') return false;
-        const d = new Date(r.datum); d.setHours(0,0,0,0);
-        return d.getTime() === today.getTime();
-      });
-      if (herinVandaag.length) berichten.push(`🔔 ${herinVandaag.length} herinnering${herinVandaag.length>1?'en':''} vandaag`);
-    }
-
-    if (!berichten.length) return;
-
-    const bericht = `🐾 *Goeiemorgen ${naam}!*\n\n${berichten.join('\n')}\n\n👉 https://dierenarts.onrender.com`;
-    const pc = getGreenApiConfig(config, naam);
-    stuurWhatsApp(pc.phone, pc.token, bericht, pc.idInstance)
-      .then(r => console.log(`Persoonlijk WhatsApp ${naam}:`, r));
-  });
-}
-
 // Elke minuut checken
 setInterval(() => {
-  groepCheck();
-  persoonlijkCheck();
   backupMailCheck();
   herhalingCheck();
 }, 60000);
@@ -490,17 +321,7 @@ app.get('/api/config-backup', auth, (req, res) => {
   catch(e) { res.status(500).json({ error: e.message }); }
 });
 
-// ── WHATSAPP TEST ─────────────────────────────────────────────
-app.post('/api/whatsapp-test', auth, async (req, res) => {
-  const { phone, apikey, naam, green_instance, green_token } = req.body;
-  const config = readConfig();
-  const p = phone || config.groep_phone;
-  const k = green_token || apikey || config.groep_green_token || config.groep_apikey;
-  const inst = green_instance || config.groep_green_instance || null;
-  const ontvanger = naam || 'het team';
-  const result = await stuurWhatsApp(p, k, `🐾 Testbericht voor ${ontvanger} — het Praktijkbord werkt!`, inst);
-  res.json(result);
-});
+
 
 
 // ── PUSH NOTIFICATIES ────────────────────────────────────────
