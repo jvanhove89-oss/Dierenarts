@@ -1,6 +1,60 @@
 {
   "taken": [
     {
+      "id": "mqgl8871rnvy",
+      "naam": "Labo onderzoek van Verhaert Thor (punctie)",
+      "status": "waiting",
+      "prio": "med",
+      "cat": "",
+      "verant": "Karen",
+      "opvolger": "",
+      "belofte": "Bellen met de uitslag.",
+      "deadline": "",
+      "dossier": "",
+      "opmerking": "",
+      "herhaling": "",
+      "subtaken": [
+        {
+          "tekst": "Punctie naar het labo",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "uitslag bekeken",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "medicatie klaargelegd",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "uitslag doorgeven aan de klant",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        }
+      ],
+      "comments": [],
+      "overdracht": false,
+      "door": "Sylvie",
+      "op": "16/06/2026",
+      "gdoor": null,
+      "gop": null
+    },
+    {
       "id": "mqf6zh6xed7x",
       "naam": "Aerts Kyara",
       "status": "waiting",
@@ -120,7 +174,7 @@
     "notities": ""
   },
   "vergaderingArchief": [],
-  "bijgewerktDoor": "Karen",
+  "bijgewerktDoor": "Sylvie",
   "laatstBijgewerkt": "16/06/2026",
-  "serverTijd": "2026-06-16T11:03:05.684Z"
+  "serverTijd": "2026-06-16T11:57:45.633Z"
 }
