@@ -17,10 +17,10 @@
         {
           "tekst": "Punctie naar het labo",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Sylvie",
+          "afgevinktOp": "16/06/2026",
+          "afgevinktTijd": "13:58"
         },
         {
           "tekst": "uitslag bekeken",
@@ -176,5 +176,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Sylvie",
   "laatstBijgewerkt": "16/06/2026",
-  "serverTijd": "2026-06-16T11:58:09.175Z"
+  "serverTijd": "2026-06-16T11:58:11.997Z"
 }
