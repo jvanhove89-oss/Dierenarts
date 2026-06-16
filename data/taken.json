@@ -41,26 +41,47 @@
       "deadline": "",
       "dossier": "",
       "opmerking": "Was Giardia -",
+      "herhaling": "",
       "subtaken": [
         {
           "tekst": "giardia snap",
-          "done": true
+          "eigenaar": "",
+          "done": true,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
         },
         {
           "tekst": "bacteriologie uitslag",
-          "done": false
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
         },
         {
           "tekst": "opvolging medicatie naar huis",
-          "done": false
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "mailen met de uitslag",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
         }
       ],
       "comments": [],
       "overdracht": false,
       "door": "Sylvie",
       "op": "15/06/2026",
-      "gdoor": "Karen",
-      "gop": "15/06/2026"
+      "gdoor": "Sylvie",
+      "gop": "16/06/2026"
     }
   ],
   "herinneringen": [],
@@ -99,7 +120,7 @@
     "notities": ""
   },
   "vergaderingArchief": [],
-  "bijgewerktDoor": "Karen",
+  "bijgewerktDoor": "Sylvie",
   "laatstBijgewerkt": "16/06/2026",
-  "serverTijd": "2026-06-16T08:04:02.997Z"
+  "serverTijd": "2026-06-16T08:49:15.990Z"
 }
