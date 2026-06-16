@@ -58,6 +58,69 @@ async function laadVanGitHub() {
   } catch(e) { return null; }
 }
 
+async function slaConfigOpGitHub(config) {
+  if (!GITHUB_TOKEN) return;
+  try {
+    const huidig = await laadConfigVanGitHub();
+    const sha = huidig ? huidig.sha : null;
+    const content = Buffer.from(JSON.stringify(config, null, 2)).toString('base64');
+    const body = JSON.stringify({
+      message: 'Config backup: ' + new Date().toISOString(),
+      content,
+      ...(sha ? { sha } : {})
+    });
+    return new Promise((resolve) => {
+      const options = {
+        hostname: 'api.github.com',
+        path: `/repos/${GITHUB_REPO}/contents/data/config.json`,
+        method: 'PUT',
+        headers: {
+          'Authorization': `token ${GITHUB_TOKEN}`,
+          'User-Agent': 'Praktijkbord',
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(body)
+        }
+      };
+      const req = https.request(options, (r) => {
+        let resp = ''; r.on('data', d => resp += d);
+        r.on('end', () => { resolve(); });
+      });
+      req.on('error', () => resolve());
+      req.write(body); req.end();
+    });
+  } catch(e) {}
+}
+
+async function laadConfigVanGitHub() {
+  if (!GITHUB_TOKEN) return null;
+  try {
+    return new Promise((resolve) => {
+      const options = {
+        hostname: 'api.github.com',
+        path: `/repos/${GITHUB_REPO}/contents/data/config.json`,
+        headers: {
+          'Authorization': `token ${GITHUB_TOKEN}`,
+          'User-Agent': 'Praktijkbord',
+          'Accept': 'application/vnd.github.v3+json'
+        }
+      };
+      https.get(options, (r) => {
+        let body = ''; r.on('data', d => body += d);
+        r.on('end', () => {
+          try {
+            const json = JSON.parse(body);
+            if (json.content) {
+              const data = JSON.parse(Buffer.from(json.content, 'base64').toString('utf8'));
+              resolve({ data, sha: json.sha });
+            } else resolve(null);
+          } catch(e) { resolve(null); }
+        });
+      }).on('error', () => resolve(null));
+    });
+  } catch(e) { return null; }
+}
+
 async function slaOpGitHub(data) {
   if (!GITHUB_TOKEN) return;
   try {
@@ -310,7 +373,10 @@ app.post('/api/config', auth, (req, res) => {
     const huidig = readConfig();
     const nieuw = req.body;
     if (nieuw.wachtwoord === '***') nieuw.wachtwoord = huidig.wachtwoord;
-    fs.writeFileSync(CONFIG_FILE, JSON.stringify({ ...huidig, ...nieuw }, null, 2));
+    const merged = { ...huidig, ...nieuw };
+    fs.writeFileSync(CONFIG_FILE, JSON.stringify(merged, null, 2));
+    // Backup config naar GitHub (bevat templates, namen, etc)
+    slaConfigOpGitHub(merged).catch(()=>{});
     res.json({ ok: true });
   } catch(e) { res.status(500).json({ error: e.message }); }
 });
@@ -485,6 +551,18 @@ async function startServer() {
       }
     } catch(e) {
       console.log('⚠️ GitHub ophalen mislukt:', e.message);
+    }
+  }
+  // Herstel config (templates, namen) van GitHub
+  if (GITHUB_TOKEN && !fs.existsSync(CONFIG_FILE)) {
+    try {
+      const cfg = await laadConfigVanGitHub();
+      if (cfg && cfg.data) {
+        fs.writeFileSync(CONFIG_FILE, JSON.stringify(cfg.data, null, 2));
+        console.log('✅ Config hersteld van GitHub (' + (cfg.data.templates||[]).length + ' templates)');
+      }
+    } catch(e) {
+      console.log('⚠️ Config ophalen mislukt:', e.message);
     }
   }
   
