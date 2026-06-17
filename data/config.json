@@ -39,6 +39,29 @@
         "boeha 2",
         "Tralalala"
       ]
+    },
+    {
+      "naam": "test",
+      "omschrijving": "mail sturen naar de eigenaar",
+      "cat": "medicatie",
+      "prio": "med",
+      "status": "waiting",
+      "verant": "Karen",
+      "opvolger": "Alexandra",
+      "belofte": "sdfsdf",
+      "opmerking": "sdfsf",
+      "subtaken": [
+        "sdfsd",
+        "sdf",
+        "ssf",
+        "sd",
+        "fsd",
+        "fs",
+        "df",
+        "sf",
+        "sf",
+        "sf"
+      ]
     }
   ]
 }
