@@ -8,22 +8,6 @@
   ],
   "templates": [
     {
-      "naam": "bloedtest",
-      "omschrijving": "boeha",
-      "cat": "medicatie",
-      "prio": "",
-      "status": "waiting",
-      "verant": "Karen",
-      "opvolger": "",
-      "belofte": "boeha",
-      "opmerking": "boeha",
-      "subtaken": [
-        "boeha1",
-        "boeha 2",
-        "Tralalala"
-      ]
-    },
-    {
       "naam": "test",
       "omschrijving": "mail sturen naar de eigenaar",
       "cat": "medicatie",
