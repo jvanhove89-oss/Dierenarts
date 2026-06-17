@@ -52,10 +52,10 @@
         {
           "tekst": "urine naar het labo",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Sylvie",
+          "afgevinktOp": "17/06/2026",
+          "afgevinktTijd": "11:02"
         },
         {
           "tekst": "uitslag bekeken",
@@ -254,5 +254,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Sylvie",
   "laatstBijgewerkt": "17/06/2026",
-  "serverTijd": "2026-06-17T08:41:44.179Z"
+  "serverTijd": "2026-06-17T09:02:12.263Z"
 }
