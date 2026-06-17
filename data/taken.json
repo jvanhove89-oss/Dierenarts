@@ -36,10 +36,10 @@
         {
           "tekst": "eigenaar gecontacteerd",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Alexandra",
+          "afgevinktOp": "17/06/2026",
+          "afgevinktTijd": "14:22"
         },
         {
           "tekst": "naar het labo",
@@ -86,7 +86,7 @@
       "overdracht": false,
       "door": "Sylvie",
       "op": "17/06/2026",
-      "gdoor": "Sylvie",
+      "gdoor": "Alexandra",
       "gop": "17/06/2026"
     },
     {
@@ -332,6 +332,7 @@
     "Sylvie",
     "Jade"
   ],
+  "templates": [],
   "feed": [],
   "casussen": [],
   "vergadering": {
@@ -341,7 +342,7 @@
     "notities": ""
   },
   "vergaderingArchief": [],
-  "bijgewerktDoor": "Karen",
+  "bijgewerktDoor": "Alexandra",
   "laatstBijgewerkt": "17/06/2026",
-  "serverTijd": "2026-06-17T11:52:33.227Z"
+  "serverTijd": "2026-06-17T12:22:13.482Z"
 }
