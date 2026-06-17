@@ -94,11 +94,11 @@
       "overdracht": false,
       "door": "Karen",
       "op": "17/06/2026",
-      "gdoor": null,
-      "gop": null,
-      "verwijderd": false,
-      "verwijderdDoor": null,
-      "verwijderdOp": null
+      "gdoor": "Karen",
+      "gop": "17/06/2026",
+      "verwijderd": true,
+      "verwijderdDoor": "Karen",
+      "verwijderdOp": 1781697150299
     },
     {
       "id": "mqhvdm5mfmk7",
@@ -443,5 +443,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "17/06/2026",
-  "serverTijd": "2026-06-17T11:52:16.939Z"
+  "serverTijd": "2026-06-17T11:52:30.375Z"
 }
