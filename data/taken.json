@@ -28,10 +28,10 @@
         {
           "tekst": "in de computer gezet",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Sylvie",
+          "afgevinktOp": "17/06/2026",
+          "afgevinktTijd": "11:29"
         },
         {
           "tekst": "eigenaar gecontacteerd",
@@ -44,10 +44,10 @@
         {
           "tekst": "naar het labo",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Sylvie",
+          "afgevinktOp": "17/06/2026",
+          "afgevinktTijd": "11:29"
         },
         {
           "tekst": "uitslag bekeken",
@@ -343,5 +343,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Sylvie",
   "laatstBijgewerkt": "17/06/2026",
-  "serverTijd": "2026-06-17T09:29:43.355Z"
+  "serverTijd": "2026-06-17T09:29:44.769Z"
 }
