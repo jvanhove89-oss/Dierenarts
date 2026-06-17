@@ -272,7 +272,7 @@
     {
       "id": "mqf5yn8kvvoj",
       "naam": "Mestonderzoek van Choco Geyskens is naar het labo moet opgevolgd worden.",
-      "status": "waiting",
+      "status": "done",
       "prio": "med",
       "cat": "onderzoek",
       "verant": "Karen",
@@ -310,10 +310,10 @@
         {
           "tekst": "mailen met de uitslag",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Sylvie",
+          "afgevinktOp": "17/06/2026",
+          "afgevinktTijd": "16:59"
         }
       ],
       "comments": [],
@@ -343,5 +343,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Sylvie",
   "laatstBijgewerkt": "17/06/2026",
-  "serverTijd": "2026-06-17T14:59:09.211Z"
+  "serverTijd": "2026-06-17T14:59:16.724Z"
 }
