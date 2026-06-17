@@ -294,10 +294,10 @@
         {
           "tekst": "bacteriologie uitslag",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Sylvie",
+          "afgevinktOp": "17/06/2026",
+          "afgevinktTijd": "16:59"
         },
         {
           "tekst": "opvolging medicatie naar huis",
@@ -321,7 +321,7 @@
       "door": "Sylvie",
       "op": "15/06/2026",
       "gdoor": "Sylvie",
-      "gop": "16/06/2026"
+      "gop": "17/06/2026"
     }
   ],
   "herinneringen": [],
@@ -332,7 +332,6 @@
     "Sylvie",
     "Jade"
   ],
-  "templates": [],
   "feed": [],
   "casussen": [],
   "vergadering": {
@@ -342,7 +341,7 @@
     "notities": ""
   },
   "vergaderingArchief": [],
-  "bijgewerktDoor": "Alexandra",
+  "bijgewerktDoor": "Sylvie",
   "laatstBijgewerkt": "17/06/2026",
-  "serverTijd": "2026-06-17T12:22:13.482Z"
+  "serverTijd": "2026-06-17T14:59:07.135Z"
 }
