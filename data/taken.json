@@ -1,6 +1,106 @@
 {
   "taken": [
     {
+      "id": "mqi0h1b4wfk7",
+      "naam": "Urine van Tisza Smeyers naar labo (kopie)",
+      "status": "waiting",
+      "prio": "med",
+      "cat": "",
+      "verant": "Karen",
+      "opvolger": "Jade",
+      "belofte": "bellen met de uitslag",
+      "deadline": "",
+      "dossier": "",
+      "opmerking": "",
+      "herhaling": "",
+      "diersoort": "",
+      "diernaam": "",
+      "eigenaar": "",
+      "subtaken": [
+        {
+          "tekst": "Urine ingestoken",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "in de computer gezet",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "medicatie klaargelegd",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "eigenaar op de hoogte",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "urine naar het labo",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "uitslag bekeken",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "uitslag in de computer gezet",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "eventuele medicatie klaargezet",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "eigenaar op de hoogte gesteld",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        }
+      ],
+      "comments": [],
+      "overdracht": false,
+      "door": "Karen",
+      "op": "17/06/2026",
+      "gdoor": null,
+      "gop": null,
+      "verwijderd": false,
+      "verwijderdDoor": null,
+      "verwijderdOp": null
+    },
+    {
       "id": "mqhvdm5mfmk7",
       "naam": "urine Bonny Nickmans naat labo",
       "status": "waiting",
@@ -341,7 +441,7 @@
     "notities": ""
   },
   "vergaderingArchief": [],
-  "bijgewerktDoor": "Sylvie",
+  "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "17/06/2026",
-  "serverTijd": "2026-06-17T09:31:39.488Z"
+  "serverTijd": "2026-06-17T11:52:16.939Z"
 }
