@@ -1,6 +1,95 @@
 {
   "taken": [
     {
+      "id": "mqhvdm5mfmk7",
+      "naam": "urine Bonny Nickmans naat labo",
+      "status": "waiting",
+      "prio": "med",
+      "cat": "",
+      "verant": "Karen",
+      "opvolger": "Jade",
+      "belofte": "mailen met de uitslag",
+      "deadline": "",
+      "dossier": "",
+      "opmerking": "Struviet is wel weg",
+      "herhaling": "",
+      "diersoort": "",
+      "diernaam": "",
+      "eigenaar": "",
+      "subtaken": [
+        {
+          "tekst": "urine ingestoken",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "in de computer gezet",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "eigenaar gecontacteerd",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "naar het labo",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "uitslag bekeken",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "uitslag in de computer",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "eventuele medicatie",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "eigenaar op de hoogte",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        }
+      ],
+      "comments": [],
+      "overdracht": false,
+      "door": "Sylvie",
+      "op": "17/06/2026",
+      "gdoor": null,
+      "gop": null
+    },
+    {
       "id": "mqhtdjq6akru",
       "naam": "Urine van Tisza Smeyers naar labo",
       "status": "waiting",
@@ -254,5 +343,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Sylvie",
   "laatstBijgewerkt": "17/06/2026",
-  "serverTijd": "2026-06-17T09:02:12.263Z"
+  "serverTijd": "2026-06-17T09:29:39.270Z"
 }
