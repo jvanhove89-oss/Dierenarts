@@ -1,6 +1,103 @@
 {
   "taken": [
     {
+      "id": "mqhtdjq6akru",
+      "naam": "Urine van Tisza Smeyers naar labo",
+      "status": "waiting",
+      "prio": "med",
+      "cat": "",
+      "verant": "Karen",
+      "opvolger": "Jade",
+      "belofte": "bellen met de uitslag",
+      "deadline": "",
+      "dossier": "",
+      "opmerking": "",
+      "herhaling": "",
+      "diersoort": "",
+      "diernaam": "",
+      "eigenaar": "",
+      "subtaken": [
+        {
+          "tekst": "Urine ingestoken",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "in de computer gezet",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "medicatie klaargelegd",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "eigenaar op de hoogte",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "urine naar het labo",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "uitslag bekeken",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "uitslag in de computer gezet",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "eventuele medicatie klaargezet",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "eigenaar op de hoogte gesteld",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        }
+      ],
+      "comments": [],
+      "overdracht": false,
+      "door": "Sylvie",
+      "op": "17/06/2026",
+      "gdoor": null,
+      "gop": null
+    },
+    {
       "id": "mqgl8871rnvy",
       "naam": "Labo onderzoek van Verhaert Thor (punctie)",
       "status": "waiting",
@@ -156,6 +253,6 @@
   },
   "vergaderingArchief": [],
   "bijgewerktDoor": "Sylvie",
-  "laatstBijgewerkt": "16/06/2026",
-  "serverTijd": "2026-06-16T16:15:22.993Z"
+  "laatstBijgewerkt": "17/06/2026",
+  "serverTijd": "2026-06-17T08:33:36.914Z"
 }
