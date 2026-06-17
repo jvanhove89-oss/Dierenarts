@@ -44,10 +44,10 @@
         {
           "tekst": "eigenaar op de hoogte",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Sylvie",
+          "afgevinktOp": "17/06/2026",
+          "afgevinktTijd": "10:41"
         },
         {
           "tekst": "urine naar het labo",
@@ -254,5 +254,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Sylvie",
   "laatstBijgewerkt": "17/06/2026",
-  "serverTijd": "2026-06-17T08:41:40.036Z"
+  "serverTijd": "2026-06-17T08:41:44.179Z"
 }
