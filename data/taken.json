@@ -209,7 +209,7 @@
         },
         {
           "tekst": "medicatie klaargelegd",
-          "done": false
+          "done": true
         },
         {
           "tekst": "uitslag doorgeven aan de klant",
@@ -326,6 +326,6 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "18/06/2026",
-  "serverTijd": "2026-06-18T09:47:03.769Z",
+  "serverTijd": "2026-06-18T09:47:04.913Z",
   "templates": []
 }
