@@ -20,10 +20,10 @@
         {
           "tekst": "Snap Giardia",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Karen",
+          "afgevinktOp": "18/06/2026",
+          "afgevinktTijd": "15:59"
         },
         {
           "tekst": "uitslag giardia ingegeven",
@@ -36,10 +36,10 @@
         {
           "tekst": "uitslag giardia doorgemaild",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Karen",
+          "afgevinktOp": "18/06/2026",
+          "afgevinktTijd": "15:59"
         },
         {
           "tekst": "overige stoelgang naar het labo",
@@ -86,7 +86,7 @@
       "overdracht": false,
       "door": "Sylvie",
       "op": "18/06/2026",
-      "gdoor": "Sylvie",
+      "gdoor": "Karen",
       "gop": "18/06/2026"
     },
     {
@@ -404,6 +404,7 @@
     "Sylvie",
     "Jade"
   ],
+  "templates": [],
   "feed": [],
   "casussen": [],
   "vergadering": {
@@ -413,7 +414,7 @@
     "notities": ""
   },
   "vergaderingArchief": [],
-  "bijgewerktDoor": "Sylvie",
+  "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "18/06/2026",
-  "serverTijd": "2026-06-18T13:54:15.053Z"
+  "serverTijd": "2026-06-18T13:59:09.695Z"
 }
