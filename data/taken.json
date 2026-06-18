@@ -189,7 +189,7 @@
     {
       "id": "mqgl8871rnvy",
       "naam": "Labo onderzoek van Verhaert Thor (punctie)",
-      "status": "waiting",
+      "status": "done",
       "prio": "med",
       "cat": "",
       "verant": "Karen",
@@ -198,39 +198,22 @@
       "deadline": "",
       "dossier": "",
       "opmerking": "",
-      "herhaling": "",
       "subtaken": [
         {
           "tekst": "Punctie naar het labo",
-          "eigenaar": "",
-          "done": true,
-          "afgevinktDoor": "Sylvie",
-          "afgevinktOp": "16/06/2026",
-          "afgevinktTijd": "13:58"
+          "done": false
         },
         {
           "tekst": "uitslag bekeken",
-          "eigenaar": "",
-          "done": true,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": false
         },
         {
           "tekst": "medicatie klaargelegd",
-          "eigenaar": "",
-          "done": true,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": false
         },
         {
           "tekst": "uitslag doorgeven aan de klant",
-          "eigenaar": "",
-          "done": true,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": false
         }
       ],
       "comments": [],
@@ -343,6 +326,6 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "18/06/2026",
-  "serverTijd": "2026-06-18T09:46:53.879Z",
+  "serverTijd": "2026-06-18T09:47:00.880Z",
   "templates": []
 }
