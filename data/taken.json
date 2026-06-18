@@ -213,7 +213,7 @@
         },
         {
           "tekst": "uitslag doorgeven aan de klant",
-          "done": false
+          "done": true
         }
       ],
       "comments": [],
@@ -326,6 +326,6 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "18/06/2026",
-  "serverTijd": "2026-06-18T09:47:04.913Z",
+  "serverTijd": "2026-06-18T09:47:05.783Z",
   "templates": []
 }
