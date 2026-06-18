@@ -125,7 +125,7 @@
         {
           "tekst": "medicatie klaargelegd",
           "eigenaar": "",
-          "done": false,
+          "done": true,
           "afgevinktDoor": null,
           "afgevinktOp": null,
           "afgevinktTijd": null
@@ -343,6 +343,6 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "18/06/2026",
-  "serverTijd": "2026-06-18T09:31:45.763Z",
+  "serverTijd": "2026-06-18T09:31:47.049Z",
   "templates": []
 }
