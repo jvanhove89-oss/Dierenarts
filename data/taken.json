@@ -109,7 +109,7 @@
         {
           "tekst": "Urine ingestoken",
           "eigenaar": "",
-          "done": false,
+          "done": true,
           "afgevinktDoor": null,
           "afgevinktOp": null,
           "afgevinktTijd": null
@@ -183,8 +183,8 @@
       "overdracht": false,
       "door": "Sylvie",
       "op": "17/06/2026",
-      "gdoor": "Sylvie",
-      "gop": "17/06/2026"
+      "gdoor": "Karen",
+      "gop": "18/06/2026"
     },
     {
       "id": "mqgl8871rnvy",
@@ -341,7 +341,8 @@
     "notities": ""
   },
   "vergaderingArchief": [],
-  "bijgewerktDoor": "Sylvie",
-  "laatstBijgewerkt": "17/06/2026",
-  "serverTijd": "2026-06-17T14:59:16.724Z"
+  "bijgewerktDoor": "Karen",
+  "laatstBijgewerkt": "18/06/2026",
+  "serverTijd": "2026-06-18T09:31:45.763Z",
+  "templates": []
 }
