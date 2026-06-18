@@ -44,10 +44,10 @@
         {
           "tekst": "overige stoelgang naar het labo",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Sylvie",
+          "afgevinktOp": "18/06/2026",
+          "afgevinktTijd": "11:58"
         },
         {
           "tekst": "uitslag labo bekeken",
@@ -86,8 +86,8 @@
       "overdracht": false,
       "door": "Sylvie",
       "op": "18/06/2026",
-      "gdoor": null,
-      "gop": null
+      "gdoor": "Sylvie",
+      "gop": "18/06/2026"
     },
     {
       "id": "mqhvdm5mfmk7",
@@ -415,5 +415,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Sylvie",
   "laatstBijgewerkt": "18/06/2026",
-  "serverTijd": "2026-06-18T09:58:25.789Z"
+  "serverTijd": "2026-06-18T09:58:29.799Z"
 }
