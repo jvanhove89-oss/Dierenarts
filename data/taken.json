@@ -205,7 +205,7 @@
         },
         {
           "tekst": "uitslag bekeken",
-          "done": false
+          "done": true
         },
         {
           "tekst": "medicatie klaargelegd",
@@ -326,6 +326,6 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "18/06/2026",
-  "serverTijd": "2026-06-18T09:47:00.880Z",
+  "serverTijd": "2026-06-18T09:47:03.769Z",
   "templates": []
 }
