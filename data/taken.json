@@ -211,7 +211,7 @@
         {
           "tekst": "uitslag bekeken",
           "eigenaar": "",
-          "done": false,
+          "done": true,
           "afgevinktDoor": null,
           "afgevinktOp": null,
           "afgevinktTijd": null
@@ -237,8 +237,8 @@
       "overdracht": false,
       "door": "Sylvie",
       "op": "16/06/2026",
-      "gdoor": "Sylvie",
-      "gop": "16/06/2026"
+      "gdoor": "Karen",
+      "gop": "18/06/2026"
     },
     {
       "id": "mqf6zh6xed7x",
@@ -259,7 +259,7 @@
         },
         {
           "tekst": "Bellen eigenaar",
-          "done": false
+          "done": true
         }
       ],
       "comments": [],
@@ -343,6 +343,6 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "18/06/2026",
-  "serverTijd": "2026-06-18T09:34:23.509Z",
+  "serverTijd": "2026-06-18T09:46:52.435Z",
   "templates": []
 }
