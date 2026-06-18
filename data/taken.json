@@ -1,6 +1,95 @@
 {
   "taken": [
     {
+      "id": "mqjbuh1iw38l",
+      "naam": "Mestonderzoek Ziggy Vleminckx",
+      "status": "waiting",
+      "prio": "med",
+      "cat": "",
+      "verant": "Karen",
+      "opvolger": "",
+      "belofte": "mailen met de uitslag",
+      "deadline": "",
+      "dossier": "",
+      "opmerking": "Giardia is +",
+      "herhaling": "",
+      "diersoort": "",
+      "diernaam": "",
+      "eigenaar": "",
+      "subtaken": [
+        {
+          "tekst": "Snap Giardia",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "uitslag giardia ingegeven",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "uitslag giardia doorgemaild",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "overige stoelgang naar het labo",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "uitslag labo bekeken",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "uitslag labo ingeven",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "medicatie klaarleggen",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "uitslag labo doorgemaild",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        }
+      ],
+      "comments": [],
+      "overdracht": false,
+      "door": "Sylvie",
+      "op": "18/06/2026",
+      "gdoor": null,
+      "gop": null
+    },
+    {
       "id": "mqhvdm5mfmk7",
       "naam": "urine Bonny Nickmans naat labo",
       "status": "waiting",
@@ -324,8 +413,7 @@
     "notities": ""
   },
   "vergaderingArchief": [],
-  "bijgewerktDoor": "Karen",
+  "bijgewerktDoor": "Sylvie",
   "laatstBijgewerkt": "18/06/2026",
-  "serverTijd": "2026-06-18T09:47:06.607Z",
-  "templates": []
+  "serverTijd": "2026-06-18T09:58:25.789Z"
 }
