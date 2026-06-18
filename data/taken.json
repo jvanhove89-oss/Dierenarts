@@ -28,10 +28,10 @@
         {
           "tekst": "uitslag giardia ingegeven",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Sylvie",
+          "afgevinktOp": "18/06/2026",
+          "afgevinktTijd": "15:54"
         },
         {
           "tekst": "uitslag giardia doorgemaild",
@@ -415,5 +415,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Sylvie",
   "laatstBijgewerkt": "18/06/2026",
-  "serverTijd": "2026-06-18T09:58:29.799Z"
+  "serverTijd": "2026-06-18T13:54:15.053Z"
 }
