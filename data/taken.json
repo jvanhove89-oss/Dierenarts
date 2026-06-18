@@ -243,7 +243,7 @@
     {
       "id": "mqf6zh6xed7x",
       "naam": "Aerts Kyara",
-      "status": "waiting",
+      "status": "done",
       "prio": "high",
       "cat": "",
       "verant": "Karen",
@@ -255,11 +255,11 @@
       "subtaken": [
         {
           "tekst": "Mailen velab",
-          "done": true
+          "done": false
         },
         {
           "tekst": "Bellen eigenaar",
-          "done": true
+          "done": false
         }
       ],
       "comments": [],
@@ -343,6 +343,6 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "18/06/2026",
-  "serverTijd": "2026-06-18T09:34:05.834Z",
+  "serverTijd": "2026-06-18T09:34:20.127Z",
   "templates": []
 }
