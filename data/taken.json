@@ -201,7 +201,7 @@
       "subtaken": [
         {
           "tekst": "Punctie naar het labo",
-          "done": false
+          "done": true
         },
         {
           "tekst": "uitslag bekeken",
@@ -326,6 +326,6 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "18/06/2026",
-  "serverTijd": "2026-06-18T09:47:05.783Z",
+  "serverTijd": "2026-06-18T09:47:06.607Z",
   "templates": []
 }
