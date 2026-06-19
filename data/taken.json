@@ -262,10 +262,10 @@
         {
           "tekst": "eigenaar op de hoogte gesteld",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Karen",
+          "afgevinktOp": "19/06/2026",
+          "afgevinktTijd": "10:03"
         }
       ],
       "comments": [],
@@ -416,5 +416,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "19/06/2026",
-  "serverTijd": "2026-06-19T08:03:26.539Z"
+  "serverTijd": "2026-06-19T08:03:27.926Z"
 }
