@@ -254,10 +254,10 @@
         {
           "tekst": "eventuele medicatie klaargezet",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Karen",
+          "afgevinktOp": "19/06/2026",
+          "afgevinktTijd": "10:03"
         },
         {
           "tekst": "eigenaar op de hoogte gesteld",
@@ -416,5 +416,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "19/06/2026",
-  "serverTijd": "2026-06-19T08:03:25.692Z"
+  "serverTijd": "2026-06-19T08:03:26.539Z"
 }
