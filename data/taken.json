@@ -246,10 +246,10 @@
         {
           "tekst": "uitslag in de computer gezet",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Karen",
+          "afgevinktOp": "19/06/2026",
+          "afgevinktTijd": "10:03"
         },
         {
           "tekst": "eventuele medicatie klaargezet",
@@ -416,5 +416,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "19/06/2026",
-  "serverTijd": "2026-06-19T08:03:22.550Z"
+  "serverTijd": "2026-06-19T08:03:25.692Z"
 }
