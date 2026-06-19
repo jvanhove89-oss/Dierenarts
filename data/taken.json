@@ -181,7 +181,7 @@
     {
       "id": "mqhtdjq6akru",
       "naam": "Urine van Tisza Smeyers naar labo",
-      "status": "waiting",
+      "status": "done",
       "prio": "med",
       "cat": "",
       "verant": "Karen",
@@ -272,7 +272,7 @@
       "overdracht": false,
       "door": "Sylvie",
       "op": "17/06/2026",
-      "gdoor": "Karen",
+      "gdoor": "Sylvie",
       "gop": "19/06/2026"
     },
     {
@@ -404,7 +404,6 @@
     "Sylvie",
     "Jade"
   ],
-  "templates": [],
   "feed": [],
   "casussen": [],
   "vergadering": {
@@ -414,7 +413,7 @@
     "notities": ""
   },
   "vergaderingArchief": [],
-  "bijgewerktDoor": "Karen",
+  "bijgewerktDoor": "Sylvie",
   "laatstBijgewerkt": "19/06/2026",
-  "serverTijd": "2026-06-19T08:03:27.926Z"
+  "serverTijd": "2026-06-19T13:29:00.152Z"
 }
