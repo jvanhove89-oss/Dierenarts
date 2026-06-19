@@ -238,10 +238,10 @@
         {
           "tekst": "uitslag bekeken",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Karen",
+          "afgevinktOp": "19/06/2026",
+          "afgevinktTijd": "10:03"
         },
         {
           "tekst": "uitslag in de computer gezet",
@@ -273,7 +273,7 @@
       "door": "Sylvie",
       "op": "17/06/2026",
       "gdoor": "Karen",
-      "gop": "18/06/2026"
+      "gop": "19/06/2026"
     },
     {
       "id": "mqgl8871rnvy",
@@ -415,6 +415,6 @@
   },
   "vergaderingArchief": [],
   "bijgewerktDoor": "Karen",
-  "laatstBijgewerkt": "18/06/2026",
-  "serverTijd": "2026-06-18T13:59:09.695Z"
+  "laatstBijgewerkt": "19/06/2026",
+  "serverTijd": "2026-06-19T08:03:22.550Z"
 }
