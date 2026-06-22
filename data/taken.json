@@ -169,6 +169,14 @@
           "afgevinktDoor": "Alexandra",
           "afgevinktOp": "22/06/2026",
           "afgevinktTijd": "10:31"
+        },
+        {
+          "tekst": "medicatie ligt klaar aan de balie",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
         }
       ],
       "comments": [],
@@ -415,5 +423,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Alexandra",
   "laatstBijgewerkt": "22/06/2026",
-  "serverTijd": "2026-06-22T08:31:47.758Z"
+  "serverTijd": "2026-06-22T08:32:07.367Z"
 }
