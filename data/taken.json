@@ -60,10 +60,10 @@
         {
           "tekst": "uitslag labo ingeven",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Sylvie",
+          "afgevinktOp": "22/06/2026",
+          "afgevinktTijd": "10:19"
         },
         {
           "tekst": "medicatie klaarleggen",
@@ -86,8 +86,8 @@
       "overdracht": false,
       "door": "Sylvie",
       "op": "18/06/2026",
-      "gdoor": "Karen",
-      "gop": "18/06/2026"
+      "gdoor": "Sylvie",
+      "gop": "22/06/2026"
     },
     {
       "id": "mqhvdm5mfmk7",
@@ -415,5 +415,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Sylvie",
   "laatstBijgewerkt": "22/06/2026",
-  "serverTijd": "2026-06-22T08:18:25.560Z"
+  "serverTijd": "2026-06-22T08:19:20.464Z"
 }
