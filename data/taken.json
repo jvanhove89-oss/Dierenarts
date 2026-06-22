@@ -141,10 +141,10 @@
         {
           "tekst": "uitslag bekeken",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Alexandra",
+          "afgevinktOp": "22/06/2026",
+          "afgevinktTijd": "10:31"
         },
         {
           "tekst": "uitslag in de computer",
@@ -175,7 +175,7 @@
       "overdracht": false,
       "door": "Sylvie",
       "op": "17/06/2026",
-      "gdoor": "Sylvie",
+      "gdoor": "Alexandra",
       "gop": "22/06/2026"
     },
     {
@@ -413,7 +413,7 @@
     "notities": ""
   },
   "vergaderingArchief": [],
-  "bijgewerktDoor": "Sylvie",
+  "bijgewerktDoor": "Alexandra",
   "laatstBijgewerkt": "22/06/2026",
-  "serverTijd": "2026-06-22T08:19:20.464Z"
+  "serverTijd": "2026-06-22T08:31:29.746Z"
 }
