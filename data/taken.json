@@ -157,10 +157,10 @@
         {
           "tekst": "eventuele medicatie",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Alexandra",
+          "afgevinktOp": "22/06/2026",
+          "afgevinktTijd": "10:31"
         },
         {
           "tekst": "eigenaar op de hoogte",
@@ -415,5 +415,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Alexandra",
   "laatstBijgewerkt": "22/06/2026",
-  "serverTijd": "2026-06-22T08:31:29.746Z"
+  "serverTijd": "2026-06-22T08:31:32.475Z"
 }
