@@ -52,10 +52,10 @@
         {
           "tekst": "uitslag labo bekeken",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Sylvie",
+          "afgevinktOp": "23/06/2026",
+          "afgevinktTijd": "10:57"
         },
         {
           "tekst": "uitslag labo ingeven",
@@ -87,7 +87,7 @@
       "door": "Sylvie",
       "op": "18/06/2026",
       "gdoor": "Sylvie",
-      "gop": "22/06/2026"
+      "gop": "23/06/2026"
     },
     {
       "id": "mqhvdm5mfmk7",
@@ -423,5 +423,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Sylvie",
   "laatstBijgewerkt": "23/06/2026",
-  "serverTijd": "2026-06-23T08:57:07.225Z"
+  "serverTijd": "2026-06-23T08:57:13.782Z"
 }
