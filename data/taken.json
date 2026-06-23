@@ -92,7 +92,7 @@
     {
       "id": "mqhvdm5mfmk7",
       "naam": "urine Bonny Nickmans naat labo",
-      "status": "waiting",
+      "status": "done",
       "prio": "med",
       "cat": "",
       "verant": "Karen",
@@ -423,5 +423,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Sylvie",
   "laatstBijgewerkt": "23/06/2026",
-  "serverTijd": "2026-06-23T08:57:03.665Z"
+  "serverTijd": "2026-06-23T08:57:07.225Z"
 }
