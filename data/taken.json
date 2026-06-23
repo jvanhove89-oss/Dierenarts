@@ -76,10 +76,10 @@
         {
           "tekst": "uitslag labo doorgemaild",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Sylvie",
+          "afgevinktOp": "23/06/2026",
+          "afgevinktTijd": "10:58"
         }
       ],
       "comments": [],
@@ -423,5 +423,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Sylvie",
   "laatstBijgewerkt": "23/06/2026",
-  "serverTijd": "2026-06-23T08:57:27.238Z"
+  "serverTijd": "2026-06-23T08:58:38.854Z"
 }
