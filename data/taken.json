@@ -3,7 +3,7 @@
     {
       "id": "mqjbuh1iw38l",
       "naam": "Mestonderzoek Ziggy Vleminckx",
-      "status": "waiting",
+      "status": "done",
       "prio": "med",
       "cat": "",
       "verant": "Karen",
@@ -423,5 +423,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Sylvie",
   "laatstBijgewerkt": "23/06/2026",
-  "serverTijd": "2026-06-23T08:57:24.482Z"
+  "serverTijd": "2026-06-23T08:57:27.238Z"
 }
