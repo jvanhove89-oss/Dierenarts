@@ -68,10 +68,10 @@
         {
           "tekst": "medicatie klaarleggen",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Sylvie",
+          "afgevinktOp": "23/06/2026",
+          "afgevinktTijd": "10:57"
         },
         {
           "tekst": "uitslag labo doorgemaild",
@@ -423,5 +423,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Sylvie",
   "laatstBijgewerkt": "23/06/2026",
-  "serverTijd": "2026-06-23T08:57:13.782Z"
+  "serverTijd": "2026-06-23T08:57:15.602Z"
 }
