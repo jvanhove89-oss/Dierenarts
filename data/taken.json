@@ -173,18 +173,18 @@
         {
           "tekst": "medicatie ligt klaar aan de balie",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Sylvie",
+          "afgevinktOp": "23/06/2026",
+          "afgevinktTijd": "10:57"
         }
       ],
       "comments": [],
       "overdracht": false,
       "door": "Sylvie",
       "op": "17/06/2026",
-      "gdoor": "Alexandra",
-      "gop": "22/06/2026"
+      "gdoor": "Sylvie",
+      "gop": "23/06/2026"
     },
     {
       "id": "mqhtdjq6akru",
@@ -421,7 +421,7 @@
     "notities": ""
   },
   "vergaderingArchief": [],
-  "bijgewerktDoor": "Alexandra",
-  "laatstBijgewerkt": "22/06/2026",
-  "serverTijd": "2026-06-22T08:32:07.367Z"
+  "bijgewerktDoor": "Sylvie",
+  "laatstBijgewerkt": "23/06/2026",
+  "serverTijd": "2026-06-23T08:57:03.665Z"
 }
