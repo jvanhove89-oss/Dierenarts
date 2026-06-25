@@ -1,6 +1,30 @@
 {
   "taken": [
     {
+      "id": "mqtb40aj4e0k",
+      "naam": "Voorschrift maken Aciclovir zalf voor Beets Kimberley",
+      "status": "waiting",
+      "prio": "med",
+      "cat": "medicatie",
+      "verant": "Jade",
+      "opvolger": "",
+      "belofte": "Mailen als voorschrift klaar ligt",
+      "deadline": "",
+      "dossier": "",
+      "opmerking": "",
+      "herhaling": "",
+      "diersoort": "",
+      "diernaam": "",
+      "eigenaar": "",
+      "subtaken": [],
+      "comments": [],
+      "overdracht": false,
+      "door": "Alexandra",
+      "op": "25/06/2026",
+      "gdoor": null,
+      "gop": null
+    },
+    {
       "id": "mqjbuh1iw38l",
       "naam": "Mestonderzoek Ziggy Vleminckx",
       "status": "done",
@@ -421,7 +445,7 @@
     "notities": ""
   },
   "vergaderingArchief": [],
-  "bijgewerktDoor": "Sylvie",
-  "laatstBijgewerkt": "23/06/2026",
-  "serverTijd": "2026-06-23T08:58:38.854Z"
+  "bijgewerktDoor": "Alexandra",
+  "laatstBijgewerkt": "25/06/2026",
+  "serverTijd": "2026-06-25T09:35:33.536Z"
 }
