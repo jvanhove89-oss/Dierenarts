@@ -24,6 +24,14 @@
           "afgevinktDoor": null,
           "afgevinktOp": null,
           "afgevinktTijd": null
+        },
+        {
+          "tekst": "mailen naar eigenaar als het klaar ligt",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
         }
       ],
       "comments": [],
@@ -456,5 +464,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Alexandra",
   "laatstBijgewerkt": "25/06/2026",
-  "serverTijd": "2026-06-25T09:36:06.943Z"
+  "serverTijd": "2026-06-25T09:36:24.727Z"
 }
