@@ -16,13 +16,22 @@
       "diersoort": "",
       "diernaam": "",
       "eigenaar": "",
-      "subtaken": [],
+      "subtaken": [
+        {
+          "tekst": "voorschrift maken aciclovir zalf",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        }
+      ],
       "comments": [],
       "overdracht": false,
       "door": "Alexandra",
       "op": "25/06/2026",
-      "gdoor": null,
-      "gop": null
+      "gdoor": "Alexandra",
+      "gop": "25/06/2026"
     },
     {
       "id": "mqjbuh1iw38l",
@@ -447,5 +456,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Alexandra",
   "laatstBijgewerkt": "25/06/2026",
-  "serverTijd": "2026-06-25T09:35:33.536Z"
+  "serverTijd": "2026-06-25T09:36:06.943Z"
 }
