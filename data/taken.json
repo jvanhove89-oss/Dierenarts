@@ -20,10 +20,10 @@
         {
           "tekst": "voorschrift maken aciclovir zalf",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Jade",
+          "afgevinktOp": "26/06/2026",
+          "afgevinktTijd": "09:06"
         },
         {
           "tekst": "mailen naar eigenaar als het klaar ligt",
@@ -38,8 +38,8 @@
       "overdracht": false,
       "door": "Alexandra",
       "op": "25/06/2026",
-      "gdoor": "Alexandra",
-      "gop": "25/06/2026"
+      "gdoor": "Jade",
+      "gop": "26/06/2026"
     },
     {
       "id": "mqjbuh1iw38l",
@@ -462,7 +462,7 @@
     "notities": ""
   },
   "vergaderingArchief": [],
-  "bijgewerktDoor": "Alexandra",
-  "laatstBijgewerkt": "25/06/2026",
-  "serverTijd": "2026-06-25T09:36:24.727Z"
+  "bijgewerktDoor": "Jade",
+  "laatstBijgewerkt": "26/06/2026",
+  "serverTijd": "2026-06-26T07:06:50.196Z"
 }
