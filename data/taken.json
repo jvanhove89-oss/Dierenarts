@@ -3,7 +3,7 @@
     {
       "id": "mqtb40aj4e0k",
       "naam": "Voorschrift maken Aciclovir zalf voor Beets Kimberley",
-      "status": "waiting",
+      "status": "done",
       "prio": "med",
       "cat": "medicatie",
       "verant": "Jade",
@@ -464,5 +464,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Jade",
   "laatstBijgewerkt": "26/06/2026",
-  "serverTijd": "2026-06-26T07:08:36.303Z"
+  "serverTijd": "2026-06-26T07:08:57.280Z"
 }
