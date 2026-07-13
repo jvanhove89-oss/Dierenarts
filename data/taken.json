@@ -20,10 +20,10 @@
         {
           "tekst": "urine ingestoken",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Sylvie",
+          "afgevinktOp": "13/07/2026",
+          "afgevinktTijd": "12:06"
         },
         {
           "tekst": "bekeken",
@@ -62,8 +62,8 @@
       "overdracht": false,
       "door": "Sylvie",
       "op": "13/07/2026",
-      "gdoor": null,
-      "gop": null
+      "gdoor": "Sylvie",
+      "gop": "13/07/2026"
     },
     {
       "id": "mqtb40aj4e0k",
@@ -529,5 +529,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Sylvie",
   "laatstBijgewerkt": "13/07/2026",
-  "serverTijd": "2026-07-13T10:06:17.681Z"
+  "serverTijd": "2026-07-13T10:06:20.276Z"
 }
