@@ -1,6 +1,71 @@
 {
   "taken": [
     {
+      "id": "mrj24vtc5ylb",
+      "naam": "urine Nora De Proost",
+      "status": "waiting",
+      "prio": "",
+      "cat": "",
+      "verant": "Karen",
+      "opvolger": "Alexandra",
+      "belofte": "Mailen met de uitslag",
+      "deadline": "",
+      "dossier": "",
+      "opmerking": "tijdens verlof bij Iris Mensch geweest (zie verslag)",
+      "herhaling": "",
+      "diersoort": "",
+      "diernaam": "",
+      "eigenaar": "",
+      "subtaken": [
+        {
+          "tekst": "urine ingestoken",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "bekeken",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "gemaild",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "eventueel naar labo",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        },
+        {
+          "tekst": "eventueel medicatie",
+          "eigenaar": "",
+          "done": false,
+          "afgevinktDoor": null,
+          "afgevinktOp": null,
+          "afgevinktTijd": null
+        }
+      ],
+      "comments": [],
+      "overdracht": false,
+      "door": "Sylvie",
+      "op": "13/07/2026",
+      "gdoor": null,
+      "gop": null
+    },
+    {
       "id": "mqtb40aj4e0k",
       "naam": "Voorschrift maken Aciclovir zalf voor Beets Kimberley",
       "status": "done",
@@ -462,7 +527,7 @@
     "notities": ""
   },
   "vergaderingArchief": [],
-  "bijgewerktDoor": "Jade",
-  "laatstBijgewerkt": "26/06/2026",
-  "serverTijd": "2026-06-26T07:08:57.280Z"
+  "bijgewerktDoor": "Sylvie",
+  "laatstBijgewerkt": "13/07/2026",
+  "serverTijd": "2026-07-13T10:06:17.681Z"
 }
