@@ -36,10 +36,10 @@
         {
           "tekst": "gemaild",
           "eigenaar": "",
-          "done": false,
-          "afgevinktDoor": null,
-          "afgevinktOp": null,
-          "afgevinktTijd": null
+          "done": true,
+          "afgevinktDoor": "Sylvie",
+          "afgevinktOp": "13/07/2026",
+          "afgevinktTijd": "14:15"
         },
         {
           "tekst": "eventueel naar labo",
@@ -529,5 +529,5 @@
   "vergaderingArchief": [],
   "bijgewerktDoor": "Sylvie",
   "laatstBijgewerkt": "13/07/2026",
-  "serverTijd": "2026-07-13T10:06:20.276Z"
+  "serverTijd": "2026-07-13T12:15:32.579Z"
 }
