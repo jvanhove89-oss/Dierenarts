@@ -3,7 +3,7 @@
     {
       "id": "mrj24vtc5ylb",
       "naam": "urine Nora De Proost",
-      "status": "waiting",
+      "status": "done",
       "prio": "",
       "cat": "",
       "verant": "Karen",
@@ -62,8 +62,8 @@
       "overdracht": false,
       "door": "Sylvie",
       "op": "13/07/2026",
-      "gdoor": "Karen",
-      "gop": "13/07/2026"
+      "gdoor": "Sylvie",
+      "gop": "14/07/2026"
     },
     {
       "id": "mqtb40aj4e0k",
@@ -527,7 +527,7 @@
     "notities": ""
   },
   "vergaderingArchief": [],
-  "bijgewerktDoor": "Karen",
-  "laatstBijgewerkt": "13/07/2026",
-  "serverTijd": "2026-07-13T12:45:37.396Z"
+  "bijgewerktDoor": "Sylvie",
+  "laatstBijgewerkt": "14/07/2026",
+  "serverTijd": "2026-07-14T08:37:15.321Z"
 }
