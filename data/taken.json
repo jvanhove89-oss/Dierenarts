@@ -1,6 +1,30 @@
 {
   "taken": [
     {
+      "id": "mrkkwdnoidd9",
+      "naam": "Foto + tekst website alle collega's!",
+      "status": "waiting",
+      "prio": "high",
+      "cat": "",
+      "verant": "Karen",
+      "opvolger": "Sylvie",
+      "belofte": "Einde van deze week foto + tekst.",
+      "deadline": "2026-07-17",
+      "dossier": "",
+      "opmerking": "",
+      "herhaling": "",
+      "diersoort": "",
+      "diernaam": "",
+      "eigenaar": "",
+      "subtaken": [],
+      "comments": [],
+      "overdracht": false,
+      "door": "Karen",
+      "op": "14/07/2026",
+      "gdoor": null,
+      "gop": null
+    },
+    {
       "id": "mrj24vtc5ylb",
       "naam": "urine Nora De Proost",
       "status": "done",
@@ -527,7 +551,7 @@
     "notities": ""
   },
   "vergaderingArchief": [],
-  "bijgewerktDoor": "Sylvie",
+  "bijgewerktDoor": "Karen",
   "laatstBijgewerkt": "14/07/2026",
-  "serverTijd": "2026-07-14T08:37:15.321Z"
+  "serverTijd": "2026-07-14T11:39:20.061Z"
 }
